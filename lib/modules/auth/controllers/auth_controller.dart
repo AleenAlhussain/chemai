@@ -33,10 +33,8 @@ class AuthController extends GetxController {
     await Future.delayed(const Duration(seconds: 2));
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('logged_in', true);
-    await prefs.setBool('onboarding_done', true);
-    await prefs.setString('mentor_id', 'gamer');
     isLoading.value = false;
-    Get.offAllNamed(AppRoutes.mainNav);
+    Get.offAllNamed(AppRoutes.onboarding);
   }
 
   void togglePasswordVisibility() =>

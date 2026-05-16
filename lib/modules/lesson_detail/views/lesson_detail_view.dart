@@ -1,6 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 
 import '../../../app/theme/app_colors.dart';
@@ -11,409 +10,512 @@ class LessonDetailView extends GetView<LessonDetailController> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Scaffold(
-      backgroundColor: Colors.black,
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        titleSpacing: 16,
-        leading: Padding(
-          padding:  EdgeInsets.all(10),
-          child: Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.black38,
-              border: Border.all(color: Colors.white24),
+      backgroundColor: AppColors.bgDeep,
+      appBar: _buildAppBar(),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            padding: const EdgeInsets.only(bottom: 100),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 12),
+                _buildTabBar(),
+                const SizedBox(height: 12),
+                _buildTitleRow(),
+                const SizedBox(height: 8),
+                _buildProgressBar(),
+                const SizedBox(height: 16),
+                _buildStepCards(),
+              ],
             ),
-            child:  Icon(Icons.person_outline,
-                color: Colors.white70, size: 18),
           ),
-        ),
-        title:  Text(
-          'QUANTUM CHEMISTRY',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 12,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 1.8,
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon:  Icon(Icons.settings_outlined,
-                color: Colors.white70, size: 20),
-            onPressed: () {},
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: _buildGotItButton(),
           ),
         ],
       ),
-      body: Stack(
+    );
+  }
+
+  AppBar _buildAppBar() {
+    return AppBar(
+      backgroundColor: AppColors.bgDeep,
+      elevation: 0,
+      automaticallyImplyLeading: false,
+      leading: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColors.bgCard,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: const Icon(Icons.bolt, color: Colors.white, size: 20),
+        ),
+      ),
+      title: ShaderMask(
+        shaderCallback: (bounds) => LinearGradient(
+          colors: [AppColors.purple, AppColors.cyan],
+        ).createShader(bounds),
+        child: const Text(
+          'ChemAI',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.w800,
+            letterSpacing: 0.5,
+          ),
+        ),
+      ),
+      centerTitle: true,
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: 12),
+          child: Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppColors.bgCard,
+            ),
+            child: const Icon(Icons.person_outline, color: Colors.white70, size: 20),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTabBar() {
+    final tabs = ['Steps', 'Equations', 'Visual'];
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Obx(() => Container(
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: AppColors.bgCard,
+              borderRadius: BorderRadius.circular(30),
+            ),
+            child: Row(
+              children: List.generate(tabs.length, (i) {
+                final isActive = controller.activeTab.value == i;
+                return Expanded(
+                  child: GestureDetector(
+                    onTap: () => controller.setTab(i),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      decoration: BoxDecoration(
+                        color: isActive ? Colors.white : Colors.transparent,
+                        borderRadius: BorderRadius.circular(26),
+                      ),
+                      child: Text(
+                        tabs[i],
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: isActive ? AppColors.bgDeep : AppColors.textMuted,
+                          fontSize: 13,
+                          fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }),
+            ),
+          )),
+    );
+  }
+
+  Widget _buildTitleRow() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Obx(() => Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  controller.lessonTitle,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: AppColors.purple,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  'Step ${controller.currentStep.value + 1} of ${controller.totalSteps}',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          )),
+    );
+  }
+
+  Widget _buildProgressBar() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Obx(() => ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: (controller.currentStep.value + 1) / controller.totalSteps,
+              minHeight: 3,
+              backgroundColor: AppColors.bgCard,
+              valueColor: AlwaysStoppedAnimation<Color>(AppColors.purple),
+            ),
+          )),
+    );
+  }
+
+  Widget _buildStepCards() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
         children: [
-          // ── Full-screen molecular visualization ──────────────────────
-          SizedBox.expand(
-            child: CustomPaint(
-              painter: _MolecularFieldPainter(),
+          _buildPastStepCard(
+            stepNumber: 1,
+            text: 'The two hydrogen atoms approach each other due to attractive forces.',
+          ).animate().fadeIn(duration: 300.ms),
+          const SizedBox(height: 12),
+          _buildActiveStepCard().animate().fadeIn(duration: 400.ms, delay: 100.ms),
+          const SizedBox(height: 12),
+          _buildUpcomingStepCard(
+            stepNumber: 3,
+            text: 'Atoms reaching maximum stability...',
+          ).animate().fadeIn(duration: 300.ms, delay: 200.ms),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPastStepCard({required int stepNumber, required String text}) {
+    return Opacity(
+      opacity: 0.5,
+      child: Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: AppColors.bgCard,
+          borderRadius: BorderRadius.circular(14),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Text(
+                text,
+                style: TextStyle(
+                  color: AppColors.textMuted,
+                  fontSize: 13,
+                  height: 1.5,
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Container(
+              width: 28,
+              height: 28,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.textMuted.withOpacity(0.3),
+              ),
+              child: Center(
+                child: Text(
+                  '$stepNumber',
+                  style: TextStyle(
+                    color: AppColors.textMuted,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActiveStepCard() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.bgCard,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.white, width: 1.5),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Text(
+                  'Orbital Overlap',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Container(
+                width: 28,
+                height: 28,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.cyan,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.cyan.withOpacity(0.4),
+                      blurRadius: 10,
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
+                child: const Center(
+                  child: Text(
+                    '2',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Text(
+            'The electron cloud of each atom begins to overlap with the other\'s, increasing the probability of electrons existing in the region between the nuclei.',
+            style: TextStyle(
+              color: AppColors.textSecondary,
+              fontSize: 14,
+              height: 1.5,
             ),
           ),
+          const SizedBox(height: 12),
+          _buildKemoAdviceCard(),
+          const SizedBox(height: 12),
+          _buildImageCarousel(),
+        ],
+      ),
+    );
+  }
 
-          // ── Right sidebar actions ────────────────────────────────────
-          Positioned(
-            right: 12,
-            bottom: 140,
+  Widget _buildKemoAdviceCard() {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: const Color(0xFF0A1628),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.cyan.withOpacity(0.3)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              color: AppColors.bgCard,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Center(
+              child: Text('🧬', style: TextStyle(fontSize: 24)),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Creator avatar
-                Container(
-                  width: 46,
-                  height: 46,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppColors.purple,
-                    border: Border.all(color: Colors.white, width: 2),
+                Text(
+                  "KEMO'S TIP",
+                  style: TextStyle(
+                    color: AppColors.cyan,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.2,
                   ),
-                  child:  Icon(Icons.school_outlined,
-                      color: Colors.white, size: 22),
                 ),
-
-                 SizedBox(height: 20),
-
-                _SideAction(
-                  icon: Icons.favorite_rounded,
-                  label: controller.formatCount(controller.likes),
-                  onTap: controller.toggleLike,
-                ),
-                 SizedBox(height: 18),
-                _SideAction(
-                  icon: Icons.chat_bubble_outline_rounded,
-                  label: controller.formatCount(controller.comments),
-                  onTap: () {},
-                ),
-                 SizedBox(height: 18),
-                _SideAction(
-                  icon: Icons.share_rounded,
-                  label: 'Share',
-                  onTap: () {},
-                ),
-                 SizedBox(height: 18),
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.white12,
-                    border: Border.all(color: Colors.white24),
+                const SizedBox(height: 4),
+                Text(
+                  '"Imagine them sharing an umbrella on a rainy day!"',
+                  style: TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 12,
+                    fontStyle: FontStyle.italic,
+                    height: 1.4,
                   ),
-                  child:  Icon(Icons.science_outlined,
-                      color: Colors.white70, size: 18),
                 ),
               ],
             ),
           ),
+        ],
+      ),
+    );
+  }
 
-          // ── Bottom info overlay ──────────────────────────────────────
+  Widget _buildImageCarousel() {
+    return Container(
+      height: 160,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [AppColors.purple.withOpacity(0.6), AppColors.cyan.withOpacity(0.4)],
+        ),
+      ),
+      child: Stack(
+        children: [
+          Center(
+            child: Text(
+              '⚛',
+              style: TextStyle(
+                fontSize: 64,
+                color: Colors.white.withOpacity(0.8),
+                shadows: [
+                  Shadow(
+                    color: AppColors.cyan.withOpacity(0.8),
+                    blurRadius: 20,
+                  ),
+                ],
+              ),
+            ),
+          ),
           Positioned(
+            bottom: 10,
             left: 0,
             right: 0,
-            bottom: 0,
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.transparent,
-                    Colors.black.withOpacity(0.85),
-                    Colors.black,
-                  ],
-                  stops:  [0.0, 0.4, 1.0],
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildDot(false),
+                const SizedBox(width: 5),
+                _buildDot(false),
+                const SizedBox(width: 5),
+                _buildDot(true),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDot(bool isActive) {
+    return Container(
+      width: 6,
+      height: 6,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: isActive ? Colors.white : AppColors.textMuted,
+      ),
+    );
+  }
+
+  Widget _buildUpcomingStepCard({required int stepNumber, required String text}) {
+    return Opacity(
+      opacity: 0.4,
+      child: Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: AppColors.bgCard,
+          borderRadius: BorderRadius.circular(14),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Text(
+                text,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: AppColors.textMuted,
+                  fontSize: 13,
                 ),
               ),
-              padding:  EdgeInsets.fromLTRB(16, 40, 60, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Chapter badge
-                  Container(
-                    padding:  EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: Colors.white12,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.white24),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                         Text('⚗️',
-                            style: TextStyle(fontSize: 12)),
-                         SizedBox(width: 6),
-                        Text(
-                          controller.chapterLabel,
-                          style:  TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
+            ),
+            const SizedBox(width: 10),
+            Container(
+              width: 28,
+              height: 28,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.textMuted.withOpacity(0.3),
+              ),
+              child: Center(
+                child: Text(
+                  '$stepNumber',
+                  style: TextStyle(
+                    color: AppColors.textMuted,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
                   ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
-                   SizedBox(height: 10),
-
-                  Text(
-                    controller.title,
-                    style:  TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-
-                   SizedBox(height: 6),
-
-                  Text(
-                    controller.description,
-                    style:  TextStyle(
-                      color: Colors.white70,
-                      fontSize: 13,
-                      height: 1.4,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-
-                   SizedBox(height: 12),
-
-                  // Duration + difficulty
-                  Obx(() => Row(
-                        children: [
-                          _TagPill(
-                            icon: Icons.timer_outlined,
-                            text:
-                                '${controller.currentTime} / ${controller.totalTime}',
-                          ),
-                           SizedBox(width: 8),
-                          _TagPill(
-                            icon: Icons.bolt_outlined,
-                            text: controller.difficulty,
-                          ),
-                        ],
-                      )),
-
-                   SizedBox(height: 10),
-
-                  // Progress bar
-                  Obx(() => LinearProgressIndicator(
-                        value: controller.progress,
-                        minHeight: 2,
-                        backgroundColor: Colors.white24,
-                        valueColor:  AlwaysStoppedAnimation<Color>(
-                            AppColors.purple),
-                      )),
-
-                  const SizedBox(height: 56),
-                ],
+  Widget _buildGotItButton() {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 20),
+      color: AppColors.bgDeep,
+      child: SizedBox(
+        height: 56,
+        width: double.infinity,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [Color(0xFF84CC16), Color(0xFF4ADE80)],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: TextButton.icon(
+            onPressed: controller.gotIt,
+            icon: const Icon(Icons.check_circle_outline, color: Colors.black, size: 20),
+            label: const Text(
+              'I Got It',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            style: TextButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
               ),
             ),
           ),
-
-          // ── Minimal bottom nav ───────────────────────────────────────
-          Positioned(
-            left: 16,
-            right: 16,
-            bottom: 12,
-            child: _BottomNavBar(activeIndex: 1),
-          ),
-        ],
+        ),
       ),
-    );
+    ).animate().slideY(begin: 1, end: 0, duration: 400.ms, curve: Curves.easeOut);
   }
-}
-
-// ── Side action button ────────────────────────────────────────────────────────
-class _SideAction extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final VoidCallback onTap;
-  const _SideAction(
-      {required this.icon, required this.label, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        children: [
-          Icon(icon, color: Colors.white, size: 28),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// ── Duration / difficulty pill ────────────────────────────────────────────────
-class _TagPill extends StatelessWidget {
-  final IconData icon;
-  final String text;
-  const _TagPill({required this.icon, required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(
-        color: Colors.white12,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white24),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, color: Colors.white70, size: 12),
-          const SizedBox(width: 4),
-          Text(text,
-              style: const TextStyle(color: Colors.white, fontSize: 12)),
-        ],
-      ),
-    );
-  }
-}
-
-// ── Minimal bottom nav bar ────────────────────────────────────────────────────
-class _BottomNavBar extends StatelessWidget {
-  final int activeIndex;
-  const _BottomNavBar({required this.activeIndex});
-
-  static const _items = [
-    (icon: Icons.home_outlined, label: 'HOME'),
-    (icon: Icons.school_outlined, label: 'LESSONS'),
-    (icon: Icons.psychology_outlined, label: 'ASK AI'),
-    (icon: Icons.science_outlined, label: 'LAB'),
-    (icon: Icons.person_outline, label: 'PROFILE'),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 60,
-      decoration: BoxDecoration(
-        color: AppColors.bgCard.withOpacity(0.9),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.borderDefault),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: List.generate(_items.length, (i) {
-          final item = _items[i];
-          final isActive = i == activeIndex;
-          return GestureDetector(
-            onTap: () => Get.back(),
-            behavior: HitTestBehavior.opaque,
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(item.icon,
-                      size: 20,
-                      color: isActive
-                          ? AppColors.purple
-                          : AppColors.textMuted),
-                  const SizedBox(height: 3),
-                  Text(
-                    item.label,
-                    style: TextStyle(
-                      color: isActive
-                          ? AppColors.purple
-                          : AppColors.textMuted,
-                      fontSize: 7,
-                      letterSpacing: 0.5,
-                      fontWeight: isActive
-                          ? FontWeight.w700
-                          : FontWeight.w400,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        }),
-      ),
-    );
-  }
-}
-
-// ── Dense molecular field painter ─────────────────────────────────────────────
-class _MolecularFieldPainter extends CustomPainter {
-  static final _rng = Random(42);
-
-  static final _nodes = List.generate(80, (_) {
-    return Offset(
-      _rng.nextDouble(),
-      _rng.nextDouble(),
-    );
-  });
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    // Black background
-    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height),
-        Paint()..color = Colors.black);
-
-    final scaledNodes =
-        _nodes.map((n) => Offset(n.dx * size.width, n.dy * size.height))
-            .toList();
-
-    // Draw edges between nearby nodes
-    final edgePaint = Paint()
-      ..color = const Color(0xFF00AACC).withOpacity(0.45)
-      ..strokeWidth = 1.2
-      ..style = PaintingStyle.stroke;
-
-    for (int i = 0; i < scaledNodes.length; i++) {
-      for (int j = i + 1; j < scaledNodes.length; j++) {
-        final d = (scaledNodes[i] - scaledNodes[j]).distance;
-        if (d < size.width * 0.18) {
-          canvas.drawLine(scaledNodes[i], scaledNodes[j], edgePaint);
-        }
-      }
-    }
-
-    // Draw spheres (nodes) with radial gradient
-    for (final n in scaledNodes) {
-      final r = size.width * 0.028;
-      final rect = Rect.fromCircle(center: n, radius: r);
-
-      canvas.drawCircle(
-        n,
-        r,
-        Paint()
-          ..shader = RadialGradient(
-            colors: [
-              const Color(0xFF00DDFF),
-              const Color(0xFF007ACC),
-              const Color(0xFF004466),
-            ],
-            stops: const [0.0, 0.5, 1.0],
-          ).createShader(rect),
-      );
-    }
-  }
-
-  @override
-  bool shouldRepaint(_) => false;
 }

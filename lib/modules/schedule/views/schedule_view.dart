@@ -1,10 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 
 import '../../../app/theme/app_colors.dart';
-import '../../../data/models/schedule_model.dart';
 import '../controllers/schedule_controller.dart';
 
 class ScheduleView extends GetView<ScheduleController> {
@@ -16,204 +16,96 @@ class ScheduleView extends GetView<ScheduleController> {
       backgroundColor: AppColors.bgBase,
       appBar: AppBar(
         backgroundColor: AppColors.bgBase,
-        titleSpacing: 16,
-        title:  Text(
-          'STUDY PROTOCOL',
-          style: TextStyle(
-            color: AppColors.textPrimary,
-            fontSize: 12,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 1.8,
+        elevation: 0,
+        leadingWidth: 56,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              color: AppColors.bgCard,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: AppColors.borderDefault),
+            ),
+            child: Icon(Icons.bolt, color: AppColors.purple, size: 20),
           ),
         ),
-        actions: [
-          IconButton(
-            icon:  Icon(Icons.settings_outlined,
-                color: AppColors.textSecondary, size: 20),
-            onPressed: () {},
-          ),
-        ],
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            ShaderMask(
+              shaderCallback: (bounds) =>
+                  AppColors.gradientPurple.createShader(bounds),
+              child: const Text(
+                'ChemAI',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 0.5,
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            CircleAvatar(
+              radius: 16,
+              backgroundColor: AppColors.purpleDim,
+              child: Icon(Icons.person, color: AppColors.purple, size: 18),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: AppColors.green,
+        child: const Icon(Icons.add, color: Colors.white),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ── Mission + efficiency ──────────────────────────────────────
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                       Text(
-                        'CURRENT MISSION',
-                        style: TextStyle(
-                          color: AppColors.textMuted,
-                          fontSize: 10,
-                          letterSpacing: 1.5,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                       SizedBox(height: 4),
-                       Text(
-                        'Quantum Chemistry',
-                        style: TextStyle(
-                          color: AppColors.textPrimary,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                 SizedBox(width: 12),
-                _EfficiencyRing(
-                  percent: controller.efficiency,
-                  label: controller.efficiencyLabel,
-                ),
-              ],
-            ),
-
-             SizedBox(height: 20),
-
-            // ── Calendar ──────────────────────────────────────────────────
-            Container(
-              padding:  EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.bgCard,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.borderDefault),
-              ),
-              child: Obx(() => _Calendar(
-                    month: controller.currentMonth.value,
-                    selectedDay: controller.selectedDay.value,
-                    onPrev: controller.previousMonth,
-                    onNext: controller.nextMonth,
-                    onSelectDay: controller.selectDay,
-                    daysInMonth: controller.daysInMonth(
-                        controller.currentMonth.value),
-                    firstWeekday: controller.firstWeekday(
-                        controller.currentMonth.value),
-                    monthName:
-                        controller.monthName(controller.currentMonth.value),
-                  )),
-            ),
-
-             SizedBox(height: 20),
-
-            // ── Protocol status ───────────────────────────────────────────
-             Text(
-              'PROTOCOL STATUS',
+            _ExamHeaderCard(controller: controller)
+                .animate()
+                .fadeIn(duration: 350.ms)
+                .slideY(begin: 0.08, end: 0),
+            const SizedBox(height: 16),
+            _StatsRow(controller: controller)
+                .animate()
+                .fadeIn(duration: 350.ms, delay: 80.ms)
+                .slideY(begin: 0.08, end: 0),
+            const SizedBox(height: 20),
+            Text(
+              'Review Schedule',
               style: TextStyle(
-                color: AppColors.textMuted,
-                fontSize: 10,
-                letterSpacing: 1.5,
+                color: AppColors.textPrimary,
+                fontSize: 18,
                 fontWeight: FontWeight.w700,
               ),
-            ),
-             SizedBox(height: 10),
-            Container(
-              padding:  EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                color: AppColors.bgCard,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: AppColors.borderDefault),
-              ),
-              child: Column(
-                children: [
-                  _StatusRow(
-                      color: AppColors.green,
-                      label: 'Completed',
-                      count: controller.completed),
-                   Divider(
-                      color: AppColors.borderDefault, height: 16),
-                  _StatusRow(
-                      color: AppColors.purple,
-                      label: 'Upcoming',
-                      count: controller.upcoming),
-                   Divider(
-                      color: AppColors.borderDefault, height: 16),
-                  _StatusRow(
-                      color:  Color(0xFFEF4444),
-                      label: 'Missed',
-                      count: controller.missed),
-                ],
-              ),
-            ),
-
-             SizedBox(height: 20),
-
-            // ── Session timeline ──────────────────────────────────────────
-            ...controller.sessions.map((s) => _SessionCard(session: s)),
-
-             SizedBox(height: 16),
-
-            // ── Interruption warning ──────────────────────────────────────
-            Container(
-              padding:  EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                color:  Color(0xFF2A1500),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                    color: AppColors.warning.withOpacity(0.5)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                       Icon(Icons.warning_amber_rounded,
-                          color: AppColors.warning, size: 16),
-                       SizedBox(width: 8),
-                       Text(
-                        'PROTOCOL INTERRUPTION DETECTED',
-                        style: TextStyle(
-                          color: AppColors.warning,
-                          fontSize: 10,
-                          letterSpacing: 1.2,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                   SizedBox(height: 8),
-                   Text(
-                    "You missed 'Lab Simulation: Titration' yesterday. AI suggests rescheduling to 21:00 tonight to maintain streak.",
-                    style: TextStyle(
-                      color: AppColors.textSecondary,
-                      fontSize: 12,
-                      height: 1.5,
-                    ),
-                  ),
-                   SizedBox(height: 12),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      padding:  EdgeInsets.symmetric(
-                          horizontal: 14, vertical: 9),
-                      decoration: BoxDecoration(
-                        color: AppColors.warning.withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(
-                            color: AppColors.warning.withOpacity(0.4)),
-                      ),
-                      child:  Text(
-                        'Approve Reschedule',
-                        style: TextStyle(
-                          color: AppColors.warning,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-             SizedBox(height: 30),
+            ).animate().fadeIn(duration: 300.ms, delay: 140.ms),
+            const SizedBox(height: 12),
+            _YesterdayCard()
+                .animate()
+                .fadeIn(duration: 300.ms, delay: 180.ms)
+                .slideY(begin: 0.06, end: 0),
+            const SizedBox(height: 10),
+            _TodayCard(controller: controller)
+                .animate()
+                .fadeIn(duration: 350.ms, delay: 220.ms)
+                .slideY(begin: 0.06, end: 0),
+            const SizedBox(height: 10),
+            _SimpleScheduleCard(
+              day: 'Tomorrow',
+              date: 'May 11',
+              subtitle: '3 lessons • Acids and Bases',
+            ).animate().fadeIn(duration: 300.ms, delay: 260.ms).slideY(begin: 0.06, end: 0),
+            const SizedBox(height: 10),
+            _SimpleScheduleCard(
+              day: 'Monday',
+              date: 'May 12',
+              subtitle: 'General review - Chapter 2',
+            ).animate().fadeIn(duration: 300.ms, delay: 300.ms).slideY(begin: 0.06, end: 0),
           ],
         ),
       ),
@@ -221,44 +113,177 @@ class ScheduleView extends GetView<ScheduleController> {
   }
 }
 
-// ── Efficiency ring ───────────────────────────────────────────────────────────
-class _EfficiencyRing extends StatelessWidget {
-  final double percent;
-  final String label;
-  const _EfficiencyRing({required this.percent, required this.label});
+class _ExamHeaderCard extends StatelessWidget {
+  final ScheduleController controller;
+  const _ExamHeaderCard({required this.controller});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          width: 70,
-          height: 70,
-          child: CustomPaint(
-            painter: _RingPainter(percent: percent),
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.bgCard,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.borderDefault),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              color: AppColors.bgCardAlt,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: AppColors.borderDefault),
+            ),
             child: Center(
-              child: Text(
-                '${(percent * 100).toInt()}%',
-                style:  TextStyle(
-                  color: AppColors.textPrimary,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w800,
+              child: Icon(Icons.smart_toy_outlined,
+                  color: AppColors.purple, size: 38),
+            ),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'When is your exam?',
+                  style: TextStyle(
+                    color: AppColors.textPrimary,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
+                const SizedBox(height: 4),
+                Text(
+                  'Let me help you create a schedule to ace the material! 🚀',
+                  style: TextStyle(
+                    color: AppColors.textMuted,
+                    fontSize: 12,
+                    height: 1.4,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: AppColors.bgCardAlt,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: AppColors.borderDefault),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.calendar_today_outlined,
+                          color: AppColors.textSecondary, size: 14),
+                      const SizedBox(width: 6),
+                      Text(
+                        controller.examDate,
+                        style: TextStyle(
+                          color: AppColors.textPrimary,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Icon(Icons.edit_outlined,
+                          color: AppColors.textSecondary, size: 14),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _StatsRow extends StatelessWidget {
+  final ScheduleController controller;
+  const _StatsRow({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppColors.bgCard,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: AppColors.borderDefault),
+            ),
+            child: Column(
+              children: [
+                SizedBox(
+                  width: 72,
+                  height: 72,
+                  child: CustomPaint(
+                    painter: _CircleRingPainter(
+                      progress: controller.weeklyProgress,
+                      color: AppColors.green,
+                    ),
+                    child: Center(
+                      child: Text(
+                        '${(controller.weeklyProgress * 100).toInt()}%',
+                        style: TextStyle(
+                          color: AppColors.textPrimary,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Weekly Achievement',
+                  style: TextStyle(
+                    color: AppColors.textMuted,
+                    fontSize: 11,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
           ),
         ),
-         SizedBox(height: 4),
-         Text(
-          'Daily Efficiency',
-          style: TextStyle(color: AppColors.textMuted, fontSize: 10),
-        ),
-        Text(
-          label,
-          style:  TextStyle(
-            color: AppColors.green,
-            fontSize: 11,
-            fontWeight: FontWeight.w600,
+        const SizedBox(width: 12),
+        Expanded(
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppColors.bgCard,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: AppColors.borderDefault),
+            ),
+            child: Column(
+              children: [
+                Icon(Icons.track_changes,
+                    color: AppColors.danger, size: 32),
+                const SizedBox(height: 6),
+                Obx(() => Text(
+                      '${controller.daysToExam.value} Days',
+                      style: TextStyle(
+                        color: AppColors.textPrimary,
+                        fontSize: 28,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    )),
+                Text(
+                  'to Final Exam',
+                  style: TextStyle(
+                    color: AppColors.textMuted,
+                    fontSize: 11,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],
@@ -266,15 +291,16 @@ class _EfficiencyRing extends StatelessWidget {
   }
 }
 
-class _RingPainter extends CustomPainter {
-  final double percent;
-  const _RingPainter({required this.percent});
+class _CircleRingPainter extends CustomPainter {
+  final double progress;
+  final Color color;
+  const _CircleRingPainter({required this.progress, required this.color});
 
   @override
   void paint(Canvas canvas, Size size) {
     final cx = size.width / 2;
     final cy = size.height / 2;
-    final r = size.width / 2 - 5;
+    final r = size.width / 2 - 6;
 
     canvas.drawCircle(
       Offset(cx, cy),
@@ -282,367 +308,272 @@ class _RingPainter extends CustomPainter {
       Paint()
         ..color = AppColors.borderDefault
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 5,
+        ..strokeWidth = 6,
     );
     canvas.drawArc(
       Rect.fromCircle(center: Offset(cx, cy), radius: r),
       -pi / 2,
-      2 * pi * percent,
+      2 * pi * progress,
       false,
       Paint()
-        ..color = AppColors.purple
+        ..color = color
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 5
+        ..strokeWidth = 6
         ..strokeCap = StrokeCap.round,
     );
   }
 
   @override
-  bool shouldRepaint(_RingPainter old) => old.percent != percent;
+  bool shouldRepaint(_CircleRingPainter old) =>
+      old.progress != progress || old.color != color;
 }
 
-// ── Calendar ──────────────────────────────────────────────────────────────────
-class _Calendar extends StatelessWidget {
-  final DateTime month;
-  final int selectedDay;
-  final VoidCallback onPrev;
-  final VoidCallback onNext;
-  final ValueChanged<int> onSelectDay;
-  final int daysInMonth;
-  final int firstWeekday;
-  final String monthName;
+class _YesterdayCard extends StatelessWidget {
+  const _YesterdayCard();
 
-  const _Calendar({
-    required this.month,
-    required this.selectedDay,
-    required this.onPrev,
-    required this.onNext,
-    required this.onSelectDay,
-    required this.daysInMonth,
-    required this.firstWeekday,
-    required this.monthName,
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: AppColors.bgCard,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppColors.borderDefault),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.check_circle, color: AppColors.green, size: 22),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              'Yesterday',
+              style: TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          Text(
+            'May 9',
+            style: TextStyle(
+              color: AppColors.textMuted,
+              fontSize: 12,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TodayCard extends StatelessWidget {
+  final ScheduleController controller;
+  const _TodayCard({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.bgCard,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.cyan, width: 2),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                'Today',
+                style: TextStyle(
+                  color: AppColors.cyan,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(width: 6),
+              Icon(Icons.calendar_today, color: AppColors.cyan, size: 16),
+              const Spacer(),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: AppColors.cyan.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: AppColors.cyan.withOpacity(0.4)),
+                ),
+                child: Text(
+                  'In Progress',
+                  style: TextStyle(
+                    color: AppColors.cyan,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '4 lessons remaining • 2.5 hours',
+            style: TextStyle(
+              color: AppColors.textMuted,
+              fontSize: 12,
+            ),
+          ),
+          const SizedBox(height: 12),
+          _LessonRow(
+            title: controller.todayLessons[0],
+            badgeIcon: Icons.science,
+            badgeColor: const Color(0xFFEC4899),
+          ),
+          const SizedBox(height: 8),
+          _LessonRow(
+            title: controller.todayLessons[1],
+            badgeIcon: Icons.bolt,
+            badgeColor: AppColors.green,
+          ),
+          const SizedBox(height: 12),
+          SizedBox(
+            width: double.infinity,
+            height: 46,
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.cyan,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 0,
+              ),
+              child: const Text(
+                'Start Study Now',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _LessonRow extends StatelessWidget {
+  final String title;
+  final IconData badgeIcon;
+  final Color badgeColor;
+
+  const _LessonRow({
+    required this.title,
+    required this.badgeIcon,
+    required this.badgeColor,
   });
 
   @override
   Widget build(BuildContext context) {
-    const dayLabels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-
-    final cells = <Widget>[];
-    for (int i = 0; i < firstWeekday; i++) {
-      cells.add(const SizedBox.shrink());
-    }
-    for (int d = 1; d <= daysInMonth; d++) {
-      final isSelected = d == selectedDay;
-      cells.add(GestureDetector(
-        onTap: () => onSelectDay(d),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          margin: const EdgeInsets.all(1),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: isSelected ? AppColors.purple : Colors.transparent,
-          ),
-          alignment: Alignment.center,
-          child: Text(
-            '$d',
-            style: TextStyle(
-              color: isSelected
-                  ? Colors.white
-                  : AppColors.textSecondary,
-              fontSize: 12,
-              fontWeight:
-                  isSelected ? FontWeight.w700 : FontWeight.w400,
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: AppColors.bgCardAlt,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: AppColors.borderDefault),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 20,
+            height: 20,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: AppColors.textMuted, width: 1.5),
             ),
           ),
-        ),
-      ));
-    }
-
-    return Column(
-      children: [
-        // Month header
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              monthName,
-              style:  TextStyle(
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              title,
+              style: TextStyle(
                 color: AppColors.textPrimary,
-                fontSize: 14,
-                fontWeight: FontWeight.w700,
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
               ),
             ),
-            Row(
-              children: [
-                GestureDetector(
-                  onTap: onPrev,
-                  child:  Icon(Icons.chevron_left,
-                      color: AppColors.textSecondary, size: 20),
-                ),
-                const SizedBox(width: 4),
-                GestureDetector(
-                  onTap: onNext,
-                  child:  Icon(Icons.chevron_right,
-                      color: AppColors.textSecondary, size: 20),
-                ),
-              ],
-            ),
-          ],
-        ),
-        const SizedBox(height: 10),
-        // Day labels
-        GridView.count(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          crossAxisCount: 7,
-          childAspectRatio: 1.2,
-          children: dayLabels
-              .map((d) => Center(
-                    child: Text(d,
-                        style:  TextStyle(
-                          color: AppColors.textMuted,
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
-                        )),
-                  ))
-              .toList(),
-        ),
-        GridView.count(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          crossAxisCount: 7,
-          childAspectRatio: 1.2,
-          children: cells,
-        ),
-      ],
-    );
-  }
-}
-
-// ── Protocol status row ───────────────────────────────────────────────────────
-class _StatusRow extends StatelessWidget {
-  final Color color;
-  final String label;
-  final int count;
-  const _StatusRow(
-      {required this.color, required this.label, required this.count});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          width: 8,
-          height: 8,
-          decoration: BoxDecoration(shape: BoxShape.circle, color: color),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Text(label,
-              style:  TextStyle(
-                  color: AppColors.textSecondary, fontSize: 13)),
-        ),
-        Text(
-          count.toString().padLeft(2, '0'),
-          style: TextStyle(
-            color: color,
-            fontSize: 13,
-            fontWeight: FontWeight.w700,
           ),
-        ),
-      ],
+          const SizedBox(width: 8),
+          Container(
+            width: 30,
+            height: 30,
+            decoration: BoxDecoration(
+              color: badgeColor.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(badgeIcon, color: badgeColor, size: 16),
+          ),
+        ],
+      ),
     );
   }
 }
 
-// ── Session card ──────────────────────────────────────────────────────────────
-class _SessionCard extends StatelessWidget {
-  final ScheduleSession session;
-  const _SessionCard({required this.session});
+class _SimpleScheduleCard extends StatelessWidget {
+  final String day;
+  final String date;
+  final String subtitle;
+
+  const _SimpleScheduleCard({
+    required this.day,
+    required this.date,
+    required this.subtitle,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final Color statusColor = switch (session.status) {
-      SessionStatus.completed => AppColors.green,
-      SessionStatus.active => AppColors.purple,
-      SessionStatus.upcoming => AppColors.textMuted,
-    };
-
-    final String statusLabel = switch (session.status) {
-      SessionStatus.completed => 'Completed',
-      SessionStatus.active => 'Active',
-      SessionStatus.upcoming => 'Upcoming',
-    };
-
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         color: AppColors.bgCard,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color: session.status == SessionStatus.active
-              ? AppColors.purple.withOpacity(0.4)
-              : AppColors.borderDefault,
-        ),
+        border: Border.all(color: AppColors.borderDefault),
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Time + status column
-          SizedBox(
-            width: 68,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  session.time,
-                  style:  TextStyle(
-                    color: AppColors.textPrimary,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                 SizedBox(height: 3),
-                Text(
-                  statusLabel,
-                  style: TextStyle(
-                    color: statusColor,
-                    fontSize: 10,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // Vertical divider line
-          Container(
-            width: 1,
-            height: null,
-            constraints: const BoxConstraints(minHeight: 50),
-            color: AppColors.borderDefault,
-            margin: const EdgeInsets.only(right: 12),
-          ),
-
-          // Content
+          Icon(Icons.access_time_outlined,
+              color: AppColors.textMuted, size: 20),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (session.status == SessionStatus.active)
-                  Row(
-                    children: [
-                      Container(
-                        width: 6,
-                        height: 6,
-                        margin: const EdgeInsets.only(right: 6),
-                        decoration:  BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.purple,
-                        ),
-                      ),
-                       Text(
-                        'AI Tutoring Session',
-                        style: TextStyle(
-                          color: AppColors.purple,
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                if (session.status == SessionStatus.active)
-                   SizedBox(height: 4),
                 Text(
-                  session.status == SessionStatus.active
-                      ? session.title
-                      : session.title,
-                  style:  TextStyle(
+                  day,
+                  style: TextStyle(
                     color: AppColors.textPrimary,
-                    fontSize: 13,
+                    fontSize: 14,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                 SizedBox(height: 4),
+                const SizedBox(height: 2),
                 Text(
-                  session.description,
-                  style:  TextStyle(
-                    color: AppColors.textSecondary,
+                  subtitle,
+                  style: TextStyle(
+                    color: AppColors.textMuted,
                     fontSize: 12,
-                    height: 1.4,
                   ),
                 ),
-                if (session.extra != null) ...[
-                   SizedBox(height: 4),
-                  Text(
-                    session.extra!,
-                    style:  TextStyle(
-                      color: AppColors.textMuted,
-                      fontSize: 11,
-                    ),
-                  ),
-                ],
-                if (session.hasAction) ...[
-                   SizedBox(height: 10),
-                  Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          padding:  EdgeInsets.symmetric(
-                              horizontal: 14, vertical: 7),
-                          decoration: BoxDecoration(
-                            color: AppColors.purple,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child:  Text(
-                            'Connect Now',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ),
-                       SizedBox(width: 10),
-                      GestureDetector(
-                        onTap: () {},
-                        child:  Text(
-                          'View Assets',
-                          style: TextStyle(
-                            color: AppColors.textSecondary,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-                if (session.isVerified) ...[
-                   SizedBox(height: 8),
-                  Container(
-                    padding:  EdgeInsets.symmetric(
-                        horizontal: 8, vertical: 3),
-                    decoration: BoxDecoration(
-                      color: AppColors.green.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(
-                          color: AppColors.green.withOpacity(0.3)),
-                    ),
-                    child:  Text(
-                      '✓ Verified',
-                      style: TextStyle(
-                        color: AppColors.green,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ],
               ],
+            ),
+          ),
+          Text(
+            date,
+            style: TextStyle(
+              color: AppColors.textSecondary,
+              fontSize: 12,
             ),
           ),
         ],

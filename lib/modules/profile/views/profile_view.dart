@@ -191,7 +191,7 @@ class _StatData {
   final String label;
   final Color color;
 
-  const _StatData(this.value, this.label, this.color);
+  _StatData(this.value, this.label, this.color);
 }
 
 class _StatCard extends StatelessWidget {

@@ -8,6 +8,7 @@ import '../../ask_ai/views/ask_ai_view.dart';
 import '../../home/views/home_view.dart';
 import '../../pilot_profile/views/pilot_profile_view.dart';
 import '../../profile/views/profile_view.dart';
+import '../../reels/views/reels_view.dart';
 import '../controllers/main_nav_controller.dart';
 
 class MainNavView extends GetView<MainNavController> {
@@ -16,7 +17,7 @@ class MainNavView extends GetView<MainNavController> {
   static List<Widget> get _pages => [
         PilotProfileView(),
         ProfileView(),
-        _ReelsView(),
+        ReelsView(),
         AskAiView(),
         HomeView(),
       ];
@@ -40,39 +41,6 @@ class MainNavView extends GetView<MainNavController> {
         ),
       );
     });
-  }
-}
-
-// Placeholder for Reels tab (future feature)
-class _ReelsView extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.bgBase,
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.video_library_outlined,
-                color: AppColors.textMuted, size: 48),
-            const SizedBox(height: 12),
-            Text('REELS',
-                style: TextStyle(
-                  color: AppColors.textMuted,
-                  fontSize: 12,
-                  letterSpacing: 2,
-                  fontWeight: FontWeight.w700,
-                )),
-            const SizedBox(height: 6),
-            Text('Coming Soon',
-                style: TextStyle(
-                  color: AppColors.textMuted,
-                  fontSize: 11,
-                )),
-          ],
-        ),
-      ),
-    );
   }
 }
 

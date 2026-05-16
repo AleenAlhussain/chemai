@@ -57,16 +57,14 @@ class ReelsView extends GetView<ReelsController> {
           ),
         ],
       ),
-      body: Obx(() {
-        return Stack(
-          children: [
-            _MolecularBackground(controller: controller),
-            _TopOverlay(controller: controller),
-            _RightSidebar(controller: controller),
-            _BottomCard(controller: controller),
-          ],
-        );
-      }),
+      body: Stack(
+        children: [
+          _MolecularBackground(controller: controller),
+          _TopOverlay(controller: controller),
+          _RightSidebar(controller: controller),
+          _BottomCard(controller: controller),
+        ],
+      ),
     );
   }
 }
@@ -171,10 +169,10 @@ class _TopOverlay extends StatelessWidget {
                 children: [
                   const Icon(Icons.access_time, color: Colors.white, size: 14),
                   const SizedBox(width: 6),
-                  Text(
-                    controller.timeLabel,
-                    style: const TextStyle(color: Colors.white, fontSize: 12),
-                  ),
+                  Obx(() => Text(
+                        controller.timeLabel,
+                        style: const TextStyle(color: Colors.white, fontSize: 12),
+                      )),
                 ],
               ),
             ),
@@ -197,10 +195,10 @@ class _TopOverlay extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 6),
-                  Text(
-                    controller.current.chapter,
-                    style: const TextStyle(color: Colors.white, fontSize: 12),
-                  ),
+                  Obx(() => Text(
+                        controller.current.chapter,
+                        style: const TextStyle(color: Colors.white, fontSize: 12),
+                      )),
                 ],
               ),
             ),
@@ -241,17 +239,17 @@ class _RightSidebar extends StatelessWidget {
                     shape: BoxShape.circle,
                     border: Border.all(color: AppColors.borderDefault),
                   ),
-                  child: Icon(
-                    controller.isLiked.value ? Icons.favorite : Icons.favorite_border,
-                    color: controller.isLiked.value ? Colors.red : Colors.white,
-                    size: 22,
-                  ),
+                  child: Obx(() => Icon(
+                        controller.isLiked.value ? Icons.favorite : Icons.favorite_border,
+                        color: controller.isLiked.value ? Colors.red : Colors.white,
+                        size: 22,
+                      )),
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  _formatCount(controller.current.likes + (controller.isLiked.value ? 1 : 0)),
-                  style: const TextStyle(color: Colors.white, fontSize: 11),
-                ),
+                Obx(() => Text(
+                      _formatCount(controller.current.likes + (controller.isLiked.value ? 1 : 0)),
+                      style: const TextStyle(color: Colors.white, fontSize: 11),
+                    )),
               ],
             ),
           ),
@@ -266,11 +264,11 @@ class _RightSidebar extends StatelessWidget {
                 shape: BoxShape.circle,
                 border: Border.all(color: AppColors.borderDefault),
               ),
-              child: Icon(
-                controller.isSaved.value ? Icons.bookmark : Icons.bookmark_border,
-                color: controller.isSaved.value ? Colors.amber : Colors.white,
-                size: 22,
-              ),
+              child: Obx(() => Icon(
+                    controller.isSaved.value ? Icons.bookmark : Icons.bookmark_border,
+                    color: controller.isSaved.value ? Colors.amber : Colors.white,
+                    size: 22,
+                  )),
             ),
           ),
           const SizedBox(height: 16),
@@ -351,14 +349,14 @@ class _BottomCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: Text(
-                      controller.current.description,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 13,
-                        height: 1.4,
-                      ),
-                    ),
+                    child: Obx(() => Text(
+                          controller.current.description,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 13,
+                            height: 1.4,
+                          ),
+                        )),
                   ),
                   const SizedBox(width: 8),
                   const Text('✏️', style: TextStyle(fontSize: 16)),
@@ -366,24 +364,24 @@ class _BottomCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            Text(
-              controller.current.title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+            Obx(() => Text(
+                  controller.current.title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
+                )),
             const SizedBox(height: 10),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(4),
-              child: LinearProgressIndicator(
-                value: controller.progress,
-                color: AppColors.cyan,
-                backgroundColor: Colors.white24,
-                minHeight: 3,
-              ),
-            ),
+            Obx(() => ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: LinearProgressIndicator(
+                    value: controller.progress,
+                    color: AppColors.cyan,
+                    backgroundColor: Colors.white24,
+                    minHeight: 3,
+                  ),
+                )),
           ],
         ),
       ),

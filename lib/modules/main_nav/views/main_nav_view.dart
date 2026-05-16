@@ -4,10 +4,10 @@ import '../../../core/controllers/theme_controller.dart';
 
 import '../../../app/theme/app_colors.dart';
 import '../../ask_ai/views/ask_ai_view.dart';
-import '../../flashcards/views/flashcards_view.dart';
 import '../../home/views/home_view.dart';
 import '../../lessons/views/lessons_view.dart';
 import '../../pilot_profile/views/pilot_profile_view.dart';
+import '../../schedule/views/schedule_view.dart';
 import '../controllers/main_nav_controller.dart';
 
 class MainNavView extends GetView<MainNavController> {
@@ -16,7 +16,7 @@ class MainNavView extends GetView<MainNavController> {
     HomeView(),
     LessonsView(),
     AskAiView(),
-    FlashcardsView(),
+    ScheduleView(),
     PilotProfileView(),
   ];
 
@@ -50,7 +50,7 @@ class _QuantumNavBar extends StatelessWidget {
     (icon: Icons.home_outlined, label: 'HOME'),
     (icon: Icons.school_outlined, label: 'LESSONS'),
     (icon: Icons.psychology_outlined, label: 'ASK AI'),
-    (icon: Icons.science_outlined, label: 'LAB'),
+    (icon: Icons.calendar_today_outlined, label: 'SCHEDULE'),
     (icon: Icons.person_outline, label: 'PROFILE'),
   ];
 

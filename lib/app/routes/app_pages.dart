@@ -16,9 +16,11 @@ import '../../modules/onboarding/bindings/onboarding_binding.dart';
 import '../../modules/onboarding/views/onboarding_view.dart';
 import '../../modules/pilot_profile/bindings/pilot_profile_binding.dart';
 import '../../modules/profile/bindings/profile_binding.dart';
+import '../../modules/profile/views/profile_view.dart';
 import '../../modules/quiz/bindings/quiz_binding.dart';
 import '../../modules/quiz/views/quiz_view.dart';
 import '../../modules/schedule/bindings/schedule_binding.dart';
+import '../../modules/schedule/views/schedule_view.dart';
 import '../../modules/splash/bindings/splash_binding.dart';
 import '../../modules/splash/views/splash_view.dart';
 import 'app_routes.dart';
@@ -61,7 +63,6 @@ abstract final class AppPages {
         LessonsBinding(),
         ProfileBinding(),
         ScheduleBinding(),
-        FlashcardsBinding(),
         PilotProfileBinding(),
       ],
       transition: Transition.fadeIn,
@@ -78,6 +79,20 @@ abstract final class AppPages {
       name: AppRoutes.flashcards,
       page: () => const FlashcardsView(),
       binding: FlashcardsBinding(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: AppRoutes.schedule,
+      page: () => const ScheduleView(),
+      binding: ScheduleBinding(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: AppRoutes.profile,
+      page: () => const ProfileView(),
+      binding: ProfileBinding(),
       transition: Transition.rightToLeft,
       transitionDuration: const Duration(milliseconds: 300),
     ),

@@ -39,10 +39,11 @@ abstract final class AppRoutes {
   static const rewards       = '/rewards';
 
   // ── Celebrations / overlays ────────────────────────────────────────────────
-  static const rankUp          = '/rank-up';
-  static const missionSuccess  = '/mission-success';
-  static const missionVictory  = '/mission-victory';
-  static const missionBriefing = '/mission-briefing';
+  static const rankUp           = '/rank-up';
+  static const missionSuccess   = '/mission-success';
+  static const missionVictory   = '/mission-victory';
+  static const missionBriefing  = '/mission-briefing';
+  static const synergySparks    = '/synergy-sparks';
 
   // ── Settings / account ─────────────────────────────────────────────────────
   static const plan    = '/plan';

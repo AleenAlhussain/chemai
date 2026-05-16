@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 
 import '../../../app/theme/app_colors.dart';
+import '../../../widgets/kimo_widget.dart';
 import '../controllers/splash_controller.dart';
 
 class SplashView extends GetView<SplashController> {
@@ -11,93 +12,126 @@ class SplashView extends GetView<SplashController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.bgDeep,
+      backgroundColor: const Color(0xFF070A1C),
       body: Stack(
         children: [
-          // Radial background glow
+          // Radial purple/cyan background glow
           Positioned.fill(
             child: DecoratedBox(
               decoration: BoxDecoration(
                 gradient: RadialGradient(
-                  center: const Alignment(0, -0.1),
-                  radius: 0.9,
+                  center: const Alignment(0, -0.2),
+                  radius: 0.85,
                   colors: [
-                    AppColors.cyan.withOpacity(0.04),
-                    AppColors.bgDeep,
+                    AppColors.purple.withOpacity(0.18),
+                    AppColors.cyan.withOpacity(0.06),
+                    Colors.transparent,
                   ],
+                  stops: const [0.0, 0.5, 1.0],
                 ),
               ),
             ),
           ),
 
+          // Starfield
+          const Positioned.fill(child: _Starfield()),
+
           Column(
             children: [
-              // ── Logo block (centered slightly above middle) ──────────────
+              // ── Top spacer + Kimo ──────────────────────────────────────
               Expanded(
-                flex: 55,
+                flex: 60,
                 child: Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // App icon with cyan glow
-                      _GlowingLogo()
+                      // Kimo mascot
+                      const KimoWidget(size: 150, state: KimoState.happy)
                           .animate()
-                          .fadeIn(duration: 700.ms)
-                          .scale(begin: const Offset(0.85, 0.85),
-                              duration: 700.ms, curve: Curves.easeOut),
+                          .fadeIn(duration: 800.ms)
+                          .scale(
+                            begin: const Offset(0.7, 0.7),
+                            duration: 800.ms,
+                            curve: Curves.easeOutBack,
+                          ),
 
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 28),
 
-                      // CHEMAI wordmark
+                      // CHEMAI wordmark with gradient
+                      ShaderMask(
+                        shaderCallback: (b) => AppColors.gradientPurple.createShader(b),
+                        child: const Text(
+                          'CHEMAI',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 34,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 8,
+                          ),
+                        ),
+                      ).animate().fadeIn(delay: 300.ms, duration: 600.ms),
+
+                      const SizedBox(height: 10),
+
+                      // Tagline
                       Text(
-                        'CHEMAI',
-                        style: Theme.of(context)
-                            .textTheme
-                            .displayLarge
-                            ?.copyWith(
-                              color: AppColors.textPrimary,
-                              fontSize: 30,
-                              fontWeight: FontWeight.w800,
-                              letterSpacing: 8,
-                            ),
-                      ).animate().fadeIn(delay: 200.ms, duration: 600.ms),
+                        'Your AI Chemistry Companion',
+                        style: TextStyle(
+                          color: AppColors.textSecondary,
+                          fontSize: 13,
+                          letterSpacing: 1.5,
+                        ),
+                      ).animate().fadeIn(delay: 500.ms, duration: 600.ms),
 
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 6),
 
-                      // Subtitle
-                      Text(
-                        'Quantum Simulation Engine',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: AppColors.textSecondary,
-                              letterSpacing: 2.5,
-                              fontSize: 11,
+                      // Speech bubble from Kimo
+                      Container(
+                        margin: const EdgeInsets.only(top: 16),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
+                        decoration: BoxDecoration(
+                          color: AppColors.bgCard,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: AppColors.cyan.withOpacity(0.35)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.cyan.withOpacity(0.12),
+                              blurRadius: 16,
                             ),
-                      ).animate().fadeIn(delay: 400.ms, duration: 600.ms),
+                          ],
+                        ),
+                        child: Text(
+                          'Hi! I\'m Kimo, your chemistry guide! 🧪',
+                          style: TextStyle(
+                            color: AppColors.textPrimary,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ).animate().fadeIn(delay: 700.ms, duration: 500.ms).slideY(begin: 0.2),
                     ],
                   ),
                 ),
               ),
 
-              // ── Progress section ────────────────────────────────────────
+              // ── Loading section ────────────────────────────────────────
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
+                padding: const EdgeInsets.symmetric(horizontal: 48),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Progress bar
                     Obx(() => _NeuralProgressBar(value: controller.progress.value))
                         .animate()
-                        .fadeIn(delay: 600.ms, duration: 500.ms),
+                        .fadeIn(delay: 900.ms, duration: 500.ms),
 
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 8),
 
-                    // Status + percentage row
                     Obx(() => Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               controller.statusText.value,
-                              style:  TextStyle(
+                              style: TextStyle(
                                 color: AppColors.cyan,
                                 fontSize: 9,
                                 letterSpacing: 1.2,
@@ -106,7 +140,7 @@ class SplashView extends GetView<SplashController> {
                             ),
                             Text(
                               '${(controller.progress.value * 100).toInt()}%',
-                              style:  TextStyle(
+                              style: TextStyle(
                                 color: AppColors.cyan,
                                 fontSize: 9,
                                 letterSpacing: 1,
@@ -114,34 +148,33 @@ class SplashView extends GetView<SplashController> {
                               ),
                             ),
                           ],
-                        )).animate().fadeIn(delay: 600.ms),
+                        )).animate().fadeIn(delay: 900.ms),
                   ],
                 ),
               ),
 
-              // ── Bottom version tag ──────────────────────────────────────
+              // ── Version footer ─────────────────────────────────────────
               Expanded(
-                flex: 15,
+                flex: 12,
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: Padding(
-                    padding: const EdgeInsets.only(bottom: 28),
+                    padding: const EdgeInsets.only(bottom: 24),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                         Icon(Icons.science_outlined,
-                            color: AppColors.textMuted, size: 12),
-                        const SizedBox(width: 8),
+                        Icon(Icons.science_outlined, color: AppColors.textMuted, size: 11),
+                        const SizedBox(width: 6),
                         Text(
                           'MOLECULAR INTELLIGENCE PLATFORM V4.0.2',
-                          style:  TextStyle(
+                          style: TextStyle(
                             color: AppColors.textMuted,
                             fontSize: 9,
                             letterSpacing: 1.5,
                           ),
                         ),
                       ],
-                    ).animate().fadeIn(delay: 800.ms),
+                    ).animate().fadeIn(delay: 1000.ms),
                   ),
                 ),
               ),
@@ -153,90 +186,46 @@ class SplashView extends GetView<SplashController> {
   }
 }
 
-// ── Glowing app icon ─────────────────────────────────────────────────────────
-class _GlowingLogo extends StatelessWidget {
+// ── Starfield ──────────────────────────────────────────────────────────────────
+class _Starfield extends StatelessWidget {
+  const _Starfield();
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 130,
-      height: 130,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(22),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.cyan.withOpacity(0.35),
-            blurRadius: 40,
-            spreadRadius: 4,
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(22),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            // Dark gradient background
-            Container(
-              decoration: const BoxDecoration(
-                gradient: RadialGradient(
-                  colors: [Color(0xFF0A2040), Color(0xFF050C18)],
-                  radius: 0.8,
-                ),
-              ),
-            ),
-            // Center glow
-            Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.cyan.withOpacity(0.25),
-                    blurRadius: 40,
-                    spreadRadius: 20,
-                  ),
-                ],
-              ),
-            ),
-            // Logo text
-            RichText(
-              text:  TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'C',
-                    style: TextStyle(
-                      color: AppColors.cyan,
-                      fontSize: 32,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  TextSpan(
-                    text: ' EMI',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 32,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    return CustomPaint(painter: _StarfieldPainter());
   }
 }
 
-// ── Cyan progress bar ─────────────────────────────────────────────────────────
+class _StarfieldPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..color = Colors.white.withOpacity(0.45);
+    final pts = [
+      const Offset(0.12, 0.08), const Offset(0.85, 0.05), const Offset(0.45, 0.12),
+      const Offset(0.72, 0.18), const Offset(0.25, 0.22), const Offset(0.92, 0.30),
+      const Offset(0.08, 0.40), const Offset(0.60, 0.35), const Offset(0.35, 0.50),
+      const Offset(0.78, 0.55), const Offset(0.15, 0.65), const Offset(0.50, 0.70),
+      const Offset(0.90, 0.72), const Offset(0.30, 0.80), const Offset(0.65, 0.88),
+      const Offset(0.05, 0.92), const Offset(0.55, 0.95), const Offset(0.80, 0.90),
+    ];
+    for (int i = 0; i < pts.length; i++) {
+      final r = (i % 3 == 0) ? 1.4 : (i % 3 == 1) ? 0.9 : 0.5;
+      canvas.drawCircle(Offset(pts[i].dx * size.width, pts[i].dy * size.height), r, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_) => false;
+}
+
+// ── Progress bar ────────────────────────────────────────────────────────────────
 class _NeuralProgressBar extends StatelessWidget {
   final double value;
   const _NeuralProgressBar({required this.value});
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
+    return LayoutBuilder(builder: (_, constraints) {
       return Container(
         height: 3,
         width: constraints.maxWidth,
@@ -251,9 +240,7 @@ class _NeuralProgressBar extends StatelessWidget {
             width: constraints.maxWidth * value.clamp(0.0, 1.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(2),
-              gradient:  LinearGradient(
-                colors: [AppColors.cyan, AppColors.purple],
-              ),
+              gradient: LinearGradient(colors: [AppColors.cyan, AppColors.purple]),
               boxShadow: [
                 BoxShadow(
                   color: AppColors.cyan.withOpacity(0.6),

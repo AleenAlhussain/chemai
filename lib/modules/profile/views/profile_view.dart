@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,495 +11,458 @@ class ProfileView extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.bgBase,
-      appBar: AppBar(
-        backgroundColor: AppColors.bgBase,
-        titleSpacing: 16,
-        leading: Padding(
-          padding:  EdgeInsets.all(10),
-          child: Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: AppColors.bgCard,
-              border: Border.all(color: AppColors.borderDefault),
-            ),
-            child:  Icon(Icons.person_outline,
-                color: AppColors.textSecondary, size: 18),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.only(bottom: 32),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 16),
+              _UserHeroCard(controller: controller),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: _StatsGrid(),
+              ),
+              const SizedBox(height: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: _WeeklyActivitySection(controller: controller),
+              ),
+              const SizedBox(height: 24),
+              _AchievementsSection(),
+            ],
           ),
         ),
-        title:  Text(
-          'PERFORMANCE DATA',
-          style: TextStyle(
-            color: AppColors.textPrimary,
-            fontSize: 12,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 1.8,
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon:  Icon(Icons.settings_outlined,
-                color: AppColors.textSecondary, size: 20),
-            onPressed: () {},
-          ),
-        ],
       ),
-      body: SingleChildScrollView(
-        padding:  EdgeInsets.symmetric(horizontal: 18, vertical: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // ── Three stat rings ─────────────────────────────────────────
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _StatRing(
-                  percent: controller.xpPercent,
-                  color: AppColors.purple,
-                  label: '${controller.xp ~/ 1000},${(controller.xp % 1000).toString().padLeft(3, '0')} XP',
-                  sub: 'Level ${controller.level} ${controller.levelTitle}',
-                ),
-                _StatRing(
-                  percent: controller.lessonsPercent,
-                  color:  Color(0xFFFBBF24),
-                  label: '${controller.lessonsCompleted}/${controller.lessonsTotal}',
-                  sub: controller.lessonsCourse,
-                ),
-                _StatRing(
-                  percent: controller.accuracyPercent,
-                  color: AppColors.green,
-                  label: controller.rankLabel,
-                  sub: controller.rankSub,
-                ),
-              ],
-            ),
+    );
+  }
+}
 
-             SizedBox(height: 24),
+class _UserHeroCard extends StatelessWidget {
+  final ProfileController controller;
 
-            // ── Study Consistency ─────────────────────────────────────────
-            _SectionTitle('Study Consistency'),
-             SizedBox(height: 4),
-             Text(
-              'Daily interaction map for the last 12 weeks',
-              style: TextStyle(color: AppColors.textMuted, fontSize: 11),
-            ),
-             SizedBox(height: 10),
-            _HeatmapLegend(),
-             SizedBox(height: 8),
-            _Heatmap(data: controller.heatmap),
+  const _UserHeroCard({required this.controller});
 
-             SizedBox(height: 24),
-
-            // ── Scientific Milestones ────────────────────────────────────
-            _SectionTitle('Scientific Milestones'),
-             SizedBox(height: 14),
-            GridView.count(
-              shrinkWrap: true,
-              physics:  NeverScrollableScrollPhysics(),
-              crossAxisCount: 3,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              childAspectRatio: 1.0,
-              children: controller.milestones
-                  .map((m) => _MilestoneBadge(milestone: m))
-                  .toList(),
-            ),
-
-             SizedBox(height: 24),
-
-            // ── Learning Speed ────────────────────────────────────────────
-            _SectionTitle('Learning Speed'),
-             SizedBox(height: 14),
-            Container(
-              padding:  EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.bgCard,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: AppColors.borderDefault),
-              ),
-              child: Column(
-                children: List.generate(controller.learningSpeed.length, (i) {
-                  final (subject, pct) = controller.learningSpeed[i];
-                  return Padding(
-                    padding: EdgeInsets.only(
-                        bottom: i < controller.learningSpeed.length - 1 ? 16 : 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(subject,
-                                style:  TextStyle(
-                                    color: AppColors.textSecondary,
-                                    fontSize: 12)),
-                            Text(controller.speedLabels[i],
-                                style:  TextStyle(
-                                    color: AppColors.textPrimary,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600)),
-                          ],
-                        ),
-                         SizedBox(height: 8),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(3),
-                          child: LinearProgressIndicator(
-                            value: pct,
-                            minHeight: 5,
-                            backgroundColor: AppColors.borderDefault,
-                            valueColor:  AlwaysStoppedAnimation<Color>(
-                                AppColors.purple),
-                          ),
-                        ),
-                      ],
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.bgCard,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.borderDefault),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Ahmad Kamal',
+                      style: TextStyle(
+                        color: AppColors.textPrimary,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  );
-                }),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Chemistry Student ⭐  —  Level 6',
+                      style: TextStyle(
+                        color: AppColors.cyan,
+                        fontSize: 12,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      'Progress to next level',
+                      style: TextStyle(
+                        color: AppColors.textMuted,
+                        fontSize: 10,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(4),
+                      child: LinearProgressIndicator(
+                        value: 0.7,
+                        minHeight: 6,
+                        backgroundColor: AppColors.borderDefault,
+                        valueColor: AlwaysStoppedAnimation<Color>(AppColors.cyan),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-
-             SizedBox(height: 24),
-
-            // ── AI Assistance Rate ────────────────────────────────────────
-            _SectionTitle('AI Assistance Rate'),
-             SizedBox(height: 14),
-            Container(
-              padding:  EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.bgCard,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: AppColors.borderDefault),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              const SizedBox(width: 16),
+              Stack(
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${controller.aiRate}%',
-                          style:  TextStyle(
-                            color: AppColors.textPrimary,
-                            fontSize: 32,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                         SizedBox(height: 2),
-                        Row(
-                          children: [
-                            Text(
-                              '${controller.aiTrend}% from last week',
-                              style:  TextStyle(
-                                color: AppColors.green,
-                                fontSize: 11,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                         SizedBox(height: 2),
-                         Text(
-                          'Reliance on AI',
-                          style: TextStyle(
-                              color: AppColors.textMuted, fontSize: 11),
-                        ),
-                         Text(
-                          'Independence is growing up',
-                          style: TextStyle(
-                              color: AppColors.textSecondary, fontSize: 11),
-                        ),
-                      ],
+                  Container(
+                    width: 72,
+                    height: 72,
+                    decoration: BoxDecoration(
+                      color: AppColors.bgCardAlt,
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: AppColors.purple,
+                        width: 2,
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.smart_toy_outlined,
+                      size: 40,
+                      color: AppColors.purple,
                     ),
                   ),
-                   SizedBox(width: 12),
-                  Expanded(
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
                     child: Container(
-                      padding:  EdgeInsets.all(12),
+                      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                       decoration: BoxDecoration(
-                        color: AppColors.bgCardAlt,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: AppColors.borderDefault),
+                        color: AppColors.purple,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(6),
+                          bottomRight: Radius.circular(12),
+                        ),
                       ),
-                      child: Text(
-                        controller.aiQuote,
-                        style:  TextStyle(
-                          color: AppColors.textSecondary,
-                          fontSize: 11,
-                          fontStyle: FontStyle.italic,
-                          height: 1.5,
+                      child: const Text(
+                        'PRO',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 9,
+                          fontWeight: FontWeight.w800,
                         ),
                       ),
                     ),
                   ),
                 ],
               ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Text(
+            '🤖 1,500 / 1,240 XP',
+            style: TextStyle(
+              color: AppColors.textMuted,
+              fontSize: 11,
             ),
-
-             SizedBox(height: 30),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
 
-// ── Section title ─────────────────────────────────────────────────────────────
-class _SectionTitle extends StatelessWidget {
-  final String text;
-   _SectionTitle(this.text);
-
+class _StatsGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text,
-      style:  TextStyle(
-        color: AppColors.textPrimary,
-        fontSize: 16,
-        fontWeight: FontWeight.w700,
-      ),
+    final stats = [
+      _StatData('32 Lessons', 'Lessons Completed', const Color(0xFFF472B6)),
+      _StatData('14 Days', 'Streak', const Color(0xFFF97316)),
+      _StatData('24.5 h', 'Study Time', const Color(0xFFFBBF24)),
+      _StatData('482', 'Questions Answered', AppColors.cyan),
+      _StatData('18', 'Badges', AppColors.purple),
+      _StatData('92%', 'Answer Accuracy', AppColors.green),
+    ];
+
+    return Wrap(
+      spacing: 10,
+      runSpacing: 10,
+      children: stats.map((s) {
+        return SizedBox(
+          width: (MediaQuery.of(context).size.width - 42) / 2,
+          child: _StatCard(data: s),
+        );
+      }).toList(),
     );
   }
 }
 
-// ── Circular stat ring ────────────────────────────────────────────────────────
-class _StatRing extends StatelessWidget {
-  final double percent;
-  final Color color;
+class _StatData {
+  final String value;
   final String label;
-  final String sub;
+  final Color color;
 
-  const _StatRing({
-    required this.percent,
-    required this.color,
-    required this.label,
-    required this.sub,
-  });
+  const _StatData(this.value, this.label, this.color);
+}
+
+class _StatCard extends StatelessWidget {
+  final _StatData data;
+
+  const _StatCard({required this.data});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          width: 80,
-          height: 80,
-          child: CustomPaint(
-            painter: _ArcPainter(percent: percent, color: color),
-            child: Center(
-              child: Text(
-                '${(percent * 100).toInt()}%',
-                style: TextStyle(
-                  color: color,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: AppColors.bgCard,
+        borderRadius: BorderRadius.circular(14),
+        border: Border(
+          left: BorderSide(color: data.color, width: 4),
+          top: BorderSide(color: AppColors.borderDefault),
+          right: BorderSide(color: AppColors.borderDefault),
+          bottom: BorderSide(color: AppColors.borderDefault),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            data.value,
+            style: TextStyle(
+              color: AppColors.textPrimary,
+              fontSize: 28,
+              fontWeight: FontWeight.w800,
+              height: 1.1,
             ),
           ),
-        ),
-         SizedBox(height: 8),
-        Text(
-          label,
-          style:  TextStyle(
-            color: AppColors.textPrimary,
-            fontSize: 12,
-            fontWeight: FontWeight.w700,
+          const SizedBox(height: 4),
+          Text(
+            data.label,
+            style: TextStyle(
+              color: AppColors.textMuted,
+              fontSize: 11,
+            ),
           ),
-          textAlign: TextAlign.center,
-        ),
-         SizedBox(height: 2),
-        Text(
-          sub,
-          style:  TextStyle(
-            color: AppColors.textSecondary,
-            fontSize: 10,
-          ),
-          textAlign: TextAlign.center,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
 
-class _ArcPainter extends CustomPainter {
-  final double percent;
-  final Color color;
-  const _ArcPainter({required this.percent, required this.color});
+class _WeeklyActivitySection extends StatelessWidget {
+  final ProfileController controller;
 
-  @override
-  void paint(Canvas canvas, Size size) {
-    final cx = size.width / 2;
-    final cy = size.height / 2;
-    final r = size.width / 2 - 6;
+  const _WeeklyActivitySection({required this.controller});
 
-    final track = Paint()
-      ..color = AppColors.borderDefault
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 6;
-    canvas.drawCircle(Offset(cx, cy), r, track);
+  static const _days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-    final arc = Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 6
-      ..strokeCap = StrokeCap.round;
-    canvas.drawArc(
-      Rect.fromCircle(center: Offset(cx, cy), radius: r),
-      -pi / 2,
-      2 * pi * percent,
-      false,
-      arc,
-    );
-  }
-
-  @override
-  bool shouldRepaint(_ArcPainter old) =>
-      old.percent != percent || old.color != color;
-}
-
-// ── Heatmap ───────────────────────────────────────────────────────────────────
-class _HeatmapLegend extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-         Text('Less',
-            style:
-                TextStyle(color: AppColors.textMuted, fontSize: 10)),
-         SizedBox(width: 6),
-        ...[0, 1, 2, 3].map((v) => Container(
-              width: 10,
-              height: 10,
-              margin:  EdgeInsets.only(right: 3),
-              decoration: BoxDecoration(
-                color: _cellColor(v),
-                borderRadius: BorderRadius.circular(2),
-              ),
-            )),
-         SizedBox(width: 4),
-         Text('More',
-            style:
-                TextStyle(color: AppColors.textMuted, fontSize: 10)),
-      ],
-    );
-  }
-}
-
-class _Heatmap extends StatelessWidget {
-  final List<List<int>> data;
-  const _Heatmap({required this.data});
+  static const _activity = [
+    [0, 1, 2, 1, 0, 2, 1],
+    [1, 2, 2, 0, 1, 1, 2],
+    [2, 1, 0, 2, 2, 1, 0],
+  ];
 
   @override
   Widget build(BuildContext context) {
-    const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Day labels
-        Row(
-          children: [
-             SizedBox(width: 4),
-            ...days.map((d) => SizedBox(
-                  width: 14,
-                  child: Text(d,
-                      style:  TextStyle(
-                          color: AppColors.textMuted,
-                          fontSize: 9),
-                      textAlign: TextAlign.center),
-                )),
-          ],
+        Text(
+          'Last Week Activity',
+          style: TextStyle(
+            color: AppColors.textPrimary,
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+          ),
         ),
-        const SizedBox(height: 4),
-        // Weeks
+        const SizedBox(height: 12),
         Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: data.map((week) {
-            return Padding(
-              padding: const EdgeInsets.only(right: 3),
-              child: Column(
-                children: week.map((v) {
-                  return Container(
-                    width: 11,
-                    height: 11,
-                    margin: const EdgeInsets.only(bottom: 3),
-                    decoration: BoxDecoration(
-                      color: _cellColor(v),
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  );
-                }).toList(),
+          children: _days.map((d) {
+            return Expanded(
+              child: Text(
+                d,
+                style: TextStyle(
+                  color: AppColors.textMuted,
+                  fontSize: 10,
+                ),
+                textAlign: TextAlign.center,
               ),
             );
           }).toList(),
         ),
+        const SizedBox(height: 6),
+        for (final row in _activity) ...[
+          Row(
+            children: List.generate(7, (i) {
+              final val = row[i];
+              return Expanded(
+                child: Container(
+                  height: 28,
+                  margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: _heatColor(val),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                ),
+              );
+            }),
+          ),
+        ],
+        const SizedBox(height: 10),
+        Row(
+          children: [
+            Text(
+              'Less',
+              style: TextStyle(color: AppColors.textMuted, fontSize: 10),
+            ),
+            const SizedBox(width: 6),
+            ...[0, 1, 2].map((v) => Container(
+                  width: 12,
+                  height: 12,
+                  margin: const EdgeInsets.only(right: 4),
+                  decoration: BoxDecoration(
+                    color: _heatColor(v),
+                    borderRadius: BorderRadius.circular(3),
+                  ),
+                )),
+            Text(
+              'More',
+              style: TextStyle(color: AppColors.textMuted, fontSize: 10),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Color _heatColor(int v) {
+    switch (v) {
+      case 0:
+        return AppColors.borderDefault;
+      case 1:
+        return AppColors.cyan.withOpacity(0.35);
+      case 2:
+        return AppColors.cyan;
+      default:
+        return AppColors.borderDefault;
+    }
+  }
+}
+
+class _AchievementsSection extends StatelessWidget {
+  static const _badges = [
+    _BadgeData('🚀', 'Explorer', false),
+    _BadgeData('🎓', 'Graduate', false),
+    _BadgeData('⭐', 'Star Lvl 5', true, Color(0xFFF97316)),
+    _BadgeData('🔬', 'Scientist', true, Color(0xFF22D3EE)),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Achievements',
+                style: TextStyle(
+                  color: AppColors.textPrimary,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              GestureDetector(
+                onTap: () {},
+                child: Text(
+                  'View All',
+                  style: TextStyle(
+                    color: AppColors.purple,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 14),
+        SizedBox(
+          height: 100,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: _badges.length,
+            separatorBuilder: (_, __) => const SizedBox(width: 12),
+            itemBuilder: (_, i) => _AchievementBadge(data: _badges[i]),
+          ),
+        ),
       ],
     );
   }
 }
 
-Color _cellColor(int v) {
-  switch (v) {
-    case 0:
-      return AppColors.borderDefault;
-    case 1:
-      return AppColors.purpleDim;
-    case 2:
-      return AppColors.purple.withOpacity(0.6);
-    case 3:
-      return AppColors.purple;
-    default:
-      return AppColors.borderDefault;
-  }
+class _BadgeData {
+  final String icon;
+  final String label;
+  final bool earned;
+  final Color? glowColor;
+
+  const _BadgeData(this.icon, this.label, this.earned, [this.glowColor]);
 }
 
-// ── Milestone badge ───────────────────────────────────────────────────────────
-class _MilestoneBadge extends StatelessWidget {
-  final dynamic milestone;
-  const _MilestoneBadge({required this.milestone});
+class _AchievementBadge extends StatelessWidget {
+  final _BadgeData data;
+
+  const _AchievementBadge({required this.data});
 
   @override
   Widget build(BuildContext context) {
-    final bool unlocked = milestone.unlocked as bool;
-    return Container(
-      decoration: BoxDecoration(
-        color: unlocked
-            ? const Color(0xFF1A1830)
-            : AppColors.bgCard,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: unlocked
-              ? const Color(0xFFFBBF24).withOpacity(0.35)
-              : AppColors.borderDefault,
-        ),
-      ),
-      padding: const EdgeInsets.all(10),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            unlocked ? milestone.icon as String : '🔒',
-            style: TextStyle(
-                fontSize: unlocked ? 22 : 18,
-                color: unlocked ? null : AppColors.textMuted),
+    return Column(
+      children: [
+        Container(
+          width: 60,
+          height: 60,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: data.earned
+                ? data.glowColor?.withOpacity(0.15) ?? AppColors.bgCard
+                : AppColors.bgCard,
+            border: Border.all(
+              color: data.earned
+                  ? data.glowColor ?? AppColors.borderDefault
+                  : AppColors.borderDefault,
+              width: data.earned ? 2 : 1,
+            ),
+            boxShadow: data.earned && data.glowColor != null
+                ? [
+                    BoxShadow(
+                      color: data.glowColor!.withOpacity(0.3),
+                      blurRadius: 12,
+                      spreadRadius: 1,
+                    ),
+                  ]
+                : null,
           ),
-          const SizedBox(height: 6),
-          Text(
-            milestone.label as String,
+          child: Center(
+            child: Text(
+              data.icon,
+              style: TextStyle(
+                fontSize: 26,
+                color: data.earned ? null : AppColors.textMuted,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 6),
+        SizedBox(
+          width: 64,
+          child: Text(
+            data.label,
             style: TextStyle(
-              color: unlocked
-                  ? AppColors.textPrimary
-                  : AppColors.textMuted,
-              fontSize: 9,
+              color: data.earned ? AppColors.textSecondary : AppColors.textMuted,
+              fontSize: 10,
               fontWeight: FontWeight.w600,
-              letterSpacing: 0.3,
             ),
             textAlign: TextAlign.center,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

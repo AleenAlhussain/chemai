@@ -7,14 +7,19 @@ import '../../../app/routes/app_routes.dart';
 class AuthController extends GetxController {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final nameController = TextEditingController();
   final isPasswordVisible = false.obs;
   final rememberMe = false.obs;
   final isLoading = false.obs;
+  final isLoginTab = true.obs;
+
+  void toggleTab() => isLoginTab.value = !isLoginTab.value;
 
   @override
   void onClose() {
     emailController.dispose();
     passwordController.dispose();
+    nameController.dispose();
     super.onClose();
   }
 

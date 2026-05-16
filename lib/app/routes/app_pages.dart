@@ -61,6 +61,8 @@ import '../../modules/squad_comms/bindings/squad_comms_binding.dart';
 import '../../modules/squad_comms/views/squad_comms_view.dart';
 import '../../modules/study_plan/bindings/study_plan_binding.dart';
 import '../../modules/study_plan/views/study_plan_view.dart';
+import '../../modules/synergy_sparks/bindings/synergy_sparks_binding.dart';
+import '../../modules/synergy_sparks/views/synergy_sparks_view.dart';
 import '../../modules/virtual_lab/bindings/virtual_lab_binding.dart';
 import '../../modules/virtual_lab/views/virtual_lab_view.dart';
 import 'app_routes.dart';
@@ -282,6 +284,13 @@ abstract final class AppPages {
       binding: PrivacyBinding(),
       transition: Transition.rightToLeft,
       transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: AppRoutes.synergySparks,
+      page: () => const SynergySparkView(),
+      binding: SynergySparkBinding(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 400),
     ),
   ];
 }

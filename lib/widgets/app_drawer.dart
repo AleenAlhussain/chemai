@@ -79,6 +79,8 @@ class AppDrawer extends StatelessWidget {
                         () => _push(AppRoutes.collaboration)),
                     _NavItem(Icons.share_outlined, 'Social Showcase',
                         () => _push(AppRoutes.social)),
+                    _NavItem(Icons.flash_on_outlined, 'Synergy Sparks',
+                        () => _push(AppRoutes.synergySparks)),
 
                     const SizedBox(height: 4),
 

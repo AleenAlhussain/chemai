@@ -146,10 +146,11 @@ class HomeView extends GetView<HomeController> {
         ],
       ),
       actions: [
-        IconButton(
-          icon:  Icon(Icons.settings_outlined,
-              color: AppColors.textSecondary, size: 20),
-          onPressed: () {},
+        Builder(
+          builder: (ctx) => IconButton(
+            icon: Icon(Icons.menu, color: AppColors.textSecondary, size: 22),
+            onPressed: () => Scaffold.of(ctx).openDrawer(),
+          ),
         ),
       ],
     );

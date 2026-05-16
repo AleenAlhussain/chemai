@@ -9,9 +9,14 @@ class LessonDetailController extends GetxController {
   final likes = 42900;
   final comments = 1200;
 
-  final currentSeconds = 225.obs; // 3:45
-  final totalSeconds = 300;       // 5:00
+  final currentSeconds = 225.obs;
+  final totalSeconds = 300;
   final isLiked = false.obs;
+
+  final currentStep = 1.obs;
+  final totalSteps = 5;
+  final activeTab = 0.obs;
+  final lessonTitle = 'Formation of the Covalent Bond';
 
   double get progress => currentSeconds.value / totalSeconds;
 
@@ -30,4 +35,14 @@ class LessonDetailController extends GetxController {
   }
 
   void toggleLike() => isLiked.value = !isLiked.value;
+
+  void nextStep() {
+    if (currentStep.value < totalSteps - 1) currentStep.value++;
+  }
+
+  void setTab(int i) => activeTab.value = i;
+
+  void gotIt() {
+    nextStep();
+  }
 }

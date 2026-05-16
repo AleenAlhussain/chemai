@@ -3,9 +3,6 @@ import 'package:get/get.dart';
 import '../../../data/models/schedule_model.dart';
 
 class ScheduleController extends GetxController {
-  final currentMonth = DateTime(2023, 10).obs;
-  final selectedDay = 12.obs;
-
   final sessions = ScheduleSession.defaults;
 
   final completed = 12;
@@ -15,32 +12,8 @@ class ScheduleController extends GetxController {
   final efficiency = 0.78;
   final efficiencyLabel = 'Optimal';
 
-  void previousMonth() {
-    final d = currentMonth.value;
-    currentMonth.value = DateTime(d.year, d.month - 1);
-  }
-
-  void nextMonth() {
-    final d = currentMonth.value;
-    currentMonth.value = DateTime(d.year, d.month + 1);
-  }
-
-  void selectDay(int day) => selectedDay.value = day;
-
-  int daysInMonth(DateTime m) =>
-      DateTime(m.year, m.month + 1, 0).day;
-
-  int firstWeekday(DateTime m) {
-    // 1=Mon ... 7=Sun, adjust so Mon=0
-    final wd = DateTime(m.year, m.month, 1).weekday;
-    return wd - 1;
-  }
-
-  String monthName(DateTime m) {
-    const names = [
-      '', 'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
-    ];
-    return '${names[m.month]} ${m.year}';
-  }
+  final examDate = 'May 15, 2024';
+  final daysToExam = 8.obs;
+  final weeklyProgress = 0.65;
+  final todayLessons = ['Naming Organic Compounds', 'Oxidation and Reduction'];
 }

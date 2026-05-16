@@ -37,6 +37,7 @@ import '../../modules/onboarding/views/onboarding_view.dart';
 import '../../modules/periodic_table/bindings/periodic_table_binding.dart';
 import '../../modules/periodic_table/views/periodic_table_view.dart';
 import '../../modules/pilot_profile/bindings/pilot_profile_binding.dart';
+import '../../modules/pilot_profile/views/pilot_profile_view.dart';
 import '../../modules/plan/bindings/plan_binding.dart';
 import '../../modules/plan/views/plan_view.dart';
 import '../../modules/privacy/bindings/privacy_binding.dart';
@@ -135,6 +136,13 @@ abstract final class AppPages {
       name: AppRoutes.profile,
       page: () => const ProfileView(),
       binding: ProfileBinding(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: AppRoutes.account,
+      page: () => const PilotProfileView(),
+      binding: PilotProfileBinding(),
       transition: Transition.rightToLeft,
       transitionDuration: const Duration(milliseconds: 300),
     ),

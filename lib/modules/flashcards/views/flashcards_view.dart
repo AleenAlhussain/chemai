@@ -107,8 +107,13 @@ class FlashcardsView extends GetView<FlashcardsController> {
 
                 const SizedBox(width: 16),
 
-                // Flashcard
-                Expanded(child: Obx(() => _FlipCard(controller: controller))),
+                // Flashcard — subscribe to currentIndex so card content updates on swipe
+                Expanded(
+                  child: Obx(() {
+                    controller.currentIndex.value;
+                    return _FlipCard(controller: controller);
+                  }),
+                ),
 
                 const SizedBox(width: 16),
 

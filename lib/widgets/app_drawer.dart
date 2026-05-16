@@ -30,11 +30,11 @@ class AppDrawer extends StatelessWidget {
                     // ── Main navigation ──────────────────────────────
                     _SectionLabel('NAVIGATION'),
                     _NavItem(Icons.person_outline, 'Profile', () => _goTab(0)),
-                    _NavItem(Icons.trending_up_outlined, 'Progress', () => _goTab(1)),
+                    _NavItem(Icons.book_outlined, 'Lessons', () => _goTab(1)),
                     _NavItem(Icons.video_library_outlined, 'Reels', () => _goTab(2)),
                     _NavItem(Icons.smart_toy_outlined, 'Chat / Ask AI', () => _goTab(3)),
                     _NavItem(Icons.home_outlined, 'Home', () => _goTab(4)),
-                    _NavItem(Icons.school_outlined, 'Lessons', () => _push(AppRoutes.lessons)),
+                    _NavItem(Icons.trending_up_outlined, 'Progress', () => _push(AppRoutes.profile)),
                     _NavItem(Icons.calendar_today_outlined, 'Schedule', () => _push(AppRoutes.schedule)),
 
                     const SizedBox(height: 4),
@@ -100,7 +100,7 @@ class AppDrawer extends StatelessWidget {
                     // ── Settings ──────────────────────────────────────
                     _SectionLabel('SETTINGS'),
                     _NavItem(Icons.manage_accounts_outlined, 'Account',
-                        () => _push(AppRoutes.profile)),
+                        () => _push(AppRoutes.account)),
                     _NavItem(Icons.palette_outlined, 'Interface Theme',
                         () => Get.find<ThemeController>().toggle()),
                     _NavItem(Icons.shield_outlined, 'Privacy & Security',

@@ -46,6 +46,7 @@ abstract final class AppRoutes {
   static const synergySparks    = '/synergy-sparks';
 
   // ── Settings / account ─────────────────────────────────────────────────────
+  static const account = '/account';
   static const plan    = '/plan';
   static const privacy = '/privacy';
 }

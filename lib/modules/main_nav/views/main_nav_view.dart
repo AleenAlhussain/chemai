@@ -6,8 +6,8 @@ import '../../../core/controllers/theme_controller.dart';
 import '../../../widgets/app_drawer.dart';
 import '../../ask_ai/views/ask_ai_view.dart';
 import '../../home/views/home_view.dart';
+import '../../lessons/views/lessons_view.dart';
 import '../../pilot_profile/views/pilot_profile_view.dart';
-import '../../profile/views/profile_view.dart';
 import '../../reels/views/reels_view.dart';
 import '../controllers/main_nav_controller.dart';
 
@@ -16,7 +16,7 @@ class MainNavView extends GetView<MainNavController> {
 
   static List<Widget> get _pages => [
         PilotProfileView(),
-        ProfileView(),
+        LessonsView(),
         ReelsView(),
         AskAiView(),
         HomeView(),
@@ -53,7 +53,7 @@ class _QuantumNavBar extends StatelessWidget {
 
   static const _items = [
     (icon: Icons.person_outline, label: 'PROFILE'),
-    (icon: Icons.trending_up_outlined, label: 'PROGRESS'),
+    (icon: Icons.book_outlined, label: 'LESSONS'),
     (icon: Icons.video_library_outlined, label: 'REELS'),
     (icon: Icons.smart_toy_outlined, label: 'CHAT'),
     (icon: Icons.home_outlined, label: 'HOME'),

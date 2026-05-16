@@ -29,11 +29,13 @@ class AppDrawer extends StatelessWidget {
                   children: [
                     // ── Main navigation ──────────────────────────────
                     _SectionLabel('NAVIGATION'),
-                    _NavItem(Icons.home_outlined, 'Home', () => _goTab(0)),
-                    _NavItem(Icons.school_outlined, 'Lessons', () => _goTab(1)),
-                    _NavItem(Icons.psychology_outlined, 'Ask AI', () => _goTab(2)),
-                    _NavItem(Icons.calendar_today_outlined, 'Schedule', () => _goTab(3)),
-                    _NavItem(Icons.person_outline, 'Profile', () => _goTab(4)),
+                    _NavItem(Icons.person_outline, 'Profile', () => _goTab(0)),
+                    _NavItem(Icons.trending_up_outlined, 'Progress', () => _goTab(1)),
+                    _NavItem(Icons.video_library_outlined, 'Reels', () => _goTab(2)),
+                    _NavItem(Icons.smart_toy_outlined, 'Chat / Ask AI', () => _goTab(3)),
+                    _NavItem(Icons.home_outlined, 'Home', () => _goTab(4)),
+                    _NavItem(Icons.school_outlined, 'Lessons', () => _push(AppRoutes.lessons)),
+                    _NavItem(Icons.calendar_today_outlined, 'Schedule', () => _push(AppRoutes.schedule)),
 
                     const SizedBox(height: 4),
 

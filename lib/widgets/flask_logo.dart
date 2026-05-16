@@ -108,16 +108,17 @@ class _FlaskPainter extends CustomPainter {
 
   List<Offset> _flaskNodes(double cx, double h, double top, double bot) {
     final span = bot - top;
+    final dx = cx * 0.55; // relative horizontal spread inside flask body
     return [
-      Offset(cx, top + span * 0.10),
-      Offset(cx - 0.12 * 100, top + span * 0.28),
-      Offset(cx + 0.12 * 100, top + span * 0.28),
-      Offset(cx - 0.17 * 100, top + span * 0.52),
-      Offset(cx, top + span * 0.50),
-      Offset(cx + 0.17 * 100, top + span * 0.52),
-      Offset(cx - 0.08 * 100, top + span * 0.72),
-      Offset(cx + 0.08 * 100, top + span * 0.72),
-      Offset(cx, top + span * 0.88),
+      Offset(cx,        top + span * 0.10),
+      Offset(cx - dx * 0.60, top + span * 0.28),
+      Offset(cx + dx * 0.60, top + span * 0.28),
+      Offset(cx - dx,   top + span * 0.52),
+      Offset(cx,        top + span * 0.50),
+      Offset(cx + dx,   top + span * 0.52),
+      Offset(cx - dx * 0.45, top + span * 0.72),
+      Offset(cx + dx * 0.45, top + span * 0.72),
+      Offset(cx,        top + span * 0.88),
     ];
   }
 

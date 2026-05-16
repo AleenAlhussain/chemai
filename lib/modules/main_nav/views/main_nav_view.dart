@@ -1,32 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../core/controllers/theme_controller.dart';
 
 import '../../../app/theme/app_colors.dart';
+import '../../../core/controllers/theme_controller.dart';
+import '../../../widgets/app_drawer.dart';
 import '../../ask_ai/views/ask_ai_view.dart';
-import '../../flashcards/views/flashcards_view.dart';
 import '../../home/views/home_view.dart';
 import '../../lessons/views/lessons_view.dart';
 import '../../pilot_profile/views/pilot_profile_view.dart';
+import '../../schedule/views/schedule_view.dart';
 import '../controllers/main_nav_controller.dart';
 
 class MainNavView extends GetView<MainNavController> {
   const MainNavView({super.key});
+
   static List<Widget> get _pages => [
-    HomeView(),
-    LessonsView(),
-    AskAiView(),
-    FlashcardsView(),
-    PilotProfileView(),
-  ];
+        HomeView(),
+        LessonsView(),
+        AskAiView(),
+        ScheduleView(),
+        PilotProfileView(),
+      ];
 
   @override
   Widget build(BuildContext context) {
     final tc = Get.find<ThemeController>();
     return Obx(() {
-      tc.isDark.value; // subscribe — triggers full rebuild on theme toggle
+      tc.isDark.value; // subscribe for theme rebuilds
       return Scaffold(
         backgroundColor: AppColors.bgBase,
+        drawer: const AppDrawer(),
         body: IndexedStack(
           index: controller.currentIndex.value,
           children: _pages,
@@ -40,6 +43,7 @@ class MainNavView extends GetView<MainNavController> {
   }
 }
 
+// ── Bottom navigation bar ─────────────────────────────────────────────────────
 class _QuantumNavBar extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
@@ -50,14 +54,15 @@ class _QuantumNavBar extends StatelessWidget {
     (icon: Icons.home_outlined, label: 'HOME'),
     (icon: Icons.school_outlined, label: 'LESSONS'),
     (icon: Icons.psychology_outlined, label: 'ASK AI'),
-    (icon: Icons.science_outlined, label: 'LAB'),
+    (icon: Icons.calendar_today_outlined, label: 'SCHEDULE'),
     (icon: Icons.person_outline, label: 'PROFILE'),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final bottomPad = MediaQuery.of(context).padding.bottom;
     return Container(
-      height: 72 + MediaQuery.of(context).padding.bottom,
+      height: 72 + bottomPad,
       margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
       decoration: BoxDecoration(
         color: AppColors.bgCard,
@@ -81,8 +86,7 @@ class _QuantumNavBar extends StatelessWidget {
             behavior: HitTestBehavior.opaque,
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [

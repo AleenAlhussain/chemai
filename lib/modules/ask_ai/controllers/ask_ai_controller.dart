@@ -6,7 +6,7 @@ import '../../../data/models/chat_message_model.dart';
 class AskAiController extends GetxController {
   final messages = <ChatMessage>[].obs;
   final messageController = TextEditingController();
-  final isTyping = true.obs;
+  final isTyping = false.obs;
   final teachingStyle = 'Socratic'.obs;
   final scrollController = ScrollController();
 

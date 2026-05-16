@@ -28,6 +28,7 @@ class MainNavView extends GetView<MainNavController> {
     return Obx(() {
       tc.isDark.value; // subscribe for theme rebuilds
       return Scaffold(
+        key: controller.scaffoldKey,
         backgroundColor: AppColors.bgBase,
         drawer: const AppDrawer(),
         body: IndexedStack(

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import '../../../app/theme/app_colors.dart';
 import '../controllers/home_controller.dart';
+import '../../main_nav/controllers/main_nav_controller.dart';
 import 'widgets/level_card.dart';
 import 'widgets/mission_card.dart';
 import 'widgets/quick_action_grid.dart';
@@ -146,11 +147,9 @@ class HomeView extends GetView<HomeController> {
         ],
       ),
       actions: [
-        Builder(
-          builder: (ctx) => IconButton(
-            icon: Icon(Icons.menu, color: AppColors.textSecondary, size: 22),
-            onPressed: () => Scaffold.of(ctx).openDrawer(),
-          ),
+        IconButton(
+          icon: Icon(Icons.menu, color: AppColors.textSecondary, size: 22),
+          onPressed: () => Get.find<MainNavController>().openDrawer(),
         ),
       ],
     );

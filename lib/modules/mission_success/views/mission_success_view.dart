@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
@@ -10,242 +12,325 @@ class MissionSuccessView extends GetView<MissionSuccessController> {
 
   @override
   Widget build(BuildContext context) {
+    final double progress = controller.accuracy.value / 100.0;
+    final int correct = (controller.accuracy.value * 10 / 100).round();
+
     return Scaffold(
       backgroundColor: AppColors.bgDeep,
       body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 24),
+        child: SingleChildScrollView(
+          child: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 16),
+                const SizedBox(height: 24),
 
-                // Green checkmark circle
                 Container(
-                  width: 120,
-                  height: 120,
+                  height: 220,
+                  margin: const EdgeInsets.symmetric(horizontal: 24),
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppColors.green.withOpacity(0.15),
-                    border: Border.all(
-                        color: AppColors.green.withOpacity(0.5), width: 3),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.green.withOpacity(0.5),
-                        blurRadius: 50,
-                        spreadRadius: 8,
-                      ),
-                    ],
+                    borderRadius: BorderRadius.circular(20),
+                    gradient: LinearGradient(
+                      colors: [
+                        const Color(0xFF0F1330),
+                        const Color(0xFF070A1C),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    border: Border.all(color: AppColors.borderDefault),
                   ),
-                  child: Icon(
-                    Icons.check_rounded,
-                    color: AppColors.green,
-                    size: 60,
+                  child: Center(
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          width: 160,
+                          height: 160,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: RadialGradient(
+                              colors: [
+                                AppColors.green.withOpacity(0.3),
+                                Colors.transparent,
+                              ],
+                            ),
+                          ),
+                        ),
+                        Icon(
+                          Icons.smart_toy_rounded,
+                          size: 80,
+                          color: AppColors.green,
+                        ),
+                      ],
+                    ),
                   ),
                 )
                     .animate()
-                    .scale(
-                      begin: const Offset(0.3, 0.3),
-                      end: const Offset(1.0, 1.0),
-                      duration: 600.ms,
-                      curve: Curves.elasticOut,
-                    )
-                    .fadeIn(duration: 400.ms),
-
-                const SizedBox(height: 24),
-
-                // Mission name label
-                Obx(
-                  () => Text(
-                    controller.missionName.value.toUpperCase(),
-                    style: TextStyle(
-                      color: AppColors.textMuted,
-                      fontSize: 11,
-                      letterSpacing: 2,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ).animate(delay: 300.ms).fadeIn(duration: 300.ms),
-
-                const SizedBox(height: 8),
-
-                // Title
-                Text(
-                  'MISSION COMPLETE!',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: AppColors.textPrimary,
-                    fontSize: 32,
-                    fontWeight: FontWeight.w900,
-                    letterSpacing: 2,
-                  ),
-                )
-                    .animate(delay: 400.ms)
-                    .fadeIn(duration: 400.ms)
-                    .slideY(begin: 0.3, end: 0, duration: 400.ms),
-
-                const SizedBox(height: 28),
-
-                // Stars row
-                Obx(
-                  () => Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      3,
-                      (i) => Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 6),
-                        child: Icon(
-                          Icons.star_rounded,
-                          size: 44,
-                          color: i < controller.starsEarned.value
-                              ? AppColors.amber
-                              : AppColors.textMuted.withOpacity(0.3),
-                        )
-                            .animate(
-                                delay: Duration(milliseconds: 600 + i * 150))
-                            .scale(
-                              begin: const Offset(0.4, 0.4),
-                              end: const Offset(1.0, 1.0),
-                              duration: 400.ms,
-                              curve: Curves.elasticOut,
-                            )
-                            .fadeIn(duration: 300.ms),
-                      ),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 28),
-
-                // Stats row
-                Obx(
-                  () => Row(
-                    children: [
-                      _StatTile(
-                        label: 'SCORE',
-                        value: controller.score.value.toString(),
-                        color: AppColors.purple,
-                      ),
-                      const SizedBox(width: 12),
-                      _StatTile(
-                        label: 'TIME',
-                        value: controller.formattedTime,
-                        color: AppColors.cyan,
-                      ),
-                      const SizedBox(width: 12),
-                      _StatTile(
-                        label: 'ACCURACY',
-                        value: '${controller.accuracy.value}%',
-                        color: AppColors.green,
-                      ),
-                    ],
-                  ),
-                ).animate(delay: 900.ms).fadeIn(duration: 400.ms).slideY(
-                      begin: 0.2,
-                      end: 0,
-                      duration: 400.ms,
-                    ),
-
-                const SizedBox(height: 20),
-
-                // XP earned
-                Obx(
-                  () => Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 24, vertical: 12),
-                    decoration: BoxDecoration(
-                      color: AppColors.amber.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(
-                          color: AppColors.amber.withOpacity(0.4)),
-                    ),
-                    child: Text(
-                      '+${controller.xpEarned.value} XP',
-                      style: const TextStyle(
-                        color: AppColors.amber,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 1.5,
-                      ),
-                    ),
-                  ),
-                )
-                    .animate(delay: 1100.ms)
                     .fadeIn(duration: 400.ms)
                     .scale(
                       begin: const Offset(0.8, 0.8),
                       end: const Offset(1.0, 1.0),
-                      duration: 400.ms,
+                      duration: 500.ms,
                       curve: Curves.easeOut,
                     ),
 
-                const SizedBox(height: 36),
-
-                // Buttons
-                SizedBox(
-                  width: double.infinity,
-                  height: 52,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [AppColors.green, const Color(0xFF10B981)],
-                      ),
-                      borderRadius: BorderRadius.circular(26),
-                    ),
-                    child: ElevatedButton(
-                      onPressed: controller.claimReward,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
-                        shadowColor: Colors.transparent,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(26),
-                        ),
-                      ),
-                      child: Text(
-                        'CLAIM REWARD',
-                        style: TextStyle(
-                          color: AppColors.bgDeep,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 1.5,
-                        ),
-                      ),
-                    ),
-                  ),
-                ).animate(delay: 1300.ms).fadeIn(duration: 400.ms).slideY(
-                      begin: 0.3,
-                      end: 0,
-                      duration: 400.ms,
-                    ),
-
-                const SizedBox(height: 12),
+                const SizedBox(height: 28),
 
                 SizedBox(
-                  width: double.infinity,
-                  height: 52,
-                  child: OutlinedButton(
-                    onPressed: controller.nextMission,
-                    style: OutlinedButton.styleFrom(
-                      side: BorderSide(
-                          color: AppColors.purple.withOpacity(0.6), width: 1.5),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(26),
+                  width: 180,
+                  height: 180,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      CustomPaint(
+                        size: const Size(180, 180),
+                        painter: _CircleProgressPainter(progress),
                       ),
-                    ),
-                    child: Text(
-                      'NEXT MISSION',
-                      style: TextStyle(
-                        color: AppColors.purple,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.5,
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Obx(
+                            () => Text(
+                              '${controller.accuracy.value}%',
+                              style: TextStyle(
+                                color: AppColors.textPrimary,
+                                fontSize: 36,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                          ),
+                          Text(
+                            'Total',
+                            style: TextStyle(
+                              color: AppColors.textMuted,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
+                    ],
                   ),
-                ).animate(delay: 1400.ms).fadeIn(duration: 400.ms),
+                ).animate(delay: 150.ms).fadeIn(duration: 400.ms),
 
-                const SizedBox(height: 24),
+                const SizedBox(height: 20),
+
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: AppColors.amber.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(40),
+                    border: Border.all(color: AppColors.amber.withOpacity(0.5)),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.star_rounded, color: AppColors.amber, size: 20),
+                      const SizedBox(width: 6),
+                      Obx(
+                        () => Text(
+                          '+${controller.xpEarned.value} XP',
+                          style: const TextStyle(
+                            color: AppColors.amber,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ).animate(delay: 300.ms).fadeIn(duration: 400.ms),
+
+                const SizedBox(height: 20),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: _StatCard(
+                          icon: Icons.timer_outlined,
+                          value: controller.formattedTime,
+                          label: 'Time Taken',
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Obx(
+                          () => _StatCard(
+                            icon: Icons.check_circle_outline,
+                            value: '$correct/10',
+                            label: 'Correct Answers',
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ).animate(delay: 450.ms).fadeIn(duration: 400.ms),
+
+                const SizedBox(height: 16),
+
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: AppColors.bgCard,
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: AppColors.borderDefault),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 4,
+                        height: 72,
+                        decoration: BoxDecoration(
+                          color: Colors.pink,
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(14),
+                            bottomLeft: Radius.circular(14),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 14),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Chemical Accuracy',
+                                      style: TextStyle(
+                                        color: AppColors.textPrimary,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      "Excellent! You surpassed your peers' average",
+                                      style: TextStyle(
+                                        color: AppColors.textMuted,
+                                        fontSize: 11,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Row(
+                                children: const [
+                                  Text(
+                                    '+12%',
+                                    style: TextStyle(
+                                      color: Colors.pink,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                  ),
+                                  SizedBox(width: 4),
+                                  Icon(Icons.trending_up,
+                                      color: Colors.pink, size: 18),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ).animate(delay: 600.ms).fadeIn(duration: 400.ms),
+
+                const SizedBox(height: 20),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        height: 52,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                AppColors.purple,
+                                AppColors.cyan,
+                              ],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ),
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          child: ElevatedButton(
+                            onPressed: controller.nextMission,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'New Lesson',
+                                  style: TextStyle(
+                                    color: AppColors.bgDeep,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Icon(Icons.arrow_forward_rounded,
+                                    color: AppColors.bgDeep, size: 20),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 12),
+
+                      SizedBox(
+                        width: double.infinity,
+                        height: 52,
+                        child: OutlinedButton(
+                          onPressed: controller.claimReward,
+                          style: OutlinedButton.styleFrom(
+                            backgroundColor: AppColors.bgCard,
+                            side: BorderSide(color: AppColors.borderDefault),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.bar_chart_outlined,
+                                  color: AppColors.textSecondary, size: 20),
+                              const SizedBox(width: 8),
+                              Text(
+                                'Review Mistakes',
+                                style: TextStyle(
+                                  color: AppColors.textSecondary,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ).animate(delay: 750.ms).fadeIn(duration: 400.ms),
+
+                const SizedBox(height: 32),
               ],
             ),
           ),
@@ -255,47 +340,81 @@ class MissionSuccessView extends GetView<MissionSuccessController> {
   }
 }
 
-// ── Stat tile ─────────────────────────────────────────────────────────────────
-class _StatTile extends StatelessWidget {
-  final String label;
+class _StatCard extends StatelessWidget {
+  final IconData icon;
   final String value;
-  final Color color;
-  const _StatTile(
-      {required this.label, required this.value, required this.color});
+  final String label;
+
+  const _StatCard({
+    required this.icon,
+    required this.value,
+    required this.label,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
-        decoration: BoxDecoration(
-          color: AppColors.bgCard,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: color.withOpacity(0.3)),
-        ),
-        child: Column(
-          children: [
-            Text(
-              value,
-              style: TextStyle(
-                color: color,
-                fontSize: 18,
-                fontWeight: FontWeight.w800,
-              ),
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+      decoration: BoxDecoration(
+        color: AppColors.bgCard,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppColors.borderDefault),
+      ),
+      child: Column(
+        children: [
+          Icon(icon, color: AppColors.cyan, size: 22),
+          const SizedBox(height: 6),
+          Text(
+            value,
+            style: TextStyle(
+              color: AppColors.textPrimary,
+              fontSize: 24,
+              fontWeight: FontWeight.w800,
             ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: TextStyle(
-                color: AppColors.textMuted,
-                fontSize: 10,
-                letterSpacing: 1.5,
-                fontWeight: FontWeight.w600,
-              ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            label,
+            style: TextStyle(
+              color: AppColors.textMuted,
+              fontSize: 11,
             ),
-          ],
-        ),
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }
+}
+
+class _CircleProgressPainter extends CustomPainter {
+  final double progress;
+  _CircleProgressPainter(this.progress);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = Offset(size.width / 2, size.height / 2);
+    final radius = size.width / 2 - 12;
+    final bgPaint = Paint()
+      ..color = const Color(0xFF1E2235)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 14
+      ..strokeCap = StrokeCap.round;
+    final fgPaint = Paint()
+      ..color = AppColors.cyan
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 14
+      ..strokeCap = StrokeCap.round;
+    canvas.drawCircle(center, radius, bgPaint);
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius),
+      -pi / 2,
+      2 * pi * progress,
+      false,
+      fgPaint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(_) => false;
 }

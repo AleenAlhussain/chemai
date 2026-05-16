@@ -6,20 +6,19 @@ import '../../../core/controllers/theme_controller.dart';
 import '../../../widgets/app_drawer.dart';
 import '../../ask_ai/views/ask_ai_view.dart';
 import '../../home/views/home_view.dart';
-import '../../lessons/views/lessons_view.dart';
 import '../../pilot_profile/views/pilot_profile_view.dart';
-import '../../schedule/views/schedule_view.dart';
+import '../../profile/views/profile_view.dart';
 import '../controllers/main_nav_controller.dart';
 
 class MainNavView extends GetView<MainNavController> {
   const MainNavView({super.key});
 
   static List<Widget> get _pages => [
-        HomeView(),
-        LessonsView(),
-        AskAiView(),
-        ScheduleView(),
         PilotProfileView(),
+        ProfileView(),
+        _ReelsView(),
+        AskAiView(),
+        HomeView(),
       ];
 
   @override
@@ -44,6 +43,39 @@ class MainNavView extends GetView<MainNavController> {
   }
 }
 
+// Placeholder for Reels tab (future feature)
+class _ReelsView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.bgBase,
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.video_library_outlined,
+                color: AppColors.textMuted, size: 48),
+            const SizedBox(height: 12),
+            Text('REELS',
+                style: TextStyle(
+                  color: AppColors.textMuted,
+                  fontSize: 12,
+                  letterSpacing: 2,
+                  fontWeight: FontWeight.w700,
+                )),
+            const SizedBox(height: 6),
+            Text('Coming Soon',
+                style: TextStyle(
+                  color: AppColors.textMuted,
+                  fontSize: 11,
+                )),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 // ── Bottom navigation bar ─────────────────────────────────────────────────────
 class _QuantumNavBar extends StatelessWidget {
   final int currentIndex;
@@ -52,11 +84,11 @@ class _QuantumNavBar extends StatelessWidget {
   const _QuantumNavBar({required this.currentIndex, required this.onTap});
 
   static const _items = [
-    (icon: Icons.home_outlined, label: 'HOME'),
-    (icon: Icons.school_outlined, label: 'LESSONS'),
-    (icon: Icons.psychology_outlined, label: 'ASK AI'),
-    (icon: Icons.calendar_today_outlined, label: 'SCHEDULE'),
     (icon: Icons.person_outline, label: 'PROFILE'),
+    (icon: Icons.trending_up_outlined, label: 'PROGRESS'),
+    (icon: Icons.video_library_outlined, label: 'REELS'),
+    (icon: Icons.smart_toy_outlined, label: 'CHAT'),
+    (icon: Icons.home_outlined, label: 'HOME'),
   ];
 
   @override

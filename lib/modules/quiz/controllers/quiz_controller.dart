@@ -10,6 +10,12 @@ class QuizController extends GetxController {
   final selectedOption = RxnString();
   final secondsRemaining = 45.obs;
   final isCorrect = RxnBool();
+  final hasStarted = false.obs;
+
+  int questionCount = 15;
+  String difficulty = 'Medium';
+  int selectedChapter = 0;
+
   Timer? _timer;
 
   QuizQuestion get current => questions[currentIndex.value];
@@ -36,7 +42,10 @@ class QuizController extends GetxController {
     if (selectedOption.value != null) return;
     selectedOption.value = letter;
     isCorrect.value = letter == current.correctLetter;
-    Future.delayed(const Duration(milliseconds: 1800), _advance);
+  }
+
+  void nextQuestion() {
+    _advance();
   }
 
   void _advance() {
@@ -49,6 +58,8 @@ class QuizController extends GetxController {
       Get.back();
     }
   }
+
+  void startQuiz() => hasStarted.value = true;
 
   String get timerLabel {
     final m = secondsRemaining.value ~/ 60;

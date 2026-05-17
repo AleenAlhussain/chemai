@@ -12,7 +12,7 @@ class SplashView extends GetView<SplashController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF070A1C),
+      backgroundColor: AppColors.bgDeep,
       body: Stack(
         children: [
           // Radial purple/cyan background glow

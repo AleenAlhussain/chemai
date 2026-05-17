@@ -12,9 +12,9 @@ class GlobalMapView extends GetView<GlobalMapController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF050816),
+      backgroundColor: AppColors.bgDeep,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF050816),
+        backgroundColor: AppColors.bgDeep,
         titleSpacing: 16,
         title: Text(
           'GLOBAL MISSION MAP',

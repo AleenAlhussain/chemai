@@ -13,23 +13,23 @@ class ChemAIApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetX<ThemeController>(
-      builder: (tc) => GetX<LanguageController>(
-        builder: (lc) => GetMaterialApp(
-          title: 'CHEMAI',
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.light,
-          darkTheme: AppTheme.dark,
-          themeMode: tc.isDark.value ? ThemeMode.dark : ThemeMode.light,
-          translations: AppTranslations(),
-          locale: lc.locale.value,
-          fallbackLocale: const Locale('en'),
-          supportedLocales: const [Locale('en'), Locale('ar')],
-          initialRoute: AppRoutes.splash,
-          getPages: AppPages.routes,
-          defaultTransition: Transition.fadeIn,
-        ),
-      ),
-    );
+    return Obx(() {
+      final isDark = Get.find<ThemeController>().isDark.value;
+      final locale = Get.find<LanguageController>().locale.value;
+      return GetMaterialApp(
+        title: 'CHEMAI',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
+        themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
+        translations: AppTranslations(),
+        locale: locale,
+        fallbackLocale: const Locale('en'),
+        supportedLocales: const [Locale('en'), Locale('ar')],
+        initialRoute: AppRoutes.splash,
+        getPages: AppPages.routes,
+        defaultTransition: Transition.fadeIn,
+      );
+    });
   }
 }

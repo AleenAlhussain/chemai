@@ -7,6 +7,7 @@ import '../app/theme/app_colors.dart';
 import '../core/controllers/language_controller.dart';
 import '../core/controllers/theme_controller.dart';
 import '../modules/main_nav/controllers/main_nav_controller.dart';
+import 'theme_picker.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -103,7 +104,7 @@ class AppDrawer extends StatelessWidget {
                     _NavItem(Icons.manage_accounts_outlined, 'drawer_account'.tr,
                         () => _push(AppRoutes.account)),
                     _NavItem(Icons.palette_outlined, 'drawer_theme'.tr,
-                        () => Get.find<ThemeController>().toggle()),
+                        () { Get.back(); ThemePicker.show(); }),
                     _LanguageToggleItem(),
                     _NavItem(Icons.shield_outlined, 'drawer_privacy'.tr,
                         () => _push(AppRoutes.privacy)),

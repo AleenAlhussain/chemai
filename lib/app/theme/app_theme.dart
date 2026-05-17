@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
 
 abstract final class AppTheme {
+  static ThemeData get current => AppColors.isDark ? dark : light;
+
   static ThemeData get dark => _build(
     brightness: Brightness.dark,
     statusBarIconBrightness: Brightness.light,

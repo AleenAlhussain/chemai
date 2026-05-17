@@ -52,67 +52,117 @@ class _QuantumNavBar extends StatelessWidget {
   const _QuantumNavBar({required this.currentIndex, required this.onTap});
 
   static const _items = [
-    (icon: Icons.home_outlined, label: 'HOME'),
-    (icon: Icons.book_outlined, label: 'LESSONS'),
-    (icon: Icons.video_library_outlined, label: 'REELS'),
-    (icon: Icons.smart_toy_outlined, label: 'CHAT'),
-    (icon: Icons.person_outline, label: 'PROFILE'),
+    _NavItem(Icons.home_rounded,          Icons.home_outlined,           'Home'),
+    _NavItem(Icons.book_rounded,           Icons.book_outlined,           'Lessons'),
+    _NavItem(Icons.video_library_rounded,  Icons.video_library_outlined,  'Reels'),
+    _NavItem(Icons.smart_toy_rounded,      Icons.smart_toy_outlined,      'Chat'),
+    _NavItem(Icons.person_rounded,         Icons.person_outline,          'Profile'),
   ];
 
   @override
   Widget build(BuildContext context) {
     final bottomPad = MediaQuery.of(context).padding.bottom;
     return Container(
-      height: 72 + bottomPad,
-      margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
       decoration: BoxDecoration(
-        color: AppColors.bgCard,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: AppColors.borderDefault),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            blurRadius: 20,
-            offset: const Offset(0, 4),
+        color: AppColors.bgDeep,
+        border: Border(
+          top: BorderSide(color: AppColors.borderDefault),
+        ),
+      ),
+      child: SafeArea(
+        top: false,
+        child: SizedBox(
+          height: 62,
+          child: Row(
+            children: List.generate(_items.length, (i) {
+              final item = _items[i];
+              final isActive = i == currentIndex;
+              return Expanded(
+                child: GestureDetector(
+                  onTap: () => onTap(i),
+                  behavior: HitTestBehavior.opaque,
+                  child: _NavTabItem(
+                    item: item,
+                    isActive: isActive,
+                  ),
+                ),
+              );
+            }),
           ),
-        ],
+        ),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: List.generate(_items.length, (i) {
-          final item = _items[i];
-          final isActive = i == currentIndex;
-          return GestureDetector(
-            onTap: () => onTap(i),
-            behavior: HitTestBehavior.opaque,
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    item.icon,
-                    size: 22,
-                    color: isActive ? AppColors.purple : AppColors.textMuted,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    item.label,
-                    style: TextStyle(
-                      color: isActive ? AppColors.purple : AppColors.textMuted,
-                      fontSize: 8,
-                      letterSpacing: 0.8,
-                      fontWeight:
-                          isActive ? FontWeight.w700 : FontWeight.w400,
-                    ),
-                  ),
-                ],
-              ),
+    );
+  }
+}
+
+class _NavItem {
+  final IconData activeIcon;
+  final IconData inactiveIcon;
+  final String label;
+  const _NavItem(this.activeIcon, this.inactiveIcon, this.label);
+}
+
+class _NavTabItem extends StatelessWidget {
+  final _NavItem item;
+  final bool isActive;
+  const _NavTabItem({required this.item, required this.isActive});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        // Gradient top indicator
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.easeOut,
+          height: 2,
+          width: isActive ? 36 : 0,
+          decoration: BoxDecoration(
+            gradient: isActive ? AppColors.gradientPurple : null,
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(2),
+              bottomRight: Radius.circular(2),
             ),
-          );
-        }),
-      ),
+          ),
+        ),
+
+        const Spacer(),
+
+        // Icon with optional glow
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 200),
+          child: isActive
+              ? ShaderMask(
+                  key: const ValueKey('active'),
+                  shaderCallback: (b) =>
+                      AppColors.gradientPurple.createShader(b),
+                  blendMode: BlendMode.srcIn,
+                  child: Icon(item.activeIcon, size: 24, color: Colors.white),
+                )
+              : Icon(
+                  key: const ValueKey('inactive'),
+                  item.inactiveIcon,
+                  size: 22,
+                  color: AppColors.textMuted,
+                ),
+        ),
+
+        const SizedBox(height: 4),
+
+        // Label
+        AnimatedDefaultTextStyle(
+          duration: const Duration(milliseconds: 200),
+          style: TextStyle(
+            color: isActive ? AppColors.purpleLight : AppColors.textMuted,
+            fontSize: 9,
+            fontWeight: isActive ? FontWeight.w700 : FontWeight.w400,
+            letterSpacing: 0.4,
+          ),
+          child: Text(item.label),
+        ),
+
+        const Spacer(),
+      ],
     );
   }
 }

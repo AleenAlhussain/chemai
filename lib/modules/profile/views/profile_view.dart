@@ -74,7 +74,7 @@ class _UserHeroCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Chemistry Student ⭐  —  Level 6',
+                      '${'profile_chemistry_student'.tr} ⭐  —  ${'profile_level'.tr} 6',
                       style: TextStyle(
                         color: AppColors.cyan,
                         fontSize: 12,
@@ -82,7 +82,7 @@ class _UserHeroCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'Progress to next level',
+                      'profile_progress_to_level'.tr,
                       style: TextStyle(
                         color: AppColors.textMuted,
                         fontSize: 10,
@@ -165,12 +165,12 @@ class _StatsGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final stats = [
-      _StatData('32 Lessons', 'Lessons Completed', const Color(0xFFF472B6)),
-      _StatData('14 Days', 'Streak', const Color(0xFFF97316)),
-      _StatData('24.5 h', 'Study Time', const Color(0xFFFBBF24)),
-      _StatData('482', 'Questions Answered', AppColors.cyan),
-      _StatData('18', 'Badges', AppColors.purple),
-      _StatData('92%', 'Answer Accuracy', AppColors.green),
+      _StatData('32 ${'nav_lessons'.tr}', 'profile_lessons_completed'.tr, const Color(0xFFF472B6)),
+      _StatData('14 Days', 'profile_streak'.tr, const Color(0xFFF97316)),
+      _StatData('24.5 h', 'profile_study_time'.tr, const Color(0xFFFBBF24)),
+      _StatData('482', 'profile_questions'.tr, AppColors.cyan),
+      _StatData('18', 'profile_badges'.tr, AppColors.purple),
+      _StatData('92%', 'profile_accuracy'.tr, AppColors.green),
     ];
 
     return Wrap(
@@ -244,7 +244,10 @@ class _WeeklyActivitySection extends StatelessWidget {
 
   const _WeeklyActivitySection({required this.controller});
 
-  static const _days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  List<String> get _days => [
+    'profile_sun'.tr, 'profile_mon'.tr, 'profile_tue'.tr, 'profile_wed'.tr,
+    'profile_thu'.tr, 'profile_fri'.tr, 'profile_sat'.tr,
+  ];
 
   static const _activity = [
     [0, 1, 2, 1, 0, 2, 1],
@@ -258,7 +261,7 @@ class _WeeklyActivitySection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Last Week Activity',
+          'profile_last_week'.tr,
           style: TextStyle(
             color: AppColors.textPrimary,
             fontSize: 16,
@@ -302,7 +305,7 @@ class _WeeklyActivitySection extends StatelessWidget {
         Row(
           children: [
             Text(
-              'Less',
+              'profile_less'.tr,
               style: TextStyle(color: AppColors.textMuted, fontSize: 10),
             ),
             const SizedBox(width: 6),
@@ -316,7 +319,7 @@ class _WeeklyActivitySection extends StatelessWidget {
                   ),
                 )),
             Text(
-              'More',
+              'profile_more'.tr,
               style: TextStyle(color: AppColors.textMuted, fontSize: 10),
             ),
           ],
@@ -358,7 +361,7 @@ class _AchievementsSection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Achievements',
+                'profile_achievements'.tr,
                 style: TextStyle(
                   color: AppColors.textPrimary,
                   fontSize: 16,
@@ -368,7 +371,7 @@ class _AchievementsSection extends StatelessWidget {
               GestureDetector(
                 onTap: () {},
                 child: Text(
-                  'View All',
+                  'profile_view_all'.tr,
                   style: TextStyle(
                     color: AppColors.purple,
                     fontSize: 13,

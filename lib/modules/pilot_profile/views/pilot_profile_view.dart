@@ -93,7 +93,7 @@ class PilotProfileView extends GetView<PilotProfileController> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
-                'Member since September 2023',
+                'pilot_member_since'.tr,
                 style: TextStyle(
                   color: AppColors.textMuted,
                   fontSize: 12,
@@ -130,7 +130,7 @@ class PilotProfileView extends GetView<PilotProfileController> {
                       Icon(Icons.logout_rounded, color: AppColors.danger, size: 18),
                       const SizedBox(width: 10),
                       Text(
-                        'Sign Out',
+                        'pilot_sign_out'.tr,
                         style: TextStyle(
                           color: AppColors.danger,
                           fontSize: 14,
@@ -200,7 +200,7 @@ class _AvatarHeroSection extends StatelessWidget {
                   const Text('✏', style: TextStyle(fontSize: 11)),
                   const SizedBox(width: 4),
                   Text(
-                    'Edit Appearance',
+                    'pilot_edit_appearance'.tr,
                     style: TextStyle(
                       color: AppColors.textPrimary,
                       fontSize: 11,
@@ -251,7 +251,7 @@ class _ProSubscriptionCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
-              'Renew',
+              'pilot_renew'.tr,
               style: TextStyle(
                 color: const Color(0xFF6B21A8),
                 fontSize: 12,
@@ -310,7 +310,7 @@ class _StatsRow extends StatelessWidget {
               icon: Icons.my_location_rounded,
               iconColor: AppColors.green,
               value: '88%',
-              label: 'Accuracy',
+              label: 'pilot_accuracy'.tr,
             ),
           ),
           const SizedBox(width: 10),
@@ -319,7 +319,7 @@ class _StatsRow extends StatelessWidget {
               icon: Icons.local_fire_department_rounded,
               iconColor: const Color(0xFFF97316),
               value: '12',
-              label: 'Streak Days',
+              label: 'pilot_streak_days'.tr,
             ),
           ),
           const SizedBox(width: 10),
@@ -328,7 +328,7 @@ class _StatsRow extends StatelessWidget {
               icon: Icons.bolt_rounded,
               iconColor: const Color(0xFFFBBF24),
               value: '1,240',
-              label: 'XP Points',
+              label: 'pilot_xp_points'.tr,
             ),
           ),
         ],
@@ -411,14 +411,14 @@ class _SettingsSection extends StatelessWidget {
             _SettingDetailRow(
               icon: Icons.science_outlined,
               iconColor: const Color(0xFFF43F5E),
-              label: 'Preferred Explanation Style',
+              label: 'pilot_explanation_style'.tr,
               subtitle: 'Interactive & Practical',
             ),
             Divider(height: 1, color: AppColors.borderDefault, indent: 48),
             _SettingDetailRow(
               icon: Icons.psychology_outlined,
               iconColor: AppColors.cyan,
-              label: 'Preferred Learning Method',
+              label: 'pilot_learning_method'.tr,
               subtitle: 'Competitive Solving',
             ),
           ],
@@ -452,7 +452,7 @@ class _NotificationsRow extends StatelessWidget {
           const SizedBox(width: 14),
           Expanded(
             child: Text(
-              'Study Notifications',
+              'pilot_study_notifications'.tr,
               style: TextStyle(
                 color: AppColors.textPrimary,
                 fontSize: 14,

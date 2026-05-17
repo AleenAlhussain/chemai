@@ -21,7 +21,7 @@ class LessonsView extends GetView<LessonsController> {
           children: [
             // Header
              Text(
-              'Master the Elements',
+              'lessons_master'.tr,
               style: TextStyle(
                 color: AppColors.textPrimary,
                 fontSize: 26,
@@ -32,7 +32,7 @@ class LessonsView extends GetView<LessonsController> {
              SizedBox(height: 6),
 
              Text(
-              'Continue your journey through the quantum realm of chemical interactions.',
+              'lessons_subtitle'.tr,
               style: TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 13,
@@ -84,7 +84,7 @@ class LessonsView extends GetView<LessonsController> {
           ),
            SizedBox(width: 10),
            Text(
-            'CURRICULUM',
+            'lessons_curriculum'.tr,
             style: TextStyle(
               color: AppColors.textPrimary,
               fontSize: 12,

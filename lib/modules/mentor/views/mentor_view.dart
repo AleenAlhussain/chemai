@@ -24,7 +24,7 @@ class MentorView extends GetView<MentorController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                  Text(
-                  'Choose Your Mentor',
+                  'mentor_choose'.tr,
                   style: TextStyle(
                     color: AppColors.textPrimary,
                     fontSize: 26,
@@ -33,7 +33,7 @@ class MentorView extends GetView<MentorController> {
                 ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.2),
                  SizedBox(height: 6),
                  Text(
-                  'Select a teaching style that fits your vibe.',
+                  'mentor_subtitle'.tr,
                   style: TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 14,
@@ -97,8 +97,8 @@ class MentorView extends GetView<MentorController> {
                                 child: CircularProgressIndicator(
                                     color: Colors.white, strokeWidth: 2),
                               )
-                            :  Text(
-                                'Initialize Session',
+                            : Text(
+                                'mentor_initialize'.tr,
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w700,
@@ -109,7 +109,7 @@ class MentorView extends GetView<MentorController> {
                 ),
                  SizedBox(height: 10),
                  Text(
-                  'QUANTUM ENGINE ONLINE',
+                  'mentor_engine_online'.tr,
                   style: TextStyle(
                     color: AppColors.textMuted,
                     fontSize: 10,
@@ -145,7 +145,7 @@ class MentorView extends GetView<MentorController> {
           ),
            SizedBox(width: 10),
            Text(
-            'QUANTUM CHEMISTRY',
+            'mentor_quantum_chem'.tr,
             style: TextStyle(
               color: AppColors.textPrimary,
               fontSize: 12,

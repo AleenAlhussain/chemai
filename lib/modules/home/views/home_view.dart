@@ -40,13 +40,13 @@ class HomeView extends GetView<HomeController> {
               _ActiveMissionCard()
                   .animate().fadeIn(delay: 220.ms, duration: 400.ms).slideY(begin: 0.08),
               const SizedBox(height: 22),
-              _SectionHeader('QUICK ACTIONS')
+              _SectionHeader('home_quick_actions'.tr)
                   .animate().fadeIn(delay: 280.ms, duration: 300.ms),
               const SizedBox(height: 12),
               _QuickActionsGrid()
                   .animate().fadeIn(delay: 320.ms, duration: 400.ms),
               const SizedBox(height: 22),
-              _SectionHeader("TODAY'S INTEL")
+              _SectionHeader('home_todays_intel'.tr)
                   .animate().fadeIn(delay: 380.ms, duration: 300.ms),
               const SizedBox(height: 12),
               _TodayIntelRow()
@@ -154,7 +154,7 @@ class _StatusRow extends StatelessWidget {
               ),
               const SizedBox(width: 6),
               Text(
-                'STATUS: ONLINE',
+                'home_status_online'.tr,
                 style: TextStyle(
                   color: const Color(0xFF22C55E),
                   fontSize: 10,
@@ -179,7 +179,7 @@ class _StatusRow extends StatelessWidget {
               Icon(Icons.bolt, color: AppColors.amber, size: 13),
               const SizedBox(width: 4),
               Text(
-                'DAILY STREAK: 7',
+                'home_daily_streak'.tr,
                 style: TextStyle(
                   color: AppColors.amber,
                   fontSize: 10,
@@ -209,7 +209,7 @@ class _GreetingSection extends StatelessWidget {
           text: TextSpan(
             children: [
               TextSpan(
-                text: 'Systems Active, ',
+                text: 'home_greeting'.tr,
                 style: TextStyle(
                   color: AppColors.textPrimary,
                   fontSize: 24,
@@ -231,7 +231,7 @@ class _GreetingSection extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          'Grade 9 · Quantum Chemistry Protocol',
+          'home_grade'.tr,
           style: TextStyle(
             color: AppColors.textMuted,
             fontSize: 12,
@@ -296,7 +296,7 @@ class _PilotStatsCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      'Quantum Operative',
+                      'home_role'.tr,
                       style: TextStyle(
                         color: AppColors.textMuted,
                         fontSize: 11,
@@ -337,7 +337,7 @@ class _PilotStatsCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'XP PROGRESS',
+                    'home_xp_progress'.tr,
                     style: TextStyle(
                       color: AppColors.textMuted,
                       fontSize: 9,
@@ -367,7 +367,7 @@ class _PilotStatsCard extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                '${user.xpRemaining} XP to Level ${user.level + 1}',
+                '${user.xpRemaining} ${'home_xp_to_level'.tr} ${user.level + 1}',
                 style: TextStyle(color: AppColors.textMuted, fontSize: 10),
               ),
             ],
@@ -378,11 +378,11 @@ class _PilotStatsCard extends StatelessWidget {
           // Stats row
           Row(
             children: [
-              _StatPill('STREAK', '7 days', AppColors.amber),
+              _StatPill('home_streak'.tr, '7 days', AppColors.amber),
               const SizedBox(width: 8),
-              _StatPill('ACCURACY', '84%', AppColors.green),
+              _StatPill('home_accuracy'.tr, '84%', AppColors.green),
               const SizedBox(width: 8),
-              _StatPill('TOTAL XP', '${user.xp}', AppColors.purple),
+              _StatPill('home_total_xp'.tr, '${user.xp}', AppColors.purple),
             ],
           ),
         ],
@@ -463,7 +463,7 @@ class _ActiveMissionCard extends StatelessWidget {
                   border: Border.all(color: AppColors.cyan.withOpacity(0.35)),
                 ),
                 child: Text(
-                  'ACTIVE PROTOCOL',
+                  'home_active_protocol'.tr,
                   style: TextStyle(
                     color: AppColors.cyan,
                     fontSize: 9,
@@ -483,7 +483,7 @@ class _ActiveMissionCard extends StatelessWidget {
               ),
               const SizedBox(width: 6),
               Text(
-                'IN PROGRESS',
+                'home_in_progress'.tr,
                 style: TextStyle(
                   color: const Color(0xFF22C55E),
                   fontSize: 10,
@@ -497,7 +497,7 @@ class _ActiveMissionCard extends StatelessWidget {
           const SizedBox(height: 12),
 
           Text(
-            'Chapter 3: Chemical Bonding',
+            'home_chapter_3'.tr,
             style: TextStyle(
               color: AppColors.textPrimary,
               fontSize: 16,
@@ -506,7 +506,7 @@ class _ActiveMissionCard extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            'Lesson 4 of 8 · Ionic vs Covalent Bonds',
+            'home_lesson_4'.tr,
             style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
           ),
 
@@ -517,7 +517,7 @@ class _ActiveMissionCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'LESSON PROGRESS',
+                'home_lesson_progress'.tr,
                 style: TextStyle(
                   color: AppColors.textMuted,
                   fontSize: 9,
@@ -566,8 +566,8 @@ class _ActiveMissionCard extends StatelessWidget {
                 ],
               ),
               alignment: Alignment.center,
-              child: const Text(
-                '▶  RESUME LESSON',
+              child: Text(
+                'home_resume_lesson'.tr,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 13,
@@ -618,12 +618,12 @@ class _SectionHeader extends StatelessWidget {
 // ── Quick actions grid ────────────────────────────────────────────────────────
 class _QuickActionsGrid extends StatelessWidget {
   static const _actions = [
-    _QAction(Icons.science_outlined, 'VIRTUAL LAB', route: AppRoutes.virtualLab),
-    _QAction(Icons.grid_view_outlined, 'PERIODIC TABLE', route: AppRoutes.periodicTable),
-    _QAction(Icons.sports_esports_outlined, 'BOSS BATTLE', route: AppRoutes.bossBattle),
-    _QAction(Icons.style_outlined, 'FLASHCARDS', route: AppRoutes.flashcards),
-    _QAction(Icons.bolt_outlined, 'CHALLENGES', route: AppRoutes.dailyChallenges),
-    _QAction(Icons.smart_toy_outlined, 'AI CHAT', navTab: 3),
+    _QAction(Icons.science_outlined, 'home_virtual_lab', route: AppRoutes.virtualLab),
+    _QAction(Icons.grid_view_outlined, 'home_periodic_table', route: AppRoutes.periodicTable),
+    _QAction(Icons.sports_esports_outlined, 'home_boss_battle', route: AppRoutes.bossBattle),
+    _QAction(Icons.style_outlined, 'home_flashcards', route: AppRoutes.flashcards),
+    _QAction(Icons.bolt_outlined, 'home_challenges', route: AppRoutes.dailyChallenges),
+    _QAction(Icons.smart_toy_outlined, 'home_ai_chat', navTab: 3),
   ];
 
   @override
@@ -698,7 +698,7 @@ class _QuickActionItem extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              action.label,
+              action.label.tr,
               style: TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 8,
@@ -723,11 +723,11 @@ class _TodayIntelRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        _IntelCard('LESSONS', '3', 'completed today', Icons.book_outlined, AppColors.purple),
+        _IntelCard('home_lessons_label'.tr, '3', 'home_completed_today'.tr, Icons.book_outlined, AppColors.purple),
         const SizedBox(width: 10),
-        _IntelCard('TIME', '42m', 'studied today', Icons.timer_outlined, AppColors.cyan),
+        _IntelCard('home_time_label'.tr, '42m', 'home_studied_today'.tr, Icons.timer_outlined, AppColors.cyan),
         const SizedBox(width: 10),
-        _IntelCard('XP EARNED', '+240', 'today', Icons.star_border_rounded, AppColors.amber),
+        _IntelCard('home_xp_earned'.tr, '+240', 'home_today'.tr, Icons.star_border_rounded, AppColors.amber),
       ],
     );
   }

@@ -51,12 +51,12 @@ class _QuantumNavBar extends StatelessWidget {
 
   const _QuantumNavBar({required this.currentIndex, required this.onTap});
 
-  static const _items = [
-    _NavItem(Icons.home_rounded,          Icons.home_outlined,           'Home'),
-    _NavItem(Icons.book_rounded,           Icons.book_outlined,           'Lessons'),
-    _NavItem(Icons.video_library_rounded,  Icons.video_library_outlined,  'Reels'),
-    _NavItem(Icons.smart_toy_rounded,      Icons.smart_toy_outlined,      'Chat'),
-    _NavItem(Icons.person_rounded,         Icons.person_outline,          'Profile'),
+  static List<_NavItem> get _items => [
+    _NavItem(Icons.home_rounded,          Icons.home_outlined,           'nav_home'.tr),
+    _NavItem(Icons.book_rounded,           Icons.book_outlined,           'nav_lessons'.tr),
+    _NavItem(Icons.video_library_rounded,  Icons.video_library_outlined,  'nav_reels'.tr),
+    _NavItem(Icons.smart_toy_rounded,      Icons.smart_toy_outlined,      'nav_chat'.tr),
+    _NavItem(Icons.person_rounded,         Icons.person_outline,          'nav_profile'.tr),
   ];
 
   @override

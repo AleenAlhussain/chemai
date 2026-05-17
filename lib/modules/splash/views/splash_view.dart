@@ -75,7 +75,7 @@ class SplashView extends GetView<SplashController> {
 
                       // Tagline
                       Text(
-                        'Your AI Chemistry Companion',
+                        'splash_tagline'.tr,
                         style: TextStyle(
                           color: AppColors.textSecondary,
                           fontSize: 13,
@@ -101,7 +101,7 @@ class SplashView extends GetView<SplashController> {
                           ],
                         ),
                         child: Text(
-                          'Hi! I\'m Kimo, your chemistry guide! 🧪',
+                          'splash_kimo_greeting'.tr,
                           style: TextStyle(
                             color: AppColors.textPrimary,
                             fontSize: 12,
@@ -166,7 +166,7 @@ class SplashView extends GetView<SplashController> {
                         Icon(Icons.science_outlined, color: AppColors.textMuted, size: 11),
                         const SizedBox(width: 6),
                         Text(
-                          'MOLECULAR INTELLIGENCE PLATFORM V4.0.2',
+                          'splash_version'.tr,
                           style: TextStyle(
                             color: AppColors.textMuted,
                             fontSize: 9,

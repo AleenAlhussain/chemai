@@ -67,7 +67,7 @@ class AuthView extends GetView<AuthController> {
                       Expanded(child: Divider(color: AppColors.borderDefault, height: 1)),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 14),
-                        child: Text('OR', style: TextStyle(color: AppColors.textMuted, fontSize: 10, letterSpacing: 2)),
+                        child: Text('auth_or'.tr, style: TextStyle(color: AppColors.textMuted, fontSize: 10, letterSpacing: 2)),
                       ),
                       Expanded(child: Divider(color: AppColors.borderDefault, height: 1)),
                     ],
@@ -91,7 +91,7 @@ class AuthView extends GetView<AuthController> {
                         children: [
                           const Text('G', style: TextStyle(color: Color(0xFF4285F4), fontSize: 18, fontWeight: FontWeight.w800)),
                           const SizedBox(width: 10),
-                          Text('Continue with Google', style: TextStyle(color: AppColors.textPrimary, fontSize: 14, fontWeight: FontWeight.w500)),
+                          Text('auth_google'.tr, style: TextStyle(color: AppColors.textPrimary, fontSize: 14, fontWeight: FontWeight.w500)),
                         ],
                       ),
                     ),
@@ -104,13 +104,13 @@ class AuthView extends GetView<AuthController> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            controller.isLoginTab.value ? 'New to ChemAI? ' : 'Already have an account? ',
+                            controller.isLoginTab.value ? 'auth_new_to'.tr : 'auth_already_have'.tr,
                             style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
                           ),
                           GestureDetector(
                             onTap: controller.toggleTab,
                             child: Text(
-                              controller.isLoginTab.value ? 'Sign Up' : 'Log In',
+                              controller.isLoginTab.value ? 'auth_sign_up_link'.tr : 'auth_login_link'.tr,
                               style: TextStyle(color: AppColors.purple, fontSize: 13, fontWeight: FontWeight.w700),
                             ),
                           ),
@@ -143,12 +143,12 @@ class _KimoHeader extends StatelessWidget {
             )),
         const SizedBox(height: 14),
         Obx(() => Text(
-              controller.isLoginTab.value ? 'Welcome back, scientist!' : 'Join the lab, recruit!',
+              controller.isLoginTab.value ? 'auth_welcome_back'.tr : 'auth_join_lab'.tr,
               style: TextStyle(color: AppColors.textPrimary, fontSize: 20, fontWeight: FontWeight.w800),
             )),
         const SizedBox(height: 6),
         Text(
-          'ChemAI — Quantum Intelligence Platform',
+          'auth_platform'.tr,
           style: TextStyle(color: AppColors.textMuted, fontSize: 11, letterSpacing: 1.2),
         ),
       ],
@@ -172,8 +172,8 @@ class _TabBar extends StatelessWidget {
           ),
           child: Row(
             children: [
-              _Tab(label: 'Log In', active: controller.isLoginTab.value, onTap: () => controller.isLoginTab.value = true),
-              _Tab(label: 'Sign Up', active: !controller.isLoginTab.value, onTap: () => controller.isLoginTab.value = false),
+              _Tab(label: 'auth_login'.tr, active: controller.isLoginTab.value, onTap: () => controller.isLoginTab.value = true),
+              _Tab(label: 'auth_signup'.tr, active: !controller.isLoginTab.value, onTap: () => controller.isLoginTab.value = false),
             ],
           ),
         ));
@@ -232,7 +232,7 @@ class _FormCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!isLogin) ...[
-            _FieldLabel('Full Name'),
+            _FieldLabel('auth_fullname'.tr),
             const SizedBox(height: 8),
             _InputField(
               controller: controller.nameController,
@@ -242,7 +242,7 @@ class _FormCard extends StatelessWidget {
             const SizedBox(height: 18),
           ],
 
-          _FieldLabel('Email Address'),
+          _FieldLabel('auth_email'.tr),
           const SizedBox(height: 8),
           _InputField(
             controller: controller.emailController,
@@ -256,11 +256,11 @@ class _FormCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _FieldLabel('Password'),
+              _FieldLabel('auth_password'.tr),
               if (isLogin)
                 GestureDetector(
                   onTap: () {},
-                  child: const Text('Forgot?', style: TextStyle(color: Color(0xFFFBBF24), fontSize: 12, fontWeight: FontWeight.w600)),
+                  child: Text('auth_forgot'.tr, style: const TextStyle(color: Color(0xFFFBBF24), fontSize: 12, fontWeight: FontWeight.w600)),
                 ),
             ],
           ),
@@ -301,7 +301,7 @@ class _FormCard extends StatelessWidget {
                         child: controller.rememberMe.value ? const Icon(Icons.check, size: 12, color: Colors.white) : null,
                       ),
                       const SizedBox(width: 10),
-                      Text('Keep me signed in', style: TextStyle(color: AppColors.textSecondary, fontSize: 13)),
+                      Text('auth_remember_me'.tr, style: TextStyle(color: AppColors.textSecondary, fontSize: 13)),
                     ],
                   ),
                 )),
@@ -322,7 +322,7 @@ class _FormCard extends StatelessWidget {
                   child: controller.isLoading.value
                       ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
                       : Text(
-                          isLogin ? 'Enter the Lab 🚀' : 'Create Account ⚗️',
+                          isLogin ? 'auth_enter_lab'.tr : 'auth_create_account'.tr,
                           style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700),
                         ),
                 ),

@@ -15,11 +15,11 @@ class MainNavView extends GetView<MainNavController> {
   const MainNavView({super.key});
 
   static List<Widget> get _pages => [
-        PilotProfileView(),
+        HomeView(),
         LessonsView(),
         ReelsView(),
         AskAiView(),
-        HomeView(),
+        PilotProfileView(),
       ];
 
   @override
@@ -52,11 +52,11 @@ class _QuantumNavBar extends StatelessWidget {
   const _QuantumNavBar({required this.currentIndex, required this.onTap});
 
   static const _items = [
-    (icon: Icons.person_outline, label: 'PROFILE'),
+    (icon: Icons.home_outlined, label: 'HOME'),
     (icon: Icons.book_outlined, label: 'LESSONS'),
     (icon: Icons.video_library_outlined, label: 'REELS'),
     (icon: Icons.smart_toy_outlined, label: 'CHAT'),
-    (icon: Icons.home_outlined, label: 'HOME'),
+    (icon: Icons.person_outline, label: 'PROFILE'),
   ];
 
   @override

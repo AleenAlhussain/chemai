@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 
 import '../core/controllers/language_controller.dart';
@@ -18,13 +19,18 @@ class ChemAIApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
-      // Theme updates are applied via Get.changeThemeMode() in ThemeController.
-      // Locale updates are applied via Get.updateLocale() in LanguageController.
-      // GetMaterialApp's internal GetBuilder handles both without a wrapper.
       translations: AppTranslations(),
       locale: lc.locale.value,
       fallbackLocale: const Locale('en'),
       supportedLocales: const [Locale('en'), Locale('ar')],
+      // Provides MaterialLocalizations for every supported locale (including ar).
+      // Without these delegates, switching to Arabic crashes DrawerController
+      // because DefaultMaterialLocalizations.delegate only covers 'en'.
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       initialRoute: AppRoutes.splash,
       getPages: AppPages.routes,
       defaultTransition: Transition.fadeIn,

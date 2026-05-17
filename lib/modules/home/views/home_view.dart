@@ -16,7 +16,7 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF020408),
+      backgroundColor: AppColors.bgDeep,
       appBar: _HomeAppBar(controller: controller),
       body: Obx(() {
         final user = controller.user.value;
@@ -71,7 +71,7 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: const Color(0xFF020408),
+      backgroundColor: AppColors.bgDeep,
       elevation: 0,
       leading: Padding(
         padding: const EdgeInsets.only(left: 16),

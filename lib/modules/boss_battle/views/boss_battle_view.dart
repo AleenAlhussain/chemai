@@ -11,7 +11,7 @@ class BossBattleView extends GetView<BossBattleController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF02040F),
+      backgroundColor: AppColors.bgDeep,
       appBar: _buildAppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -87,7 +87,7 @@ class BossBattleView extends GetView<BossBattleController> {
 
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
-      backgroundColor: const Color(0xFF02040F),
+      backgroundColor: AppColors.bgDeep,
       elevation: 0,
       leading: IconButton(
         icon: Icon(Icons.arrow_back_ios_new_rounded,

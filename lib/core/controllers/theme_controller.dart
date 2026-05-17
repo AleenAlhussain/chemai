@@ -18,6 +18,7 @@ class ThemeController extends GetxController {
     isDark.toggle();
     AppColors.isDark = isDark.value;
     Get.changeTheme(AppTheme.current);
+    Get.forceAppUpdate();
     _save();
   }
 
@@ -25,6 +26,7 @@ class ThemeController extends GetxController {
     chemTheme.value = t;
     AppColors.theme = t;
     Get.changeTheme(AppTheme.current);
+    Get.forceAppUpdate();
     _save();
   }
 

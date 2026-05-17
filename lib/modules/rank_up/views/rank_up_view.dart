@@ -13,7 +13,7 @@ class RankUpView extends GetView<RankUpController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF050816),
+      backgroundColor: AppColors.bgDeep,
       body: Stack(
         children: [
           // Floating particles background

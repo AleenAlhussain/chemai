@@ -15,10 +15,10 @@ class OnboardingView extends GetView<OnboardingController> {
     KimoState.concentrating,
   ];
 
-  static const _kimoMessages = [
-    'Nice to meet you! Let\'s learn chemistry together! 🧪',
-    'Level up your brain cells — let\'s go! ⚡',
-    'I\'ll guide you every step of the way! 🔬',
+  static const _kimoMessageKeys = [
+    'kimo_msg_1',
+    'kimo_msg_2',
+    'kimo_msg_3',
   ];
 
   @override
@@ -61,7 +61,7 @@ class OnboardingView extends GetView<OnboardingController> {
                   itemBuilder: (_, i) => _OnboardingPage(
                     pageIndex: i,
                     kimoState: _kimoStates[i],
-                    message: _kimoMessages[i],
+                    message: _kimoMessageKeys[i].tr,
                     illustrationIndex: i,
                   ),
                 ),
@@ -139,8 +139,8 @@ class OnboardingView extends GetView<OnboardingController> {
                             alignment: Alignment.center,
                             child: Obx(() => Text(
                                   controller.pageIndex.value == controller.pages.length - 1
-                                      ? 'GET STARTED ⚡'
-                                      : 'NEXT →',
+                                      ? 'onboarding_get_started'.tr
+                                      : 'onboarding_next'.tr,
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 14,
@@ -157,7 +157,7 @@ class OnboardingView extends GetView<OnboardingController> {
                       GestureDetector(
                         onTap: controller.skip,
                         child: Text(
-                          'SKIP ONBOARDING',
+                          'onboarding_skip'.tr,
                           style: TextStyle(color: AppColors.textMuted, fontSize: 11, letterSpacing: 1.5),
                         ),
                       ),

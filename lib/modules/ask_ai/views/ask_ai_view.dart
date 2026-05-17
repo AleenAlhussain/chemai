@@ -28,7 +28,7 @@ class AskAiView extends GetView<AskAiController> {
           ),
         ),
         title: Text(
-          'Quantum AI Tutor',
+          'ask_ai_tutor'.tr,
           style: TextStyle(
             color: AppColors.textPrimary,
             fontSize: 16,
@@ -72,7 +72,7 @@ class AskAiView extends GetView<AskAiController> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                      Text(
-                      'TEACHING STYLE:',
+                      'ask_ai_teaching_style'.tr,
                       style: TextStyle(
                         color: AppColors.textMuted,
                         fontSize: 10,
@@ -81,14 +81,14 @@ class AskAiView extends GetView<AskAiController> {
                     ),
                     const SizedBox(width: 12),
                     _StyleChip(
-                      label: 'Socratic',
+                      label: 'ask_ai_socratic'.tr,
                       icon: Icons.psychology_outlined,
                       active: controller.teachingStyle.value == 'Socratic',
                       onTap: () => controller.setStyle('Socratic'),
                     ),
                     const SizedBox(width: 8),
                     _StyleChip(
-                      label: 'Direct',
+                      label: 'ask_ai_direct'.tr,
                       icon: Icons.flash_on_outlined,
                       active: controller.teachingStyle.value == 'Direct',
                       onTap: () => controller.setStyle('Direct'),
@@ -123,8 +123,8 @@ class AskAiView extends GetView<AskAiController> {
                     controller: controller.messageController,
                     style:  TextStyle(
                         color: AppColors.textPrimary, fontSize: 14),
-                    decoration:  InputDecoration(
-                      hintText: 'Ask about molecular geometry...',
+                    decoration: InputDecoration(
+                      hintText: 'ask_ai_hint'.tr,
                       hintStyle: TextStyle(
                           color: AppColors.textMuted, fontSize: 14),
                       border: InputBorder.none,
@@ -170,7 +170,7 @@ class _MessageBubble extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
              Text(
-              'QUANTUM_BOT v4.2',
+              'ask_ai_bot_name'.tr,
               style: TextStyle(
                 color: AppColors.textMuted,
                 fontSize: 10,

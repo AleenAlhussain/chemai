@@ -5,38 +5,38 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../app/routes/app_routes.dart';
 
 class OnboardingPage {
-  final String title;
-  final String subtitle;
+  final String titleKey;
+  final String subtitleKey;
   final String illustrationAsset;
 
   const OnboardingPage({
-    required this.title,
-    required this.subtitle,
+    required this.titleKey,
+    required this.subtitleKey,
     required this.illustrationAsset,
   });
+
+  String get title => titleKey.tr;
+  String get subtitle => subtitleKey.tr;
 }
 
 class OnboardingController extends GetxController {
   final pageIndex = 0.obs;
   late final PageController pageController;
 
-  final pages = [
-    const OnboardingPage(
-      title: 'Master Chemistry with AI',
-      subtitle:
-          'Your personal AI tutor designed to make Grade 9 Chemistry feel like a game.',
+  final pages = const [
+    OnboardingPage(
+      titleKey: 'onboarding_title_1',
+      subtitleKey: 'onboarding_subtitle_1',
       illustrationAsset: 'atom',
     ),
-    const OnboardingPage(
-      title: 'Level Up Your Knowledge',
-      subtitle:
-          'Earn XP, unlock chapters, and rise through the quantum ranks as you learn.',
+    OnboardingPage(
+      titleKey: 'onboarding_title_2',
+      subtitleKey: 'onboarding_subtitle_2',
       illustrationAsset: 'rocket',
     ),
-    const OnboardingPage(
-      title: 'Pick Your Learning Style',
-      subtitle:
-          'Choose a mentor persona that matches how you think and learn best.',
+    OnboardingPage(
+      titleKey: 'onboarding_title_3',
+      subtitleKey: 'onboarding_subtitle_3',
       illustrationAsset: 'mentor',
     ),
   ];

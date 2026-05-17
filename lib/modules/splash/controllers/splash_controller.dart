@@ -5,14 +5,14 @@ import '../../../app/routes/app_routes.dart';
 
 class SplashController extends GetxController {
   final progress = 0.0.obs;
-  final statusText = 'INITIALIZING NEURAL CORE...'.obs;
+  final statusText = ''.obs;
 
-  static const _steps = [
-    (pct: 0.20, msg: 'LOADING QUANTUM MODULES...'),
-    (pct: 0.45, msg: 'CALIBRATING AI MATRIX...'),
-    (pct: 0.65, msg: 'INITIALIZING NEURAL CORE...'),
-    (pct: 0.85, msg: 'SYNCING MOLECULAR DATABASE...'),
-    (pct: 1.00, msg: 'SYSTEMS ONLINE'),
+  List<({double pct, String msg})> get _steps => [
+    (pct: 0.20, msg: 'splash_loading'.tr),
+    (pct: 0.45, msg: 'splash_calibrating'.tr),
+    (pct: 0.65, msg: 'splash_init'.tr),
+    (pct: 0.85, msg: 'splash_syncing'.tr),
+    (pct: 1.00, msg: 'splash_online'.tr),
   ];
 
   @override

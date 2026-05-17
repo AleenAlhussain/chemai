@@ -23,7 +23,7 @@ class PilotProfileController extends GetxController {
       case 'account':
         Get.toNamed(AppRoutes.profile);
       case 'theme':
-        _theme.toggle();
+        _theme.toggleDark();
     }
   }
 

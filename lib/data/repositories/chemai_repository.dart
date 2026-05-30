@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../../core/utils/failures.dart';
+import '../models/auth_model.dart';
 import '../models/chapter_model.dart';
 import '../models/mentor_model.dart';
 import '../models/user_model.dart';
@@ -11,6 +12,30 @@ typedef Result<T> = ({T? data, Failure? failure});
 class ChemAIRepository {
   final ChemAIProvider _provider;
   const ChemAIRepository(this._provider);
+
+  // ── Auth ────────────────────────────────────────────────────────────────
+
+  Future<Result<AuthResponse>> register(RegisterRequest req) async {
+    try {
+      final raw = await _provider.register(req);
+      return (data: AuthResponse.fromJson(raw), failure: null);
+    } on DioException catch (e) {
+      return (data: null, failure: _map(e));
+    } catch (_) {
+      return (data: null, failure: const ParseFailure());
+    }
+  }
+
+  Future<Result<AuthResponse>> login(LoginRequest req) async {
+    try {
+      final raw = await _provider.login(req);
+      return (data: AuthResponse.fromJson(raw), failure: null);
+    } on DioException catch (e) {
+      return (data: null, failure: _map(e));
+    } catch (_) {
+      return (data: null, failure: const ParseFailure());
+    }
+  }
 
   Future<Result<UserModel>> fetchProfile() async {
     try {

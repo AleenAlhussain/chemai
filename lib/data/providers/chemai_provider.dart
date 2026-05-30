@@ -2,10 +2,30 @@ import 'package:dio/dio.dart';
 
 import '../../core/constants/api_constants.dart';
 import '../../core/network/dio_client.dart';
+import '../models/auth_model.dart';
 
 class ChemAIProvider {
   final DioClient _client;
   const ChemAIProvider(this._client);
+
+  // ── Auth ──────────────────────────────────────────────────────────────────
+
+  Future<Map<String, dynamic>> register(RegisterRequest req) async {
+    // Content-Type: application/json  →  Dio serialises the Map as raw JSON body
+    final r = await _client.post<Map<String, dynamic>>(
+      ApiConstants.register,
+      data: req.toJson(),
+    );
+    return r.data ?? {};
+  }
+
+  Future<Map<String, dynamic>> login(LoginRequest req) async {
+    final r = await _client.post<Map<String, dynamic>>(
+      ApiConstants.login,
+      data: req.toJson(),
+    );
+    return r.data ?? {};
+  }
 
   Future<Map<String, dynamic>> fetchProfile() async {
     final r = await _client.get<Map<String, dynamic>>(ApiConstants.profile);

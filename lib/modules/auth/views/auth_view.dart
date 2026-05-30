@@ -240,6 +240,10 @@ class _FormCard extends StatelessWidget {
               icon: Icons.person_outline,
             ),
             const SizedBox(height: 18),
+            _FieldLabel('auth_gender'.tr),
+            const SizedBox(height: 8),
+            _GenderSelector(controller: controller),
+            const SizedBox(height: 18),
           ],
 
           _FieldLabel('auth_email'.tr),
@@ -310,7 +314,9 @@ class _FormCard extends StatelessWidget {
           const SizedBox(height: 22),
 
           Obx(() => GestureDetector(
-                onTap: controller.isLoading.value ? null : controller.login,
+                onTap: controller.isLoading.value
+                    ? null
+                    : (isLogin ? controller.login : controller.register),
                 child: Container(
                   width: double.infinity,
                   height: 52,
@@ -328,6 +334,86 @@ class _FormCard extends StatelessWidget {
                 ),
               )),
         ],
+      ),
+    );
+  }
+}
+
+// ── Gender selector ───────────────────────────────────────────────────────────
+class _GenderSelector extends StatelessWidget {
+  final AuthController controller;
+  const _GenderSelector({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() => Row(
+          children: [
+            _GenderOption(
+              label: 'auth_female'.tr,
+              icon: Icons.female_rounded,
+              value: 'female',
+              selected: controller.gender.value == 'female',
+              onTap: () => controller.setGender('female'),
+            ),
+            const SizedBox(width: 10),
+            _GenderOption(
+              label: 'auth_male'.tr,
+              icon: Icons.male_rounded,
+              value: 'male',
+              selected: controller.gender.value == 'male',
+              onTap: () => controller.setGender('male'),
+            ),
+          ],
+        ));
+  }
+}
+
+class _GenderOption extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final String value;
+  final bool selected;
+  final VoidCallback onTap;
+  const _GenderOption({
+    required this.label,
+    required this.icon,
+    required this.value,
+    required this.selected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          decoration: BoxDecoration(
+            color: selected ? AppColors.purple.withOpacity(0.15) : AppColors.bgCardAlt,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: selected ? AppColors.purple : AppColors.borderDefault,
+              width: selected ? 1.5 : 1,
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: selected ? AppColors.purple : AppColors.textSecondary, size: 18),
+              const SizedBox(width: 6),
+              Text(
+                label,
+                style: TextStyle(
+                  color: selected ? AppColors.purple : AppColors.textSecondary,
+                  fontSize: 13,
+                  fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

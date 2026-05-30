@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 
+import '../../../app/routes/app_routes.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../widgets/kimo_widget.dart';
 import '../controllers/auth_controller.dart';
@@ -263,7 +264,7 @@ class _FormCard extends StatelessWidget {
               _FieldLabel('auth_password'.tr),
               if (isLogin)
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () => Get.toNamed(AppRoutes.forgotPassword),
                   child: Text('auth_forgot'.tr, style: const TextStyle(color: Color(0xFFFBBF24), fontSize: 12, fontWeight: FontWeight.w600)),
                 ),
             ],

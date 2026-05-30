@@ -1,5 +1,5 @@
 abstract final class ApiConstants {
-  static const baseUrl        = 'https://api.chemai.app/v1';
+  static const baseUrl        = 'http://127.0.0.1:8000';
   static const connectTimeout = Duration(seconds: 15);
   static const receiveTimeout = Duration(seconds: 30);
 

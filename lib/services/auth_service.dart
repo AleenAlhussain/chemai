@@ -90,11 +90,27 @@ class AuthService extends GetxService {
     return null;
   }
 
+  // ── Delete account ────────────────────────────────────────────────────────
+
+  Future<MessageResponse?> deleteAccount() async {
+    try {
+      final res = await _client.delete<Map<String, dynamic>>(ApiConstants.account);
+      if (_ok(res.statusCode)) {
+        final data = _toMap(res.data);
+        if (data != null) return MessageResponse.fromJson(data);
+      }
+    } on DioException catch (e) {
+      _logDio('deleteAccount', e);
+      rethrow;
+    }
+    return null;
+  }
+
   // ── Change password ───────────────────────────────────────────────────────
 
   Future<MessageResponse?> changePassword(ChangePasswordRequest req) async {
     try {
-      final res = await _client.post<Map<String, dynamic>>(
+      final res = await _client.put<Map<String, dynamic>>(
         ApiConstants.changePassword,
         data: req.toJson(),
       );
@@ -111,15 +127,15 @@ class AuthService extends GetxService {
 
   // ── Update profile ────────────────────────────────────────────────────────
 
-  Future<UserAuth?> updateProfile(UpdateProfileRequest req) async {
+  Future<MessageResponse?> updateProfile(UpdateProfileRequest req) async {
     try {
-      final res = await _client.put<Map<String, dynamic>>(
+      final res = await _client.patch<Map<String, dynamic>>(
         ApiConstants.updateProfile,
         data: req.toJson(),
       );
       if (_ok(res.statusCode)) {
         final data = _toMap(res.data);
-        if (data != null) return UserAuth.fromJson(data);
+        if (data != null) return MessageResponse.fromJson(data);
       }
     } on DioException catch (e) {
       _logDio('updateProfile', e);

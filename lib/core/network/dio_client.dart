@@ -39,4 +39,12 @@ class DioClient {
   Future<Response<T>> put<T>(String path,
           {dynamic data, Options? options}) =>
       dio.put<T>(path, data: data, options: options);
+
+  Future<Response<T>> patch<T>(String path,
+          {dynamic data, Options? options}) =>
+      dio.patch<T>(path, data: data, options: options);
+
+  Future<Response<T>> delete<T>(String path,
+          {dynamic data, Options? options}) =>
+      dio.delete<T>(path, data: data, options: options);
 }

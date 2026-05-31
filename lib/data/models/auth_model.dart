@@ -78,19 +78,22 @@ class ResetPasswordRequest {
 class AuthResponse {
   final String accessToken;
   final String tokenType;
-  final UserAuth user;
+  final UserAuth? user; // null when server omits the user object (e.g. login)
 
   const AuthResponse({
     required this.accessToken,
     required this.tokenType,
-    required this.user,
+    this.user,
   });
 
-  factory AuthResponse.fromJson(Map<String, dynamic> j) => AuthResponse(
-        accessToken: j['access_token'] as String? ?? '',
-        tokenType: j['token_type'] as String? ?? 'bearer',
-        user: UserAuth.fromJson(j['user'] as Map<String, dynamic>? ?? {}),
-      );
+  factory AuthResponse.fromJson(Map<String, dynamic> j) {
+    final raw = j['user'];
+    return AuthResponse(
+      accessToken: j['access_token'] as String? ?? '',
+      tokenType: j['token_type'] as String? ?? 'bearer',
+      user: raw is Map<String, dynamic> ? UserAuth.fromJson(raw) : null,
+    );
+  }
 }
 
 class UserAuth {

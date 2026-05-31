@@ -6,6 +6,7 @@ import '../app/routes/app_routes.dart';
 import '../app/theme/app_colors.dart';
 import '../core/controllers/language_controller.dart';
 import '../core/controllers/theme_controller.dart';
+import '../modules/auth/controllers/auth_controller.dart';
 import '../modules/main_nav/controllers/main_nav_controller.dart';
 import 'theme_picker.dart';
 
@@ -379,7 +380,7 @@ class _DisconnectButton extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Get.back();
-        Get.offAllNamed(AppRoutes.splash);
+        Get.find<AuthController>().logout();
       },
       child: Container(
         width: double.infinity,

@@ -76,8 +76,8 @@ class BossBattleController extends GetxController {
 
   void useHint() {
     Get.snackbar(
-      'HINT',
-      'Try coefficients: 2, 1, 2 — balance hydrogen and oxygen atoms.',
+      'boss_battle_snackbar_hint_title'.tr,
+      'boss_battle_snackbar_hint_body'.tr,
       snackPosition: SnackPosition.TOP,
       duration: const Duration(seconds: 3),
     );

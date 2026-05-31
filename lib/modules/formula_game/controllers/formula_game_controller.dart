@@ -40,8 +40,11 @@ class FormulaGameController extends GetxController {
       streak.value = streak.value + 1;
       levelProgress.value = (levelProgress.value + 0.08).clamp(0.0, 1.0);
       Get.snackbar(
-        'CORRECT!',
-        '+${100 + streak.value * 20} pts — Streak x${streak.value}',
+        'formula_game_correct_title'.tr,
+        'formula_game_correct_body'.trParams({
+          'pts': '${100 + streak.value * 20}',
+          'streak': '${streak.value}',
+        }),
         snackPosition: SnackPosition.TOP,
         duration: const Duration(seconds: 2),
       );
@@ -49,8 +52,10 @@ class FormulaGameController extends GetxController {
     } else {
       streak.value = 0;
       Get.snackbar(
-        'INCORRECT',
-        'Try again — build "${ currentTarget.value }"',
+        'formula_game_incorrect_title'.tr,
+        'formula_game_incorrect_body'.trParams({
+          'formula': currentTarget.value,
+        }),
         snackPosition: SnackPosition.TOP,
         duration: const Duration(seconds: 2),
       );

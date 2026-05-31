@@ -1,11 +1,7 @@
 import 'package:get/get.dart';
 
-import '../../modules/account/bindings/account_binding.dart';
-import '../../modules/account/views/account_view.dart';
 import '../../modules/auth/bindings/auth_binding.dart';
 import '../../modules/auth/views/auth_view.dart';
-import '../../modules/auth/views/forgot_password_view.dart';
-import '../../modules/auth/views/reset_password_view.dart';
 import '../../modules/boss_battle/bindings/boss_battle_binding.dart';
 import '../../modules/boss_battle/views/boss_battle_view.dart';
 import '../../modules/collaboration/bindings/collaboration_binding.dart';
@@ -145,22 +141,8 @@ abstract final class AppPages {
     ),
     GetPage(
       name: AppRoutes.account,
-      page: () => const AccountView(),
-      binding: AccountBinding(),
-      transition: Transition.rightToLeft,
-      transitionDuration: const Duration(milliseconds: 300),
-    ),
-    GetPage(
-      name: AppRoutes.forgotPassword,
-      page: () => const ForgotPasswordView(),
-      binding: AuthBinding(),
-      transition: Transition.rightToLeft,
-      transitionDuration: const Duration(milliseconds: 300),
-    ),
-    GetPage(
-      name: AppRoutes.resetPassword,
-      page: () => const ResetPasswordView(),
-      binding: AuthBinding(),
+      page: () => const PilotProfileView(),
+      binding: PilotProfileBinding(),
       transition: Transition.rightToLeft,
       transitionDuration: const Duration(milliseconds: 300),
     ),

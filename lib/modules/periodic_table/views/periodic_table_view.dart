@@ -5,6 +5,25 @@ import 'package:get/get.dart';
 import '../../../app/theme/app_colors.dart';
 import '../controllers/periodic_table_controller.dart';
 
+String _periodicCategoryLabel(String key) {
+  switch (key) {
+    case 'Non-metal':
+      return 'periodic_table_cat_nonmetal'.tr;
+    case 'Noble Gas':
+      return 'periodic_table_cat_noble_gas'.tr;
+    case 'Alkali Metal':
+      return 'periodic_table_cat_alkali'.tr;
+    case 'Transition Metal':
+      return 'periodic_table_cat_transition'.tr;
+    case 'Halogen':
+      return 'periodic_table_cat_halogen'.tr;
+    case 'Alkaline Earth':
+      return 'periodic_table_cat_alkaline'.tr;
+    default:
+      return key;
+  }
+}
+
 class PeriodicTableView extends GetView<PeriodicTableController> {
   const PeriodicTableView({super.key});
 
@@ -28,7 +47,7 @@ class PeriodicTableView extends GetView<PeriodicTableController> {
                 onChanged: controller.updateSearch,
                 style: TextStyle(color: AppColors.textPrimary, fontSize: 14),
                 decoration: InputDecoration(
-                  hintText: 'Search element, symbol or number…',
+                  hintText: 'periodic_table_search_hint'.tr,
                   hintStyle:
                       TextStyle(color: AppColors.textMuted, fontSize: 13),
                   prefixIcon: Icon(Icons.search_rounded,
@@ -57,7 +76,7 @@ class PeriodicTableView extends GetView<PeriodicTableController> {
                     border: Border.all(color: e.value.withOpacity(0.35)),
                   ),
                   child: Text(
-                    e.key,
+                    _periodicCategoryLabel(e.key),
                     style: TextStyle(
                       color: e.value,
                       fontSize: 10,
@@ -85,7 +104,7 @@ class PeriodicTableView extends GetView<PeriodicTableController> {
                           color: AppColors.textMuted, size: 40),
                       const SizedBox(height: 12),
                       Text(
-                        'No elements found',
+                        'periodic_table_empty'.tr,
                         style: TextStyle(
                             color: AppColors.textSecondary, fontSize: 14),
                       ),
@@ -148,7 +167,7 @@ class PeriodicTableView extends GetView<PeriodicTableController> {
         onPressed: () => Get.back(),
       ),
       title: Text(
-        'PERIODIC TABLE',
+        'periodic_table_title'.tr,
         style: TextStyle(
           color: AppColors.textPrimary,
           fontSize: 13,
@@ -167,7 +186,9 @@ class PeriodicTableView extends GetView<PeriodicTableController> {
               border: Border.all(color: AppColors.borderDefault),
             ),
             child: Obx(() => Text(
-                  '${controller.elements.length} Elements',
+                  'periodic_table_count'.trParams({
+                    'count': '${controller.elements.length}',
+                  }),
                   style: TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 11,
@@ -327,7 +348,7 @@ class _ElementSheet extends StatelessWidget {
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Text(
-                        element.category,
+                        _periodicCategoryLabel(element.category),
                         style: TextStyle(
                           color: element.color,
                           fontSize: 10,
@@ -347,11 +368,18 @@ class _ElementSheet extends StatelessWidget {
           const SizedBox(height: 12),
 
           // Data rows
-          _DataRow(label: 'Atomic Number', value: element.number.toString()),
           _DataRow(
-              label: 'Atomic Mass', value: '${element.mass.toStringAsFixed(3)} u'),
-          _DataRow(label: 'Electron Config', value: element.config),
-          _DataRow(label: 'Category', value: element.category),
+              label: 'periodic_table_atomic_number'.tr,
+              value: element.number.toString()),
+          _DataRow(
+              label: 'periodic_table_atomic_mass'.tr,
+              value: '${element.mass.toStringAsFixed(3)} u'),
+          _DataRow(
+              label: 'periodic_table_electron_config'.tr,
+              value: element.config),
+          _DataRow(
+              label: 'periodic_table_category'.tr,
+              value: _periodicCategoryLabel(element.category)),
 
           const SizedBox(height: 8),
         ],

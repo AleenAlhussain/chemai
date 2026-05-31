@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../data/models/chat_message_model.dart';
 import '../controllers/ask_ai_controller.dart';
+import '../../main_nav/controllers/main_nav_controller.dart';
 
 class AskAiView extends GetView<AskAiController> {
   const AskAiView({super.key});
@@ -12,37 +13,7 @@ class AskAiView extends GetView<AskAiController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.bgBase,
-      appBar: AppBar(
-        backgroundColor: AppColors.bgBase,
-        titleSpacing: 16,
-        leading: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: AppColors.bgCard,
-              border: Border.all(color: AppColors.borderDefault),
-            ),
-            child:
-                Icon(Icons.person_outline, color: AppColors.textSecondary, size: 18),
-          ),
-        ),
-        title: Text(
-          'ask_ai_tutor'.tr,
-          style: TextStyle(
-            color: AppColors.textPrimary,
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.settings_outlined,
-                color: AppColors.textSecondary, size: 20),
-            onPressed: () {},
-          ),
-        ],
-      ),
+      appBar: _buildAppBar(),
       body: Column(
         children: [
           // Messages list
@@ -153,6 +124,65 @@ class AskAiView extends GetView<AskAiController> {
           ),
         ],
       ),
+    );
+  }
+  PreferredSizeWidget _buildAppBar() {
+    final avatarUrl =
+        '';
+    return AppBar(
+      // backgroundColor: const Color(0xFF020408),
+      elevation: 0,
+      leading: Padding(
+        padding: const EdgeInsets.all(6),
+        child: GestureDetector(
+          onTap: () => Get.find<MainNavController>().openDrawer(),
+          child: Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              color: AppColors.bgCard,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: AppColors.borderDefault),
+            ),
+            child: Icon(Icons.menu_rounded, color: AppColors.textSecondary, size: 18),
+          ),
+        ),
+      ),
+      title: ShaderMask(
+        shaderCallback: (bounds) => AppColors.gradientPurple.createShader(bounds),
+        child: Text(
+          'app_name'.tr,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+      ),
+      centerTitle: true,
+      actions: [
+        Padding(
+          padding: const EdgeInsets.all(6),
+          child:
+
+          Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppColors.bgCard,
+              border: Border.all(color: AppColors.borderDefault),
+              image: avatarUrl.isNotEmpty
+                  ? DecorationImage(image: NetworkImage(avatarUrl), fit: BoxFit.cover)
+                  : null,
+            ),
+            child: avatarUrl.isEmpty
+                ? Icon(Icons.account_circle_outlined, color: AppColors.purple, size: 22)
+                : null,
+          )
+          ,
+        ),
+      ],
     );
   }
 }

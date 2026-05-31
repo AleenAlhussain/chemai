@@ -9,7 +9,11 @@ import '../controllers/reels_controller.dart';
 class ReelsView extends GetView<ReelsController> {
   const ReelsView({super.key});
 
-  static const _tabs = ['FOR YOU', 'TRENDING', 'SAVED'];
+  List<String> get _tabs => [
+        'reels_tab_for_you'.tr,
+        'reels_tab_trending'.tr,
+        'reels_tab_saved'.tr,
+      ];
 
   @override
   Widget build(BuildContext context) {
@@ -437,7 +441,7 @@ class _RightSidebar extends StatelessWidget {
                   isActive: false,
                 ),
                 const SizedBox(height: 4),
-                const Text('Save', style: TextStyle(color: Colors.white70, fontSize: 11)),
+                Text('reels_save'.tr, style: const TextStyle(color: Colors.white70, fontSize: 11)),
               ],
             ),
           ),
@@ -451,7 +455,7 @@ class _RightSidebar extends StatelessWidget {
                 isActive: false,
               ),
               const SizedBox(height: 4),
-              const Text('Share', style: TextStyle(color: Colors.white70, fontSize: 11)),
+              Text('reels_share'.tr, style: const TextStyle(color: Colors.white70, fontSize: 11)),
             ],
           ),
           const SizedBox(height: 20),
@@ -519,7 +523,7 @@ class _TopBar extends StatelessWidget {
       left: 0,
       right: 0,
       child: Container(
-        padding: EdgeInsets.fromLTRB(16, topPad + 8, 16, 12),
+        padding: EdgeInsets.fromLTRB(12, topPad + 8, 12, 12),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -532,9 +536,9 @@ class _TopBar extends StatelessWidget {
             // App logo
             ShaderMask(
               shaderCallback: (b) => AppColors.gradientPurple.createShader(b),
-              child: const Text(
-                'SPECTRAL FEED',
-                style: TextStyle(
+              child: Text(
+                'reels_title'.tr,
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 13,
                   fontWeight: FontWeight.w900,
@@ -580,19 +584,19 @@ class _TopBar extends StatelessWidget {
                   }),
                 )),
 
-            const SizedBox(width: 6),
+            // const SizedBox(width: 6),
 
-            // Search button
-            Container(
-              width: 34,
-              height: 34,
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.08),
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.white.withOpacity(0.15)),
-              ),
-              child: const Icon(Icons.search, color: Colors.white70, size: 18),
-            ),
+            // // Search button
+            // Container(
+            //   width: 34,
+            //   height: 34,
+            //   decoration: BoxDecoration(
+            //     color: Colors.white.withOpacity(0.08),
+            //     shape: BoxShape.circle,
+            //     border: Border.all(color: Colors.white.withOpacity(0.15)),
+            //   ),
+            //   child: const Icon(Icons.search, color: Colors.white70, size: 18),
+            // ),
           ],
         ),
       ),

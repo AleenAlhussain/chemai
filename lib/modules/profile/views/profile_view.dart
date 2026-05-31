@@ -17,14 +17,14 @@ class ProfileView extends GetView<ProfileController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 16),
-              _UserHeroCard(controller: controller),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: _StatsGrid(),
-              ),
-              const SizedBox(height: 24),
+              // const SizedBox(height: 16),
+              // _UserHeroCard(controller: controller),
+              // const SizedBox(height: 20),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 16),
+              //   child: _StatsGrid(),
+              // ),
+              // const SizedBox(height: 24),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: _WeeklyActivitySection(controller: controller),
@@ -39,127 +39,127 @@ class ProfileView extends GetView<ProfileController> {
   }
 }
 
-class _UserHeroCard extends StatelessWidget {
-  final ProfileController controller;
-
-  const _UserHeroCard({required this.controller});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.bgCard,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.borderDefault),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Ahmad Kamal',
-                      style: TextStyle(
-                        color: AppColors.textPrimary,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '${'profile_chemistry_student'.tr} ⭐  —  ${'profile_level'.tr} 6',
-                      style: TextStyle(
-                        color: AppColors.cyan,
-                        fontSize: 12,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      'profile_progress_to_level'.tr,
-                      style: TextStyle(
-                        color: AppColors.textMuted,
-                        fontSize: 10,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
-                      child: LinearProgressIndicator(
-                        value: 0.7,
-                        minHeight: 6,
-                        backgroundColor: AppColors.borderDefault,
-                        valueColor: AlwaysStoppedAnimation<Color>(AppColors.cyan),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 16),
-              Stack(
-                children: [
-                  Container(
-                    width: 72,
-                    height: 72,
-                    decoration: BoxDecoration(
-                      color: AppColors.bgCardAlt,
-                      borderRadius: BorderRadius.circular(14),
-                      border: Border.all(
-                        color: AppColors.purple,
-                        width: 2,
-                      ),
-                    ),
-                    child: Icon(
-                      Icons.smart_toy_outlined,
-                      size: 40,
-                      color: AppColors.purple,
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: AppColors.purple,
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(6),
-                          bottomRight: Radius.circular(12),
-                        ),
-                      ),
-                      child: const Text(
-                        'PRO',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 9,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Text(
-            '🤖 1,500 / 1,240 XP',
-            style: TextStyle(
-              color: AppColors.textMuted,
-              fontSize: 11,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+// class _UserHeroCard extends StatelessWidget {
+//   final ProfileController controller;
+//
+//   const _UserHeroCard({required this.controller});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       margin: const EdgeInsets.symmetric(horizontal: 16),
+//       padding: const EdgeInsets.all(16),
+//       decoration: BoxDecoration(
+//         color: AppColors.bgCard,
+//         borderRadius: BorderRadius.circular(20),
+//         border: Border.all(color: AppColors.borderDefault),
+//       ),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Row(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               Expanded(
+//                 child: Column(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     Text(
+//                       'Ahmad Kamal',
+//                       style: TextStyle(
+//                         color: AppColors.textPrimary,
+//                         fontSize: 18,
+//                         fontWeight: FontWeight.w700,
+//                       ),
+//                     ),
+//                     const SizedBox(height: 4),
+//                     Text(
+//                       '${'profile_chemistry_student'.tr} ⭐  —  ${'profile_level'.tr} 6',
+//                       style: TextStyle(
+//                         color: AppColors.cyan,
+//                         fontSize: 12,
+//                       ),
+//                     ),
+//                     const SizedBox(height: 10),
+//                     Text(
+//                       'profile_progress_to_level'.tr,
+//                       style: TextStyle(
+//                         color: AppColors.textMuted,
+//                         fontSize: 10,
+//                       ),
+//                     ),
+//                     const SizedBox(height: 6),
+//                     ClipRRect(
+//                       borderRadius: BorderRadius.circular(4),
+//                       child: LinearProgressIndicator(
+//                         value: 0.7,
+//                         minHeight: 6,
+//                         backgroundColor: AppColors.borderDefault,
+//                         valueColor: AlwaysStoppedAnimation<Color>(AppColors.cyan),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//               const SizedBox(width: 16),
+//               Stack(
+//                 children: [
+//                   Container(
+//                     width: 72,
+//                     height: 72,
+//                     decoration: BoxDecoration(
+//                       color: AppColors.bgCardAlt,
+//                       borderRadius: BorderRadius.circular(14),
+//                       border: Border.all(
+//                         color: AppColors.purple,
+//                         width: 2,
+//                       ),
+//                     ),
+//                     child: Icon(
+//                       Icons.smart_toy_outlined,
+//                       size: 40,
+//                       color: AppColors.purple,
+//                     ),
+//                   ),
+//                   Positioned(
+//                     bottom: 0,
+//                     right: 0,
+//                     child: Container(
+//                       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+//                       decoration: BoxDecoration(
+//                         color: AppColors.purple,
+//                         borderRadius: const BorderRadius.only(
+//                           topLeft: Radius.circular(6),
+//                           bottomRight: Radius.circular(12),
+//                         ),
+//                       ),
+//                       child: const Text(
+//                         'PRO',
+//                         style: TextStyle(
+//                           color: Colors.white,
+//                           fontSize: 9,
+//                           fontWeight: FontWeight.w800,
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ],
+//           ),
+//           const SizedBox(height: 10),
+//           Text(
+//             '🤖 1,500 / 1,240 XP',
+//             style: TextStyle(
+//               color: AppColors.textMuted,
+//               fontSize: 11,
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 class _StatsGrid extends StatelessWidget {
   @override

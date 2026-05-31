@@ -16,7 +16,7 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.bgDeep,
+      // backgroundColor: const Color(0xFF020408),
       appBar: _HomeAppBar(controller: controller),
       body: Obx(() {
         final user = controller.user.value;
@@ -71,10 +71,10 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: AppColors.bgDeep,
+      // backgroundColor: const Color(0xFF020408),
       elevation: 0,
       leading: Padding(
-        padding: const EdgeInsets.only(left: 16),
+        padding: const EdgeInsets.all(6),
         child: GestureDetector(
           onTap: () => Get.find<MainNavController>().openDrawer(),
           child: Container(
@@ -91,9 +91,9 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       title: ShaderMask(
         shaderCallback: (bounds) => AppColors.gradientPurple.createShader(bounds),
-        child: const Text(
-          'ChemAI',
-          style: TextStyle(
+        child: Text(
+          'app_name'.tr,
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 16,
             fontWeight: FontWeight.w800,
@@ -103,7 +103,7 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       actions: [
         Padding(
-          padding: const EdgeInsets.only(right: 16),
+          padding: const EdgeInsets.all(6),
           child: Obx(() {
             final avatarUrl = controller.user.value?.avatarUrl ?? '';
             return Container(
@@ -118,7 +118,7 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                     : null,
               ),
               child: avatarUrl.isEmpty
-                  ? Icon(Icons.account_circle_outlined, color: AppColors.purple, size: 22)
+                  ? Icon(Icons.notifications, color: AppColors.purple, size: 22)
                   : null,
             );
           }),
@@ -498,8 +498,8 @@ class _ActiveMissionCard extends StatelessWidget {
 
           Text(
             'home_chapter_3'.tr,
-            style: TextStyle(
-              color: AppColors.textPrimary,
+            style: const TextStyle(
+              color: Color(0xFFF0F2FF),
               fontSize: 16,
               fontWeight: FontWeight.w700,
             ),
@@ -618,12 +618,12 @@ class _SectionHeader extends StatelessWidget {
 // ── Quick actions grid ────────────────────────────────────────────────────────
 class _QuickActionsGrid extends StatelessWidget {
   static const _actions = [
-    _QAction(Icons.science_outlined, 'home_virtual_lab', route: AppRoutes.virtualLab),
+    // _QAction(Icons.science_outlined, 'home_virtual_lab', route: AppRoutes.virtualLab),
     _QAction(Icons.grid_view_outlined, 'home_periodic_table', route: AppRoutes.periodicTable),
-    _QAction(Icons.sports_esports_outlined, 'home_boss_battle', route: AppRoutes.bossBattle),
+    // _QAction(Icons.sports_esports_outlined, 'home_boss_battle', route: AppRoutes.bossBattle),
     _QAction(Icons.style_outlined, 'home_flashcards', route: AppRoutes.flashcards),
     _QAction(Icons.bolt_outlined, 'home_challenges', route: AppRoutes.dailyChallenges),
-    _QAction(Icons.smart_toy_outlined, 'home_ai_chat', navTab: 3),
+    // _QAction(Icons.smart_toy_outlined, 'home_ai_chat', navTab: 3),
   ];
 
   @override

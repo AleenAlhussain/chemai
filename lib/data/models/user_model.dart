@@ -34,7 +34,7 @@ class UserModel {
 
   static UserModel get mock => const UserModel(
         id: '1',
-        name: 'Alex',
+        name: 'Aleen',
         avatarUrl: '',
         level: 14,
         xp: 760,

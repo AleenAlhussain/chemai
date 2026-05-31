@@ -62,7 +62,7 @@ class VirtualLabView extends GetView<VirtualLabController> {
                   const Text('⚗️', style: TextStyle(fontSize: 13)),
                   const SizedBox(width: 6),
                   Text(
-                    'LAB MODE',
+                    'virtual_lab_mode_badge'.tr,
                     style: TextStyle(
                       color: AppColors.purple,
                       fontSize: 10,
@@ -89,7 +89,7 @@ class VirtualLabView extends GetView<VirtualLabController> {
         onPressed: () => Get.back(),
       ),
       title: Text(
-        'VIRTUAL LAB',
+        'virtual_lab_title'.tr,
         style: TextStyle(
           color: AppColors.textPrimary,
           fontSize: 13,
@@ -257,11 +257,13 @@ class _StatusBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _StatChip(label: 'MOLECULES', value: molecules.toString()),
+          _StatChip(label: 'virtual_lab_molecules'.tr, value: molecules.toString()),
           _Divider(),
-          _StatChip(label: 'BONDS', value: bonds.toString()),
+          _StatChip(label: 'virtual_lab_bonds'.tr, value: bonds.toString()),
           _Divider(),
-          _StatChip(label: 'ENERGY', value: '${energy.toStringAsFixed(1)} eV'),
+          _StatChip(
+              label: 'virtual_lab_energy'.tr,
+              value: '${energy.toStringAsFixed(1)} eV'),
         ],
       ),
     );
@@ -328,7 +330,7 @@ class _BottomPanel extends StatelessWidget {
         children: [
           // Compound selector
           Text(
-            'SELECT COMPOUND',
+            'virtual_lab_select_compound'.tr,
             style: TextStyle(
               color: AppColors.textMuted,
               fontSize: 9,
@@ -381,7 +383,7 @@ class _BottomPanel extends StatelessWidget {
 
           // Sliders
           _SliderRow(
-            label: 'TEMPERATURE',
+            label: 'virtual_lab_temperature'.tr,
             unit: '°C',
             value: controller.temperature,
             min: -100,
@@ -390,7 +392,7 @@ class _BottomPanel extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           _SliderRow(
-            label: 'PRESSURE',
+            label: 'virtual_lab_pressure'.tr,
             unit: 'atm',
             value: controller.pressure,
             min: 0.1,
@@ -430,8 +432,8 @@ class _BottomPanel extends StatelessWidget {
                   alignment: Alignment.center,
                   child: Text(
                     controller.isSimulating.value
-                        ? '⏹  STOP SIMULATION'
-                        : '▶  START SIMULATION',
+                        ? 'virtual_lab_stop'.tr
+                        : 'virtual_lab_start'.tr,
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 14,

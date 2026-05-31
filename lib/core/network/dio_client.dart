@@ -12,10 +12,7 @@ class DioClient {
       baseUrl: ApiConstants.baseUrl,
       connectTimeout: ApiConstants.connectTimeout,
       receiveTimeout: ApiConstants.receiveTimeout,
-      // contentType drives Dio 5.x body serialisation (Map → jsonEncode).
-      // Setting Content-Type only in headers does NOT trigger JSON encoding.
-      contentType: 'application/json',
-      headers: {'Accept': 'application/json'},
+      headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
     ))
       ..interceptors.addAll([
         AuthInterceptor(),

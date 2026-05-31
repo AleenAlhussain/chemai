@@ -8,7 +8,12 @@ import '../controllers/inventory_controller.dart';
 class InventoryView extends GetView<InventoryController> {
   const InventoryView({super.key});
 
-  static const _tabs = ['GEAR', 'REAGENTS', 'ARTIFACTS', 'BOOSTS'];
+  List<String> get _tabs => [
+        'inventory_tab_gear'.tr,
+        'inventory_tab_reagents'.tr,
+        'inventory_tab_artifacts'.tr,
+        'inventory_tab_boosts'.tr,
+      ];
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +80,7 @@ class InventoryView extends GetView<InventoryController> {
         onPressed: () => Get.back(),
       ),
       title: Text(
-        "ALCHEMIST'S ARMORY",
+        'inventory_title'.tr,
         style: TextStyle(
           color: AppColors.textPrimary,
           fontSize: 12,
@@ -132,7 +137,7 @@ class _StatsHeader extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      'Quantum Voyager',
+                      'inventory_pilot_name'.tr,
                       style: TextStyle(
                         color: AppColors.cyan,
                         fontSize: 13,
@@ -148,9 +153,9 @@ class _StatsHeader extends StatelessWidget {
                         gradient: AppColors.gradientPurple,
                         borderRadius: BorderRadius.circular(6),
                       ),
-                      child: const Text(
-                        'LVL 42',
-                        style: TextStyle(
+                      child: Text(
+                        'inventory_level'.trParams({'level': '42'}),
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 10,
                           fontWeight: FontWeight.w800,
@@ -182,7 +187,8 @@ class _StatsHeader extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  '72% to Level 43',
+                  'inventory_xp_progress'
+                      .trParams({'percent': '72', 'next': '43'}),
                   style: TextStyle(
                     color: AppColors.textMuted,
                     fontSize: 10,
@@ -324,7 +330,7 @@ class _ItemCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
-                    'ON',
+                    'inventory_equipped_on'.tr,
                     style: TextStyle(
                       color: AppColors.green,
                       fontSize: 8,
@@ -379,10 +385,10 @@ class _ItemCard extends StatelessWidget {
               alignment: Alignment.center,
               child: Text(
                 item.isLocked
-                    ? '🔒 LOCKED'
+                    ? 'inventory_locked'.tr
                     : item.isEquipped
-                        ? 'UNEQUIP'
-                        : 'EQUIP',
+                        ? 'inventory_unequip'.tr
+                        : 'inventory_equip'.tr,
                 style: TextStyle(
                   color: item.isLocked
                       ? AppColors.textMuted
@@ -423,13 +429,14 @@ class _CurrencyBar extends StatelessWidget {
         children: [
           _CurrencyChip(
             icon: '💎',
-            label: '${_fmt(crystals)} Crystals',
+            label: 'inventory_crystals'
+                .trParams({'count': _fmt(crystals)}),
             color: AppColors.cyan,
           ),
           Container(width: 1, height: 28, color: AppColors.borderDefault),
           _CurrencyChip(
             icon: '⚡',
-            label: '$charges Charges',
+            label: 'inventory_charges'.trParams({'count': '$charges'}),
             color: AppColors.amber,
           ),
         ],

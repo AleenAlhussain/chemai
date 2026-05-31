@@ -71,6 +71,10 @@ class OnboardingController extends GetxController {
   Future<void> _finish() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onboarding_done', true);
-    Get.offAllNamed(AppRoutes.mentor);
+    if (prefs.getString('mentor_id') == null) {
+      Get.offAllNamed(AppRoutes.mentor);
+    } else {
+      Get.offAllNamed(AppRoutes.mainNav);
+    }
   }
 }

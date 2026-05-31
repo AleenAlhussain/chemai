@@ -89,7 +89,7 @@ class FormulaGameView extends GetView<FormulaGameController> {
       title: Row(
         children: [
           Text(
-            'FORMULA SYNTHESIS',
+            'formula_game_title'.tr,
             style: TextStyle(
               color: AppColors.textPrimary,
               fontSize: 12,
@@ -106,7 +106,8 @@ class FormulaGameView extends GetView<FormulaGameController> {
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
-                  'LVL ${controller.level.value}',
+                  'formula_game_level_badge'
+                      .trParams({'level': '${controller.level.value}'}),
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 10,
@@ -150,7 +151,7 @@ class _ScoreBadge extends StatelessWidget {
           ),
           const SizedBox(width: 4),
           Text(
-            'pts',
+            'formula_game_pts'.tr,
             style: TextStyle(color: AppColors.textMuted, fontSize: 11),
           ),
         ],
@@ -205,7 +206,7 @@ class _StreakBadge extends StatelessWidget {
           ),
           const SizedBox(width: 4),
           Text(
-            'streak',
+            'formula_game_streak'.tr,
             style: TextStyle(color: AppColors.textMuted, fontSize: 11),
           ),
         ],
@@ -229,7 +230,7 @@ class _LevelProgressBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'LEVEL $level PROGRESS',
+              'formula_game_level_progress'.trParams({'level': '$level'}),
               style: TextStyle(
                 color: AppColors.textMuted,
                 fontSize: 9,
@@ -301,7 +302,7 @@ class _ChallengeCard extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            'BUILD THE FORMULA FOR',
+            'formula_game_build_for'.tr,
             style: TextStyle(
               color: AppColors.textMuted,
               fontSize: 9,
@@ -311,7 +312,7 @@ class _ChallengeCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Sulfuric Acid',
+            'formula_game_target_name'.tr,
             style: TextStyle(
               color: AppColors.textSecondary,
               fontSize: 14,
@@ -365,7 +366,7 @@ class _FormulaBuilder extends StatelessWidget {
           Expanded(
             child: formula.isEmpty
                 ? Text(
-                    'Tap elements below to build formula…',
+                    'formula_game_empty_hint'.tr,
                     style: TextStyle(
                       color: AppColors.textMuted,
                       fontSize: 14,
@@ -413,7 +414,7 @@ class _ElementPalette extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'ELEMENT PALETTE',
+          'formula_game_palette'.tr,
           style: TextStyle(
             color: AppColors.textMuted,
             fontSize: 9,
@@ -484,9 +485,9 @@ class _SubmitButton extends StatelessWidget {
           ],
         ),
         alignment: Alignment.center,
-        child: const Text(
-          '✓  CHECK FORMULA',
-          style: TextStyle(
+        child: Text(
+          'formula_game_submit'.tr,
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 15,
             fontWeight: FontWeight.w800,

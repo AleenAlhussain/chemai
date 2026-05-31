@@ -14,48 +14,7 @@ class ScheduleView extends GetView<ScheduleController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.bgBase,
-      appBar: AppBar(
-        backgroundColor: AppColors.bgBase,
-        elevation: 0,
-        leadingWidth: 56,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              color: AppColors.bgCard,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: AppColors.borderDefault),
-            ),
-            child: Icon(Icons.bolt, color: AppColors.purple, size: 20),
-          ),
-        ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            ShaderMask(
-              shaderCallback: (bounds) =>
-                  AppColors.gradientPurple.createShader(bounds),
-              child: const Text(
-                'ChemAI',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 0.5,
-                ),
-              ),
-            ),
-            const SizedBox(width: 10),
-            CircleAvatar(
-              radius: 16,
-              backgroundColor: AppColors.purpleDim,
-              child: Icon(Icons.person, color: AppColors.purple, size: 18),
-            ),
-          ],
-        ),
-      ),
+      appBar: _buildAppBar(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         backgroundColor: AppColors.green,
@@ -108,6 +67,32 @@ class ScheduleView extends GetView<ScheduleController> {
             ).animate().fadeIn(duration: 300.ms, delay: 300.ms).slideY(begin: 0.06, end: 0),
           ],
         ),
+      ),
+    );
+  }
+  PreferredSizeWidget _buildAppBar() {
+    return AppBar(
+      backgroundColor: AppColors.bgBase,
+      elevation: 0,
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back_ios_new_rounded,
+            color: AppColors.textSecondary, size: 18),
+        onPressed: () => Get.back(),
+      ),
+      title: Row(
+        children: [
+          Text(
+            'FLASH CARD',
+            style: TextStyle(
+              color: AppColors.textPrimary,
+              fontSize: 12,
+              fontWeight: FontWeight.w800,
+              letterSpacing: 2,
+            ),
+          ),
+          const SizedBox(width: 10),
+
+        ],
       ),
     );
   }

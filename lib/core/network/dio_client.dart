@@ -15,7 +15,12 @@ class DioClient {
       // contentType drives Dio 5.x body serialisation (Map → jsonEncode).
       // Setting Content-Type only in headers does NOT trigger JSON encoding.
       contentType: 'application/json',
-      headers: {'Accept': 'application/json'},
+      headers: {
+        'Accept': 'application/json',
+        // Required for ngrok free tier — bypasses the browser warning interstitial.
+        // Safe to keep in production (ignored by real servers).
+        'ngrok-skip-browser-warning': 'true',
+      },
     ))
       ..interceptors.addAll([
         AuthInterceptor(),

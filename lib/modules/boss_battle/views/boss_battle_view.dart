@@ -11,7 +11,7 @@ class BossBattleView extends GetView<BossBattleController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.bgDeep,
+      backgroundColor: const Color(0xFF02040F),
       appBar: _buildAppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -31,15 +31,15 @@ class BossBattleView extends GetView<BossBattleController> {
                   .animate()
                   .fadeIn(delay: 100.ms, duration: 400.ms)
                   .scale(
-                      begin: const Offset(0.9, 0.9), end: const Offset(1, 1)),
+                  begin: const Offset(0.9, 0.9), end: const Offset(1, 1)),
 
               const SizedBox(height: 20),
 
               // ── Challenge card ────────────────────────────────────────
               Obx(() => _ChallengeCard(
-                    challenge: controller.currentChallenge.value,
-                    isCorrect: controller.isCorrect.value,
-                  )).animate().fadeIn(delay: 150.ms, duration: 400.ms),
+                challenge: controller.currentChallenge.value,
+                isCorrect: controller.isCorrect.value,
+              )).animate().fadeIn(delay: 150.ms, duration: 400.ms),
 
               const SizedBox(height: 16),
 
@@ -68,7 +68,7 @@ class BossBattleView extends GetView<BossBattleController> {
               const SizedBox(height: 20),
 
               // ── Bottom status row ─────────────────────────────────────
-              Obx(() => _BottomStatus(controller: controller))
+              _BottomStatus(controller: controller)
                   .animate()
                   .fadeIn(delay: 300.ms),
 
@@ -87,7 +87,7 @@ class BossBattleView extends GetView<BossBattleController> {
 
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
-      backgroundColor: AppColors.bgDeep,
+      backgroundColor: const Color(0xFF02040F),
       elevation: 0,
       leading: IconButton(
         icon: Icon(Icons.arrow_back_ios_new_rounded,
@@ -95,7 +95,7 @@ class BossBattleView extends GetView<BossBattleController> {
         onPressed: () => Get.back(),
       ),
       title: Text(
-        'BOSS BATTLE',
+        'boss_battle_title'.tr,
         style: TextStyle(
           color: AppColors.textPrimary,
           fontSize: 13,
@@ -105,43 +105,43 @@ class BossBattleView extends GetView<BossBattleController> {
       ),
       actions: [
         Obx(() => Padding(
-              padding: const EdgeInsets.only(right: 14),
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-                decoration: BoxDecoration(
-                  color: controller.secondsLeft.value <= 10
-                      ? AppColors.danger.withOpacity(0.15)
-                      : AppColors.bgCard,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
+          padding: const EdgeInsets.only(right: 14),
+          child: Container(
+            padding:
+            const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+            decoration: BoxDecoration(
+              color: controller.secondsLeft.value <= 10
+                  ? AppColors.danger.withOpacity(0.15)
+                  : AppColors.bgCard,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: controller.secondsLeft.value <= 10
+                    ? AppColors.danger
+                    : AppColors.borderDefault,
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.timer_outlined,
                     color: controller.secondsLeft.value <= 10
                         ? AppColors.danger
-                        : AppColors.borderDefault,
+                        : AppColors.textSecondary,
+                    size: 14),
+                const SizedBox(width: 5),
+                Text(
+                  controller.timerLabel,
+                  style: TextStyle(
+                    color: controller.secondsLeft.value <= 10
+                        ? AppColors.danger
+                        : AppColors.textPrimary,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800,
                   ),
                 ),
-                child: Row(
-                  children: [
-                    Icon(Icons.timer_outlined,
-                        color: controller.secondsLeft.value <= 10
-                            ? AppColors.danger
-                            : AppColors.textSecondary,
-                        size: 14),
-                    const SizedBox(width: 5),
-                    Text(
-                      controller.timerLabel,
-                      style: TextStyle(
-                        color: controller.secondsLeft.value <= 10
-                            ? AppColors.danger
-                            : AppColors.textPrimary,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            )),
+              ],
+            ),
+          ),
+        )),
       ],
     );
   }
@@ -162,22 +162,22 @@ class _HpSection extends StatelessWidget {
         border: Border.all(color: AppColors.borderDefault),
       ),
       child: Obx(() => Column(
-            children: [
-              _HpBar(
-                label: 'PLAYER',
-                current: controller.playerHp.value,
-                max: 100,
-                color: AppColors.purple,
-              ),
-              const SizedBox(height: 12),
-              _HpBar(
-                label: 'MOLE TITAN',
-                current: controller.bossHp.value,
-                max: 100,
-                color: const Color(0xFFEF4444),
-              ),
-            ],
-          )),
+        children: [
+          _HpBar(
+            label: 'boss_battle_player'.tr,
+            current: controller.playerHp.value,
+            max: 100,
+            color: AppColors.purple,
+          ),
+          const SizedBox(height: 12),
+          _HpBar(
+            label: 'boss_battle_boss_name'.tr,
+            current: controller.bossHp.value,
+            max: 100,
+            color: const Color(0xFFEF4444),
+          ),
+        ],
+      )),
     );
   }
 }
@@ -213,7 +213,10 @@ class _HpBar extends StatelessWidget {
               ),
             ),
             Text(
-              '$current / $max HP',
+              'boss_battle_hp'.trParams({
+                'current': '$current',
+                'max': '$max',
+              }),
               style: TextStyle(
                 color: color,
                 fontSize: 11,
@@ -259,7 +262,7 @@ class _BossNameCard extends StatelessWidget {
     return Column(
       children: [
         Text(
-          'Chapter Boss',
+          'boss_battle_chapter_boss'.tr,
           style: TextStyle(
             color: AppColors.textMuted,
             fontSize: 10,
@@ -272,8 +275,8 @@ class _BossNameCard extends StatelessWidget {
           shaderCallback: (bounds) => LinearGradient(
             colors: [const Color(0xFFEF4444), const Color(0xFFFB923C)],
           ).createShader(bounds),
-          child: const Text(
-            'MOLE TITAN',
+          child: Text(
+            'boss_battle_boss_name'.tr,
             style: TextStyle(
               color: Colors.white,
               fontSize: 30,
@@ -319,7 +322,7 @@ class _ChallengeCard extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            'BALANCE THE EQUATION',
+            'boss_battle_balance_equation'.tr,
             style: TextStyle(
               color: AppColors.textMuted,
               fontSize: 9,
@@ -341,7 +344,7 @@ class _ChallengeCard extends StatelessWidget {
           ),
           if (isCorrect == true) ...[
             const SizedBox(height: 10),
-            Text('✓ CORRECT!',
+            Text('boss_battle_correct'.tr,
                 style: TextStyle(
                     color: AppColors.green,
                     fontSize: 13,
@@ -349,7 +352,7 @@ class _ChallengeCard extends StatelessWidget {
           ],
           if (isCorrect == false) ...[
             const SizedBox(height: 10),
-            Text('✗ WRONG — TRY AGAIN',
+            Text('boss_battle_wrong'.tr,
                 style: TextStyle(
                     color: AppColors.danger,
                     fontSize: 13,
@@ -383,13 +386,13 @@ class _AnswerInput extends StatelessWidget {
         ),
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
-          hintText: 'Enter coefficients (e.g. 2,1,2)…',
+          hintText: 'boss_battle_hint_coefficients'.tr,
           hintStyle: TextStyle(color: AppColors.textMuted, fontSize: 13),
           prefixIcon:
-              Icon(Icons.edit_rounded, color: AppColors.textMuted, size: 18),
+          Icon(Icons.edit_rounded, color: AppColors.textMuted, size: 18),
           border: InputBorder.none,
           contentPadding:
-              const EdgeInsets.symmetric(vertical: 14, horizontal: 4),
+          const EdgeInsets.symmetric(vertical: 14, horizontal: 4),
         ),
       ),
     );
@@ -421,8 +424,8 @@ class _AttackButton extends StatelessWidget {
           ],
         ),
         alignment: Alignment.center,
-        child: const Text(
-          '⚔️  ATTACK!',
+        child: Text(
+          'boss_battle_attack'.tr,
           style: TextStyle(
             color: Colors.white,
             fontSize: 16,
@@ -453,7 +456,7 @@ class _HintButton extends StatelessWidget {
         ),
         alignment: Alignment.center,
         child: Text(
-          '💡 HINT',
+          'boss_battle_hint_btn'.tr,
           style: TextStyle(
             color: AppColors.cyan,
             fontSize: 14,
@@ -473,28 +476,31 @@ class _BottomStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        _StatusPill(
-          label: 'COMBO',
-          value: 'x${controller.combo.value}',
-          color: AppColors.amber,
-        ),
-        const SizedBox(width: 10),
-        _StatusPill(
-          label: 'ROUND',
-          value: '${controller.round.value}/${controller.totalRounds.value}',
-          color: AppColors.purple,
-        ),
-        const SizedBox(width: 10),
-        _StatusPill(
-          label: 'TIME',
-          value: controller.timerLabel,
-          color: controller.secondsLeft.value <= 10
-              ? AppColors.danger
-              : AppColors.cyan,
-        ),
-      ],
+    return Obx(
+          () => Row(
+        children: [
+          _StatusPill(
+            label: 'boss_battle_combo'.tr,
+            value: 'x${controller.combo.value}',
+            color: AppColors.amber,
+          ),
+          const SizedBox(width: 10),
+          _StatusPill(
+            label: 'boss_battle_round'.tr,
+            value:
+            '${controller.round.value}/${controller.totalRounds.value}',
+            color: AppColors.purple,
+          ),
+          const SizedBox(width: 10),
+          _StatusPill(
+            label: 'boss_battle_time'.tr,
+            value: controller.timerLabel,
+            color: controller.secondsLeft.value <= 10
+                ? AppColors.danger
+                : AppColors.cyan,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -567,7 +573,7 @@ class _XpDisplay extends StatelessWidget {
           const Text('⭐', style: TextStyle(fontSize: 18)),
           const SizedBox(width: 8),
           Text(
-            '+150 XP',
+            'boss_battle_xp_reward'.tr,
             style: TextStyle(
               color: AppColors.amber,
               fontSize: 20,
@@ -577,7 +583,7 @@ class _XpDisplay extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Text(
-            'REWARD',
+            'boss_battle_reward_label'.tr,
             style: TextStyle(
               color: AppColors.textMuted,
               fontSize: 11,

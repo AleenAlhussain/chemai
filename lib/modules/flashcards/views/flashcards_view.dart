@@ -14,38 +14,7 @@ class FlashcardsView extends GetView<FlashcardsController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.bgDeep,
-      appBar: AppBar(
-        backgroundColor: AppColors.bgDeep,
-        titleSpacing: 16,
-        leading: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: AppColors.bgCard,
-              border: Border.all(color: AppColors.borderDefault),
-            ),
-            child:  Icon(Icons.person_outline,
-                color: AppColors.textSecondary, size: 18),
-          ),
-        ),
-        title:  Text(
-          'FLASHCARDS',
-          style: TextStyle(
-            color: AppColors.textPrimary,
-            fontSize: 13,
-            fontWeight: FontWeight.w800,
-            letterSpacing: 2.5,
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon:  Icon(Icons.settings_outlined,
-                color: AppColors.textSecondary, size: 20),
-            onPressed: () {},
-          ),
-        ],
-      ),
+      appBar: _buildAppBar(),
       body: Column(
         children: [
           const SizedBox(height: 12),
@@ -65,7 +34,9 @@ class FlashcardsView extends GetView<FlashcardsController> {
                     const Text('⭐', style: TextStyle(fontSize: 13)),
                     const SizedBox(width: 6),
                     Text(
-                      '${controller.masteredCount.value} Mastered',
+                      'flashcards_mastered'.trParams({
+                        'count': '${controller.masteredCount.value}',
+                      }),
                       style:  TextStyle(
                         color: AppColors.textPrimary,
                         fontSize: 13,
@@ -79,7 +50,9 @@ class FlashcardsView extends GetView<FlashcardsController> {
                       color: AppColors.borderDefault,
                     ),
                     Text(
-                      '${controller.totalCards} Total',
+                      'flashcards_total'.trParams({
+                        'count': '${controller.totalCards}',
+                      }),
                       style:  TextStyle(
                         color: AppColors.textSecondary,
                         fontSize: 13,
@@ -100,7 +73,7 @@ class FlashcardsView extends GetView<FlashcardsController> {
                 // FORGET
                 _ActionButton(
                   icon: Icons.close,
-                  label: 'FORGET',
+                  label: 'flashcards_forget'.tr,
                   color: const Color(0xFFEF4444),
                   onTap: controller.markForgotten,
                 ),
@@ -120,7 +93,7 @@ class FlashcardsView extends GetView<FlashcardsController> {
                 // MASTERED
                 _ActionButton(
                   icon: Icons.check,
-                  label: 'MASTERED',
+                  label: 'flashcards_mastered_btn'.tr,
                   color: AppColors.green,
                   onTap: controller.markMastered,
                 ),
@@ -137,6 +110,32 @@ class FlashcardsView extends GetView<FlashcardsController> {
               )).animate().fadeIn(delay: 300.ms, duration: 400.ms),
 
           const SizedBox(height: 28),
+        ],
+      ),
+    );
+  }
+  PreferredSizeWidget _buildAppBar() {
+    return AppBar(
+      backgroundColor: AppColors.bgBase,
+      elevation: 0,
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back_ios_new_rounded,
+            color: AppColors.textSecondary, size: 18),
+        onPressed: () => Get.back(),
+      ),
+      title: Row(
+        children: [
+          Text(
+            'flashcards_title'.tr,
+            style: TextStyle(
+              color: AppColors.textPrimary,
+              fontSize: 12,
+              fontWeight: FontWeight.w800,
+              letterSpacing: 2,
+            ),
+          ),
+          const SizedBox(width: 10),
+
         ],
       ),
     );
@@ -192,7 +191,7 @@ class _CardFront extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'QUANTUM STATE: ${card.state}',
+                'flashcards_quantum_state'.trParams({'state': card.state}),
                 style:  TextStyle(
                   color: AppColors.textMuted,
                   fontSize: 9,
@@ -221,7 +220,9 @@ class _CardFront extends StatelessWidget {
 
           // Concept number
           Text(
-            'CONCEPT ${card.id.toString().padLeft(3, '0')}',
+            'flashcards_concept'.trParams({
+              'id': card.id.toString().padLeft(3, '0'),
+            }),
             style:  TextStyle(
               color: AppColors.purple,
               fontSize: 12,
@@ -278,7 +279,7 @@ class _CardFront extends StatelessWidget {
                   color: AppColors.textMuted, size: 18),
               const SizedBox(height: 4),
                Text(
-                'Tap to Flip',
+                'flashcards_tap_flip'.tr,
                 style: TextStyle(
                   color: AppColors.textMuted,
                   fontSize: 11,
@@ -309,7 +310,7 @@ class _CardBack extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'QUANTUM STATE: ${card.state}',
+                'flashcards_quantum_state'.trParams({'state': card.state}),
                 style:  TextStyle(
                   color: AppColors.textMuted,
                   fontSize: 9,
@@ -324,7 +325,7 @@ class _CardBack extends StatelessWidget {
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child:  Text(
-                  'DEFINITION',
+                  'flashcards_definition'.tr,
                   style: TextStyle(
                     color: AppColors.green,
                     fontSize: 8,
@@ -376,7 +377,7 @@ class _CardBack extends StatelessWidget {
                   color: AppColors.textMuted, size: 18),
               SizedBox(height: 4),
               Text(
-                'Tap to Flip',
+                'flashcards_tap_flip'.tr,
                 style: TextStyle(
                   color: AppColors.textMuted,
                   fontSize: 11,
@@ -495,7 +496,7 @@ class _DailyProgress extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         Text(
-          'Daily Goal: $remaining more cards',
+          'flashcards_daily_goal'.trParams({'remaining': '$remaining'}),
           style:  TextStyle(
             color: AppColors.textSecondary,
             fontSize: 13,

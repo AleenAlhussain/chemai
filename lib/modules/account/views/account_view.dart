@@ -200,10 +200,10 @@ class _EditProfileForm extends StatelessWidget {
             )),
         const SizedBox(height: 16),
         Obx(() => _ActionButton(
-              label: 'account_save'.tr,
-              isLoading: controller.isLoading.value,
-              onTap: controller.updateProfile,
-            )),
+          label: 'account_save'.tr,
+          isLoading: controller.isLoading.value,
+          onTap: controller.updateProfile,
+        )),
       ],
     );
   }
@@ -301,44 +301,44 @@ class _ChangePasswordForm extends StatelessWidget {
     return Column(
       children: [
         Obx(() => _Field(
-              label: 'account_old_password'.tr,
-              controller: controller.oldPasswordController,
-              icon: Icons.lock_outline,
-              obscure: !controller.isOldPassVisible.value,
-              suffix: GestureDetector(
-                onTap: controller.toggleOldPassVisibility,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 12),
-                  child: Icon(
-                    controller.isOldPassVisible.value
-                        ? Icons.visibility_off_outlined
-                        : Icons.visibility_outlined,
-                    color: AppColors.textSecondary,
-                    size: 18,
-                  ),
-                ),
+          label: 'account_old_password'.tr,
+          controller: controller.oldPasswordController,
+          icon: Icons.lock_outline,
+          obscure: !controller.isOldPassVisible.value,
+          suffix: GestureDetector(
+            onTap: controller.toggleOldPassVisibility,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: Icon(
+                controller.isOldPassVisible.value
+                    ? Icons.visibility_off_outlined
+                    : Icons.visibility_outlined,
+                color: AppColors.textSecondary,
+                size: 18,
               ),
-            )),
+            ),
+          ),
+        )),
         const SizedBox(height: 12),
         Obx(() => _Field(
-              label: 'account_new_password'.tr,
-              controller: controller.newPasswordController,
-              icon: Icons.lock_reset_outlined,
-              obscure: !controller.isNewPassVisible.value,
-              suffix: GestureDetector(
-                onTap: controller.toggleNewPassVisibility,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 12),
-                  child: Icon(
-                    controller.isNewPassVisible.value
-                        ? Icons.visibility_off_outlined
-                        : Icons.visibility_outlined,
-                    color: AppColors.textSecondary,
-                    size: 18,
-                  ),
-                ),
+          label: 'account_new_password'.tr,
+          controller: controller.newPasswordController,
+          icon: Icons.lock_reset_outlined,
+          obscure: !controller.isNewPassVisible.value,
+          suffix: GestureDetector(
+            onTap: controller.toggleNewPassVisibility,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: Icon(
+                controller.isNewPassVisible.value
+                    ? Icons.visibility_off_outlined
+                    : Icons.visibility_outlined,
+                color: AppColors.textSecondary,
+                size: 18,
               ),
-            )),
+            ),
+          ),
+        )),
         const SizedBox(height: 12),
         _Field(
           label: 'account_confirm_password'.tr,
@@ -348,11 +348,11 @@ class _ChangePasswordForm extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         Obx(() => _ActionButton(
-              label: 'account_change_password'.tr,
-              isLoading: controller.isLoading.value,
-              onTap: controller.changePassword,
-              color: AppColors.cyan,
-            )),
+          label: 'account_change_password'.tr,
+          isLoading: controller.isLoading.value,
+          onTap: controller.changePassword,
+          color: AppColors.cyan,
+        )),
       ],
     );
   }

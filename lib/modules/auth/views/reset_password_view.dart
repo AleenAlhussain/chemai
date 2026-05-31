@@ -59,22 +59,22 @@ class ResetPasswordView extends GetView<AuthController> {
                     ),
                     const SizedBox(height: 22),
                     Obx(() => GestureDetector(
-                          onTap: controller.isLoading.value ? null : controller.resetPassword,
-                          child: Container(
-                            width: double.infinity,
-                            height: 52,
-                            decoration: BoxDecoration(
-                              gradient: AppColors.gradientPurple,
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            alignment: Alignment.center,
-                            child: controller.isLoading.value
-                                ? const SizedBox(width: 20, height: 20,
-                                    child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                                : Text('auth_reset_submit'.tr,
-                                    style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700)),
-                          ),
-                        )),
+                      onTap: controller.isLoading.value ? null : controller.resetPassword,
+                      child: Container(
+                        width: double.infinity,
+                        height: 52,
+                        decoration: BoxDecoration(
+                          gradient: AppColors.gradientPurple,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        alignment: Alignment.center,
+                        child: controller.isLoading.value
+                            ? const SizedBox(width: 20, height: 20,
+                            child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                            : Text('auth_reset_submit'.tr,
+                            style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700)),
+                      ),
+                    )),
                   ],
                 ),
               ),
@@ -92,9 +92,9 @@ class _FieldLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Text(
-        text,
-        style: TextStyle(color: AppColors.textSecondary, fontSize: 12, fontWeight: FontWeight.w600),
-      );
+    text,
+    style: TextStyle(color: AppColors.textSecondary, fontSize: 12, fontWeight: FontWeight.w600),
+  );
 }
 
 class _InputField extends StatelessWidget {

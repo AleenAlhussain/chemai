@@ -26,7 +26,7 @@ class OnboardingView extends GetView<OnboardingController> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: AppColors.bgDeep,
+      backgroundColor: const Color(0xFF070A1C),
       body: Stack(
         children: [
           // Background radial glow

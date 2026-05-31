@@ -65,22 +65,22 @@ class ForgotPasswordView extends GetView<AuthController> {
                     ),
                     const SizedBox(height: 22),
                     Obx(() => GestureDetector(
-                          onTap: controller.isLoading.value ? null : controller.forgotPassword,
-                          child: Container(
-                            width: double.infinity,
-                            height: 52,
-                            decoration: BoxDecoration(
-                              gradient: AppColors.gradientPurple,
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            alignment: Alignment.center,
-                            child: controller.isLoading.value
-                                ? const SizedBox(width: 20, height: 20,
-                                    child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                                : Text('auth_send_link'.tr,
-                                    style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700)),
-                          ),
-                        )),
+                      onTap: controller.isLoading.value ? null : controller.forgotPassword,
+                      child: Container(
+                        width: double.infinity,
+                        height: 52,
+                        decoration: BoxDecoration(
+                          gradient: AppColors.gradientPurple,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        alignment: Alignment.center,
+                        child: controller.isLoading.value
+                            ? const SizedBox(width: 20, height: 20,
+                            child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                            : Text('auth_send_link'.tr,
+                            style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700)),
+                      ),
+                    )),
                   ],
                 ),
               ),

@@ -20,84 +20,125 @@ class QuizView extends GetView<QuizController> {
     );
   }
 
+  // PreferredSizeWidget _buildAppBar() {
+  //   return AppBar(
+  //     backgroundColor: AppColors.bgBase,
+  //     elevation: 0,
+  //     automaticallyImplyLeading: false,
+  //     titleSpacing: 16,
+  //     title: Row(
+  //       children: [
+  //         Container(
+  //           width: 36,
+  //           height: 36,
+  //           decoration: BoxDecoration(
+  //             color: AppColors.bgCard,
+  //             borderRadius: BorderRadius.circular(10),
+  //             border: Border.all(color: AppColors.borderDefault),
+  //           ),
+  //           alignment: Alignment.center,
+  //           child: Icon(Icons.bolt, color: AppColors.amber, size: 20),
+  //         ),
+  //         const Spacer(),
+  //         Obx(() => Container(
+  //               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+  //               decoration: BoxDecoration(
+  //                 color: AppColors.bgCard,
+  //                 borderRadius: BorderRadius.circular(20),
+  //                 border: Border.all(color: AppColors.borderDefault),
+  //               ),
+  //               child: Row(
+  //                 mainAxisSize: MainAxisSize.min,
+  //                 children: [
+  //                   Text(
+  //                     controller.timerLabel,
+  //                     style: TextStyle(
+  //                       color: controller.secondsRemaining.value < 10
+  //                           ? AppColors.warning
+  //                           : AppColors.textPrimary,
+  //                       fontSize: 13,
+  //                       fontWeight: FontWeight.w700,
+  //                       fontFamily: 'monospace',
+  //                     ),
+  //                   ),
+  //                   const SizedBox(width: 6),
+  //                   Icon(Icons.timer_rounded, color: AppColors.warning, size: 16),
+  //                 ],
+  //               ),
+  //             )),
+  //         const Spacer(),
+  //         ShaderMask(
+  //           shaderCallback: (bounds) =>
+  //               AppColors.gradientPurple.createShader(bounds),
+  //           blendMode: BlendMode.srcIn,
+  //           child: const Text(
+  //             'ChemAI',
+  //             style: TextStyle(
+  //               fontSize: 15,
+  //               fontWeight: FontWeight.w800,
+  //               color: Colors.white,
+  //             ),
+  //           ),
+  //         ),
+  //
+  //       ],
+  //     ),
+  //   );
+  // }
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       backgroundColor: AppColors.bgBase,
       elevation: 0,
-      automaticallyImplyLeading: false,
-      titleSpacing: 16,
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back_ios_new_rounded,
+            color: AppColors.textSecondary, size: 18),
+        onPressed: () => Get.back(),
+      ),
       title: Row(
         children: [
-          Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              color: AppColors.bgCard,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: AppColors.borderDefault),
-            ),
-            alignment: Alignment.center,
-            child: Icon(Icons.bolt, color: AppColors.amber, size: 20),
-          ),
           const Spacer(),
           Obx(() => Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-                decoration: BoxDecoration(
-                  color: AppColors.bgCard,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: AppColors.borderDefault),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+            decoration: BoxDecoration(
+              color: AppColors.bgCard,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: AppColors.borderDefault),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  controller.timerLabel,
+                  style: TextStyle(
+                    color: controller.secondsRemaining.value < 10
+                        ? AppColors.warning
+                        : AppColors.textPrimary,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'monospace',
+                  ),
                 ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      controller.timerLabel,
-                      style: TextStyle(
-                        color: controller.secondsRemaining.value < 10
-                            ? AppColors.warning
-                            : AppColors.textPrimary,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: 'monospace',
-                      ),
-                    ),
-                    const SizedBox(width: 6),
-                    Icon(Icons.timer_rounded, color: AppColors.warning, size: 16),
-                  ],
-                ),
-              )),
+                const SizedBox(width: 6),
+                Icon(Icons.timer_rounded, color: AppColors.warning, size: 16),
+              ],
+            ),
+          )),
           const Spacer(),
-          ShaderMask(
-            shaderCallback: (bounds) =>
-                AppColors.gradientPurple.createShader(bounds),
-            blendMode: BlendMode.srcIn,
-            child: const Text(
-              'ChemAI',
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w800,
-                color: Colors.white,
-              ),
+          Text(
+            'quiz_daily_title'.tr,
+            style: TextStyle(
+              color: AppColors.textPrimary,
+              fontSize: 12,
+              fontWeight: FontWeight.w800,
+              letterSpacing: 2,
             ),
           ),
           const SizedBox(width: 10),
-          Container(
-            width: 34,
-            height: 34,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: AppColors.bgCard,
-              border: Border.all(color: AppColors.borderDefault),
-            ),
-            alignment: Alignment.center,
-            child: Icon(Icons.account_circle_outlined,
-                color: AppColors.purple, size: 22),
-          ),
+
         ],
       ),
     );
   }
-
   Widget _buildQuizBody() {
     return Obx(() {
       final q = controller.current;
@@ -143,7 +184,10 @@ class QuizView extends GetView<QuizController> {
             ),
             const Spacer(),
             Text(
-              'Question ${controller.currentIndex.value + 1} of ${controller.questions.length}',
+              'quiz_question_counter'.trParams({
+                'current': '${controller.currentIndex.value + 1}',
+                'total': '${controller.questions.length}',
+              }),
               style: TextStyle(
                 color: AppColors.textMuted,
                 fontSize: 12,
@@ -188,7 +232,7 @@ class QuizView extends GetView<QuizController> {
                 border: Border.all(color: AppColors.purple.withOpacity(0.4)),
               ),
               child: Text(
-                'Inorganic Chemistry',
+                'quiz_subject_tag'.tr,
                 style: TextStyle(
                   color: AppColors.purpleLight,
                   fontSize: 10,
@@ -382,8 +426,8 @@ class QuizView extends GetView<QuizController> {
           Expanded(
             child: Text(
               correct
-                  ? 'Excellent! This is a classic neutralization reaction. Kimo is proud of you!'
-                  : 'Not quite! Review this concept and try again. You\'ve got this!',
+                  ? 'quiz_feedback_correct'.tr
+                  : 'quiz_feedback_wrong'.tr,
               style: TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 13,
@@ -417,7 +461,7 @@ class QuizView extends GetView<QuizController> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Next Question',
+                'quiz_next'.tr,
                 style: TextStyle(
                   color: answered
                       ? Colors.white
@@ -471,7 +515,7 @@ class _QuizSetupBodyState extends State<_QuizSetupBody> {
           _buildSpeechBubble(),
           const SizedBox(height: 22),
           Text(
-            'Quiz Setup',
+            'quiz_setup_title'.tr,
             style: TextStyle(
               color: AppColors.textPrimary,
               fontSize: 26,
@@ -479,7 +523,7 @@ class _QuizSetupBodyState extends State<_QuizSetupBody> {
             ),
           ),
           const SizedBox(height: 22),
-          _buildSectionLabel('Choose Chapter'),
+          _buildSectionLabel('quiz_choose_chapter'.tr),
           const SizedBox(height: 10),
           _buildChapterOption(
             index: 0,
@@ -497,11 +541,11 @@ class _QuizSetupBodyState extends State<_QuizSetupBody> {
             locked: true,
           ),
           const SizedBox(height: 22),
-          _buildSectionLabel('Number of Questions'),
+          _buildSectionLabel('quiz_num_questions'.tr),
           const SizedBox(height: 10),
           _buildQuestionCountRow(),
           const SizedBox(height: 22),
-          _buildSectionLabel('Difficulty'),
+          _buildSectionLabel('quiz_difficulty'.tr),
           const SizedBox(height: 10),
           _buildDifficultyRow(),
           const SizedBox(height: 28),
@@ -546,7 +590,7 @@ class _QuizSetupBodyState extends State<_QuizSetupBody> {
             border: Border.all(color: AppColors.borderDefault),
           ),
           child: Text(
-            'Ready to test your knowledge?',
+            'quiz_setup_prompt'.tr,
             style: TextStyle(
               color: AppColors.textSecondary,
               fontSize: 14,
@@ -692,7 +736,7 @@ class _QuizSetupBodyState extends State<_QuizSetupBody> {
               ),
               const SizedBox(width: 8),
               Text(
-                'Questions',
+                'quiz_questions_label'.tr,
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 14,
@@ -726,20 +770,21 @@ class _QuizSetupBodyState extends State<_QuizSetupBody> {
   Widget _buildDifficultyRow() {
     return Row(
       children: [
-        _difficultyPill('Hard', Colors.red.shade400),
+        _difficultyPill('Hard', 'quiz_difficulty_hard'.tr, Colors.red.shade400),
         const SizedBox(width: 8),
-        _difficultyPill('Medium', AppColors.textPrimary),
+        _difficultyPill(
+            'Medium', 'quiz_difficulty_medium'.tr, AppColors.textPrimary),
         const SizedBox(width: 8),
-        _difficultyPill('Easy', AppColors.green),
+        _difficultyPill('Easy', 'quiz_difficulty_easy'.tr, AppColors.green),
       ],
     );
   }
 
-  Widget _difficultyPill(String label, Color color) {
-    final selected = _difficulty == label;
+  Widget _difficultyPill(String value, String label, Color color) {
+    final selected = _difficulty == value;
     return Expanded(
       child: GestureDetector(
-        onTap: () => setState(() => _difficulty = label),
+        onTap: () => setState(() => _difficulty = value),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           height: 42,
@@ -780,14 +825,14 @@ class _QuizSetupBodyState extends State<_QuizSetupBody> {
           borderRadius: BorderRadius.circular(14),
         ),
         alignment: Alignment.center,
-        child: const Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.play_arrow_rounded, color: Colors.white, size: 22),
-            SizedBox(width: 8),
+            const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 22),
+            const SizedBox(width: 8),
             Text(
-              'Start Quiz Now',
-              style: TextStyle(
+              'quiz_start'.tr,
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.w800,

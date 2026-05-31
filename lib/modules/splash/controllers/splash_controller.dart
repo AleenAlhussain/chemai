@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../app/routes/app_routes.dart';
+import '../../../core/navigation/post_auth_navigation.dart';
 
 class SplashController extends GetxController {
   final progress = 0.0.obs;
@@ -46,18 +47,12 @@ class SplashController extends GetxController {
 
   Future<void> _navigate() async {
     final prefs = await SharedPreferences.getInstance();
-    final loggedIn  = prefs.getBool('logged_in') ?? false;
-    final onboarded = prefs.getBool('onboarding_done') ?? false;
-    final mentorSet = prefs.getString('mentor_id') != null;
+    final loggedIn = prefs.getBool('logged_in') ?? false;
 
     if (!loggedIn) {
       Get.offAllNamed(AppRoutes.auth);
-    } else if (!onboarded) {
-      Get.offAllNamed(AppRoutes.onboarding);
-    } else if (!mentorSet) {
-      Get.offAllNamed(AppRoutes.mentor);
     } else {
-      Get.offAllNamed(AppRoutes.mainNav);
+      await navigateAfterLogin();
     }
   }
 }

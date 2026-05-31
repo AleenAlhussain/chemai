@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../app/theme/app_colors.dart';
+import '../../../core/controllers/explanation_style_controller.dart';
 import '../controllers/pilot_profile_controller.dart';
-
+import '../../main_nav/controllers/main_nav_controller.dart';
 class PilotProfileView extends GetView<PilotProfileController> {
   const PilotProfileView({super.key});
 
@@ -11,45 +12,7 @@ class PilotProfileView extends GetView<PilotProfileController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.bgBase,
-      appBar: AppBar(
-        backgroundColor: AppColors.bgBase,
-        automaticallyImplyLeading: false,
-        titleSpacing: 0,
-        title: const SizedBox.shrink(),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: Row(
-              children: [
-                Text(
-                  'ChemAI',
-                  style: TextStyle(
-                    color: AppColors.purple,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Container(
-                  width: 36,
-                  height: 36,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppColors.bgCard,
-                    border: Border.all(color: AppColors.borderDefault),
-                  ),
-                  child: Icon(
-                    Icons.account_circle_outlined,
-                    color: AppColors.textSecondary,
-                    size: 20,
-                  ),
-                ),
-                const SizedBox(width: 16),
-              ],
-            ),
-          ),
-        ],
-      ),
+      appBar: _buildAppBar(),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,21 +34,21 @@ class PilotProfileView extends GetView<PilotProfileController> {
                       ),
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: AppColors.amber,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      'Level ${controller.level}',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                  //   decoration: BoxDecoration(
+                  //     color: AppColors.amber,
+                  //     borderRadius: BorderRadius.circular(20),
+                  //   ),
+                  //   child: Text(
+                  //     'Level ${controller.level}',
+                  //     style: const TextStyle(
+                  //       color: Colors.white,
+                  //       fontSize: 12,
+                  //       fontWeight: FontWeight.w700,
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -148,6 +111,65 @@ class PilotProfileView extends GetView<PilotProfileController> {
       ),
     );
   }
+  PreferredSizeWidget _buildAppBar() {
+    final avatarUrl =
+        '';
+    return AppBar(
+      // backgroundColor: const Color(0xFF020408),
+      elevation: 0,
+      leading: Padding(
+        padding: const EdgeInsets.all(6),
+        child: GestureDetector(
+          onTap: () => Get.find<MainNavController>().openDrawer(),
+          child: Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              color: AppColors.bgCard,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: AppColors.borderDefault),
+            ),
+            child: Icon(Icons.menu_rounded, color: AppColors.textSecondary, size: 18),
+          ),
+        ),
+      ),
+      title: ShaderMask(
+        shaderCallback: (bounds) => AppColors.gradientPurple.createShader(bounds),
+        child: Text(
+          'app_name'.tr,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+      ),
+      centerTitle: true,
+      actions: [
+        Padding(
+          padding: const EdgeInsets.all(6),
+          child:
+
+          Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppColors.bgCard,
+              border: Border.all(color: AppColors.borderDefault),
+              image: avatarUrl.isNotEmpty
+                  ? DecorationImage(image: NetworkImage(avatarUrl), fit: BoxFit.cover)
+                  : null,
+            ),
+            child: avatarUrl.isEmpty
+                ? Icon(Icons.account_circle_outlined, color: AppColors.purple, size: 22)
+                : null,
+          )
+          ,
+        ),
+      ],
+    );
+  }
 }
 
 class _AvatarHeroSection extends StatelessWidget {
@@ -178,39 +200,39 @@ class _AvatarHeroSection extends StatelessWidget {
             ),
             child: Center(
               child: Icon(
-                Icons.smart_toy_outlined,
+                Icons.person,
                 size: 80,
                 color: AppColors.purple,
               ),
             ),
           ),
-          Positioned(
-            bottom: 12,
-            right: 12,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              decoration: BoxDecoration(
-                color: const Color(0xFF1E2040),
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: AppColors.borderDefault),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text('✏', style: TextStyle(fontSize: 11)),
-                  const SizedBox(width: 4),
-                  Text(
-                    'pilot_edit_appearance'.tr,
-                    style: TextStyle(
-                      color: AppColors.textPrimary,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          // Positioned(
+          //   bottom: 12,
+          //   right: 12,
+          //   child: Container(
+          //     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          //     decoration: BoxDecoration(
+          //       color: const Color(0xFF1E2040),
+          //       borderRadius: BorderRadius.circular(10),
+          //       border: Border.all(color: AppColors.borderDefault),
+          //     ),
+          //     child: Row(
+          //       mainAxisSize: MainAxisSize.min,
+          //       children: [
+          //         const Text('✏', style: TextStyle(fontSize: 11)),
+          //         const SizedBox(width: 4),
+          //         Text(
+          //           'pilot_edit_appearance'.tr,
+          //           style: TextStyle(
+          //             color: AppColors.textPrimary,
+          //             fontSize: 11,
+          //             fontWeight: FontWeight.w600,
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
@@ -408,19 +430,25 @@ class _SettingsSection extends StatelessWidget {
               onToggle: controller.toggleNotifications,
             )),
             Divider(height: 1, color: AppColors.borderDefault, indent: 48),
-            _SettingDetailRow(
-              icon: Icons.science_outlined,
-              iconColor: const Color(0xFFF43F5E),
-              label: 'pilot_explanation_style'.tr,
-              subtitle: 'Interactive & Practical',
-            ),
+            Obx(() => _SettingDetailRow(
+                  icon: Icons.school_outlined,
+                  iconColor: AppColors.purple,
+                  label: 'pilot_learning_method'.tr,
+                  subtitle: controller.mentorSubtitle.value,
+                  onTap: controller.openMentorPicker,
+                )),
             Divider(height: 1, color: AppColors.borderDefault, indent: 48),
-            _SettingDetailRow(
-              icon: Icons.psychology_outlined,
-              iconColor: AppColors.cyan,
-              label: 'pilot_learning_method'.tr,
-              subtitle: 'Competitive Solving',
-            ),
+            Obx(() {
+              final esc = Get.find<ExplanationStyleController>();
+              esc.selectedId.value;
+              return _SettingDetailRow(
+                icon: Icons.psychology_outlined,
+                iconColor: AppColors.cyan,
+                label: 'pilot_explanation_style'.tr,
+                subtitle: esc.displayLabel,
+                onTap: controller.openExplanationStylePicker,
+              );
+            }),
           ],
         ),
       ),
@@ -476,17 +504,21 @@ class _SettingDetailRow extends StatelessWidget {
   final Color iconColor;
   final String label;
   final String subtitle;
+  final VoidCallback? onTap;
 
   const _SettingDetailRow({
     required this.icon,
     required this.iconColor,
     required this.label,
     required this.subtitle,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
         children: [
@@ -525,6 +557,7 @@ class _SettingDetailRow extends StatelessWidget {
           Icon(Icons.chevron_left, color: AppColors.textMuted, size: 18),
         ],
       ),
+    ),
     );
   }
 }

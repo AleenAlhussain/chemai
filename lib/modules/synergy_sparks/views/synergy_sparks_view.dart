@@ -13,7 +13,7 @@ class SynergySparkView extends GetView<SynergySparkController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.bgDeep,
+      backgroundColor: const Color(0xFF070A1C),
       body: Stack(
         children: [
           const _StarfieldBackground(),

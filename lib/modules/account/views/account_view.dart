@@ -41,6 +41,8 @@ class AccountView extends GetView<AccountController> {
                 icon: Icons.lock_outline,
                 child: _ChangePasswordForm(controller: controller),
               ),
+              const SizedBox(height: 16),
+              _DeleteAccountButton(controller: controller),
               const SizedBox(height: 24),
             ],
           ),
@@ -168,12 +170,34 @@ class _EditProfileForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _Field(
           label: 'auth_fullname'.tr,
           controller: controller.nameController,
           icon: Icons.person_outline,
         ),
+        const SizedBox(height: 16),
+        Text('auth_gender'.tr,
+            style: TextStyle(color: AppColors.textSecondary, fontSize: 11, fontWeight: FontWeight.w600)),
+        const SizedBox(height: 8),
+        Obx(() => Row(
+              children: [
+                _GenderChip(
+                  label: 'auth_gender_male'.tr,
+                  icon: Icons.male_rounded,
+                  selected: controller.selectedGender.value == 'male',
+                  onTap: () => controller.selectedGender.value = 'male',
+                ),
+                const SizedBox(width: 10),
+                _GenderChip(
+                  label: 'auth_gender_female'.tr,
+                  icon: Icons.female_rounded,
+                  selected: controller.selectedGender.value == 'female',
+                  onTap: () => controller.selectedGender.value = 'female',
+                ),
+              ],
+            )),
         const SizedBox(height: 16),
         Obx(() => _ActionButton(
           label: 'account_save'.tr,
@@ -182,6 +206,88 @@ class _EditProfileForm extends StatelessWidget {
         )),
       ],
     );
+  }
+}
+
+// ── Gender chip ────────────────────────────────────────────────────────────────
+class _GenderChip extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final bool selected;
+  final VoidCallback onTap;
+  const _GenderChip({required this.label, required this.icon, required this.selected, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          decoration: BoxDecoration(
+            color: selected ? AppColors.purple.withOpacity(0.15) : AppColors.bgCardAlt,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: selected ? AppColors.purple.withOpacity(0.6) : AppColors.borderDefault,
+              width: selected ? 1.5 : 1,
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon,
+                  color: selected ? AppColors.purple : AppColors.textSecondary, size: 18),
+              const SizedBox(width: 6),
+              Text(label,
+                  style: TextStyle(
+                    color: selected ? AppColors.purple : AppColors.textSecondary,
+                    fontSize: 13,
+                    fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                  )),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ── Delete account button ──────────────────────────────────────────────────────
+class _DeleteAccountButton extends StatelessWidget {
+  final AccountController controller;
+  const _DeleteAccountButton({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() => GestureDetector(
+          onTap: controller.isLoading.value ? null : controller.deleteAccount,
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 14),
+            decoration: BoxDecoration(
+              color: AppColors.danger.withOpacity(0.08),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: AppColors.danger.withOpacity(0.4)),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.delete_forever_outlined, color: AppColors.danger, size: 18),
+                const SizedBox(width: 10),
+                Text(
+                  'account_delete_title'.tr,
+                  style: TextStyle(
+                    color: AppColors.danger,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ));
   }
 }
 

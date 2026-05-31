@@ -47,10 +47,11 @@ class ChangePasswordRequest {
 
 class UpdateProfileRequest {
   final String fullName;
+  final String gender;
 
-  const UpdateProfileRequest({required this.fullName});
+  const UpdateProfileRequest({required this.fullName, required this.gender});
 
-  Map<String, dynamic> toJson() => {'full_name': fullName};
+  Map<String, dynamic> toJson() => {'full_name': fullName, 'gender': gender};
 }
 
 class ForgotPasswordRequest {

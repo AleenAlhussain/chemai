@@ -1,5 +1,5 @@
 abstract final class ApiConstants {
-  static const baseUrl        = 'http://127.0.0.1:8000';
+  static const baseUrl        = 'https://d7eb-5-155-5-83.ngrok-free.app';
   static const connectTimeout = Duration(seconds: 15);
   static const receiveTimeout = Duration(seconds: 30);
 

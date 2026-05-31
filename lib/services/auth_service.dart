@@ -178,6 +178,27 @@ class AuthService extends GetxService {
     return null;
   }
 
-  void _logDio(String method, DioException e) =>
-      print('*** AuthService.$method [${e.response?.statusCode}]: ${e.response?.data}');
+  /// Logs the error and throws an [Exception] with a human-readable message
+  /// extracted from FastAPI's validation response (422) or generic server error.
+  Never _logDio(String method, DioException e) {
+    final status = e.response?.statusCode;
+    final body   = e.response?.data;
+    print('*** AuthService.$method [$status]: $body');
+
+    // FastAPI 422 returns {"detail": [...]} or {"detail": "string"}
+    String msg = 'Server error ($status)';
+    if (body is Map) {
+      final detail = body['detail'];
+      if (detail is List && detail.isNotEmpty) {
+        // Take first validation error: "body → field: message"
+        final first = detail.first;
+        final field = (first['loc'] as List?)?.skip(1).join(' → ') ?? '';
+        final reason = first['msg'] ?? '';
+        msg = field.isNotEmpty ? '$field: $reason' : reason.toString();
+      } else if (detail is String) {
+        msg = detail;
+      }
+    }
+    throw Exception(msg);
+  }
 }

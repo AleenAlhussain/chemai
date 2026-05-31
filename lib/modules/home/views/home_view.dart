@@ -16,7 +16,6 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: const Color(0xFF020408),
       appBar: _HomeAppBar(controller: controller),
       body: Obx(() {
         final user = controller.user.value;
@@ -34,23 +33,40 @@ class HomeView extends GetView<HomeController> {
               _GreetingSection(name: user.name)
                   .animate().fadeIn(delay: 80.ms, duration: 300.ms),
               const SizedBox(height: 16),
+
+              // ── Mission Command ring card ───────────────────────────────
+              _MissionCommandCard(user: user)
+                  .animate().fadeIn(delay: 140.ms, duration: 400.ms).slideY(begin: 0.06),
+              const SizedBox(height: 20),
+
               _PilotStatsCard(user: user)
-                  .animate().fadeIn(delay: 150.ms, duration: 400.ms).slideY(begin: 0.08),
+                  .animate().fadeIn(delay: 200.ms, duration: 400.ms).slideY(begin: 0.08),
               const SizedBox(height: 14),
               _ActiveMissionCard()
-                  .animate().fadeIn(delay: 220.ms, duration: 400.ms).slideY(begin: 0.08),
+                  .animate().fadeIn(delay: 260.ms, duration: 400.ms).slideY(begin: 0.08),
               const SizedBox(height: 22),
               _SectionHeader('home_quick_actions'.tr)
-                  .animate().fadeIn(delay: 280.ms, duration: 300.ms),
+                  .animate().fadeIn(delay: 320.ms, duration: 300.ms),
               const SizedBox(height: 12),
               _QuickActionsGrid()
-                  .animate().fadeIn(delay: 320.ms, duration: 400.ms),
+                  .animate().fadeIn(delay: 360.ms, duration: 400.ms),
               const SizedBox(height: 22),
+
+              // ── Weekly activity ────────────────────────────────────────
+              _WeeklyActivitySection()
+                  .animate().fadeIn(delay: 400.ms, duration: 400.ms).slideY(begin: 0.06),
+              const SizedBox(height: 22),
+
+              // ── Achievements ───────────────────────────────────────────
+              _AchievementsSection()
+                  .animate().fadeIn(delay: 450.ms, duration: 400.ms).slideY(begin: 0.06),
+              const SizedBox(height: 22),
+
               _SectionHeader('home_todays_intel'.tr)
-                  .animate().fadeIn(delay: 380.ms, duration: 300.ms),
+                  .animate().fadeIn(delay: 500.ms, duration: 300.ms),
               const SizedBox(height: 12),
               _TodayIntelRow()
-                  .animate().fadeIn(delay: 420.ms, duration: 400.ms),
+                  .animate().fadeIn(delay: 540.ms, duration: 400.ms),
               const SizedBox(height: 16),
             ],
           ),
@@ -780,6 +796,417 @@ class _IntelCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+// ── Mission Command card ──────────────────────────────────────────────────────
+class _MissionCommandCard extends StatelessWidget {
+  final UserModel user;
+  const _MissionCommandCard({required this.user});
+
+  @override
+  Widget build(BuildContext context) {
+    final completion = user.progressToNextLevel;
+    return Container(
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
+      decoration: BoxDecoration(
+        color: AppColors.bgCard,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: AppColors.cyan.withOpacity(0.2)),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.cyan.withOpacity(0.08),
+            blurRadius: 24,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          // MASTER CHEMIST badge
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+            decoration: BoxDecoration(
+              color: AppColors.bgCardAlt,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: AppColors.borderDefault),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.military_tech_outlined, color: AppColors.cyan, size: 14),
+                const SizedBox(width: 6),
+                Text(
+                  'home_master_chemist'.tr,
+                  style: TextStyle(
+                    color: AppColors.cyan,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 1.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
+
+          // Glowing completion ring
+          SizedBox(
+            width: 180,
+            height: 180,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                CustomPaint(
+                  size: const Size(180, 180),
+                  painter: _GlowRingPainter(progress: completion, color: AppColors.cyan),
+                ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      '${(completion * 100).toInt()}%',
+                      style: TextStyle(
+                        color: AppColors.textPrimary,
+                        fontSize: 42,
+                        fontWeight: FontWeight.w900,
+                        height: 1,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'home_completion'.tr,
+                      style: TextStyle(
+                        color: AppColors.textMuted,
+                        fontSize: 10,
+                        letterSpacing: 2,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
+
+          // XP + Streak row
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    Text(
+                      'home_xp_earned_label'.tr,
+                      style: TextStyle(color: AppColors.textMuted, fontSize: 10, letterSpacing: 1),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${_fmtNum(user.xp)} XP',
+                      style: TextStyle(
+                        color: AppColors.textPrimary,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(width: 1, height: 36, color: AppColors.borderDefault),
+              Expanded(
+                child: Column(
+                  children: [
+                    Text(
+                      'home_current_streak'.tr,
+                      style: TextStyle(color: AppColors.textMuted, fontSize: 10, letterSpacing: 1),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '14 ${'home_days'.tr}',
+                      style: TextStyle(color: AppColors.cyan, fontSize: 20, fontWeight: FontWeight.w800),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  static String _fmtNum(int n) {
+    final s = n.toString();
+    if (s.length > 3) return '${s.substring(0, s.length - 3)},${s.substring(s.length - 3)}';
+    return s;
+  }
+}
+
+class _GlowRingPainter extends CustomPainter {
+  final double progress;
+  final Color color;
+  const _GlowRingPainter({required this.progress, required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final cx = size.width / 2;
+    final cy = size.height / 2;
+    final r = size.width / 2 - 14;
+    const strokeW = 12.0;
+
+    canvas.drawCircle(
+      Offset(cx, cy),
+      r,
+      Paint()
+        ..color = const Color(0xFF0D1B2A)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = strokeW,
+    );
+
+    // Outer glow
+    canvas.drawArc(
+      Rect.fromCircle(center: Offset(cx, cy), radius: r),
+      -pi / 2,
+      2 * pi * progress,
+      false,
+      Paint()
+        ..color = color.withOpacity(0.25)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = strokeW + 8
+        ..strokeCap = StrokeCap.round
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8),
+    );
+
+    // Main arc
+    canvas.drawArc(
+      Rect.fromCircle(center: Offset(cx, cy), radius: r),
+      -pi / 2,
+      2 * pi * progress,
+      false,
+      Paint()
+        ..shader = SweepGradient(
+          startAngle: -pi / 2,
+          endAngle: -pi / 2 + 2 * pi * progress,
+          colors: [color.withOpacity(0.6), color],
+          tileMode: TileMode.clamp,
+        ).createShader(Rect.fromCircle(center: Offset(cx, cy), radius: r))
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = strokeW
+        ..strokeCap = StrokeCap.round,
+    );
+  }
+
+  @override
+  bool shouldRepaint(_GlowRingPainter old) => old.progress != progress;
+}
+
+// ── Weekly activity bars ───────────────────────────────────────────────────────
+class _WeeklyActivitySection extends StatelessWidget {
+  static const _heights = [0.4, 0.6, 0.8, 1.0, 0.3, 0.25, 0.55];
+
+  List<String> get _days => [
+    'profile_mon'.tr, 'profile_tue'.tr, 'profile_wed'.tr,
+    'profile_thu'.tr, 'profile_fri'.tr, 'profile_sat'.tr, 'profile_sun'.tr,
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'home_weekly_activity'.tr,
+              style: TextStyle(color: AppColors.textPrimary, fontSize: 17, fontWeight: FontWeight.w700),
+            ),
+            Text(
+              'home_last_7_days'.tr,
+              style: TextStyle(color: AppColors.textMuted, fontSize: 11),
+            ),
+          ],
+        ),
+        const SizedBox(height: 14),
+        Container(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),
+          decoration: BoxDecoration(
+            color: AppColors.bgCard,
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: AppColors.borderDefault),
+          ),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 70,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: List.generate(7, (i) {
+                    final isTop = i == 3;
+                    return Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: AnimatedContainer(
+                          duration: Duration(milliseconds: 300 + i * 60),
+                          curve: Curves.easeOut,
+                          height: 70 * _heights[i],
+                          decoration: BoxDecoration(
+                            color: isTop
+                                ? AppColors.cyan
+                                : AppColors.cyan.withOpacity(0.3 + _heights[i] * 0.3),
+                            borderRadius: BorderRadius.circular(6),
+                            boxShadow: isTop
+                                ? [BoxShadow(color: AppColors.cyan.withOpacity(0.45), blurRadius: 10)]
+                                : null,
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: List.generate(7, (i) => Expanded(
+                  child: Text(
+                    _days[i],
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: i == 3 ? AppColors.cyan : AppColors.textMuted,
+                      fontSize: 9,
+                      fontWeight: i == 3 ? FontWeight.w700 : FontWeight.w500,
+                    ),
+                  ),
+                )),
+              ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Icon(Icons.bolt, color: AppColors.amber, size: 14),
+                  const SizedBox(width: 6),
+                  Flexible(
+                    child: RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'home_activity_insight'.tr,
+                            style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
+                          ),
+                          TextSpan(
+                            text: 'profile_thu'.tr,
+                            style: TextStyle(
+                              color: AppColors.cyan,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          TextSpan(
+                            text: '.',
+                            style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// ── Achievements 2×2 grid ─────────────────────────────────────────────────────
+class _AchievementsSection extends StatelessWidget {
+  static const _items = [
+    _AchievData(Icons.grid_view_rounded,   'home_achievement_periodic',  'home_achievement_periodic_sub',  Color(0xFFFBBF24), true),
+    _AchievData(Icons.science_outlined,    'home_achievement_reactant',  'home_achievement_reactant_sub',  Color(0xFF22D3EE), true),
+    _AchievData(Icons.calculate_outlined,  'home_achievement_stoich',    'home_achievement_stoich_sub',    Color(0xFF8B5CF6), true),
+    _AchievData(Icons.lock_outline,        'home_achievement_organic',   'home_achievement_organic_sub',   Color(0xFF475569), false),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'profile_achievements'.tr,
+          style: TextStyle(color: AppColors.textPrimary, fontSize: 17, fontWeight: FontWeight.w700),
+        ),
+        const SizedBox(height: 14),
+        GridView.count(
+          crossAxisCount: 2,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          mainAxisSpacing: 12,
+          crossAxisSpacing: 12,
+          childAspectRatio: 0.95,
+          children: _items.map((a) => _AchievCard(data: a)).toList(),
+        ),
+      ],
+    );
+  }
+}
+
+class _AchievData {
+  final IconData icon;
+  final String titleKey;
+  final String subKey;
+  final Color color;
+  final bool unlocked;
+  const _AchievData(this.icon, this.titleKey, this.subKey, this.color, this.unlocked);
+}
+
+class _AchievCard extends StatelessWidget {
+  final _AchievData data;
+  const _AchievCard({required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.bgCard,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: data.unlocked ? data.color.withOpacity(0.3) : AppColors.borderDefault,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: data.color.withOpacity(data.unlocked ? 0.12 : 0.06),
+              border: Border.all(color: data.color.withOpacity(data.unlocked ? 0.5 : 0.2)),
+            ),
+            child: Icon(data.icon, color: data.unlocked ? data.color : AppColors.textMuted, size: 24),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            data.titleKey.tr,
+            style: TextStyle(
+              color: data.unlocked ? AppColors.textPrimary : AppColors.textMuted,
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            data.subKey.tr,
+            style: TextStyle(color: AppColors.textMuted, fontSize: 11),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
       ),
     );
   }

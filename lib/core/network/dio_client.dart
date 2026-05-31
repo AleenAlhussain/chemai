@@ -12,7 +12,10 @@ class DioClient {
       baseUrl: ApiConstants.baseUrl,
       connectTimeout: ApiConstants.connectTimeout,
       receiveTimeout: ApiConstants.receiveTimeout,
-      headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+      // contentType drives Dio 5.x body serialisation (Map → jsonEncode).
+      // Setting Content-Type only in headers does NOT trigger JSON encoding.
+      contentType: 'application/json',
+      headers: {'Accept': 'application/json'},
     ))
       ..interceptors.addAll([
         AuthInterceptor(),
@@ -21,14 +24,14 @@ class DioClient {
   }
 
   Future<Response<T>> get<T>(String path,
-          {Map<String, dynamic>? params, Options? options}) =>
+      {Map<String, dynamic>? params, Options? options}) =>
       dio.get<T>(path, queryParameters: params, options: options);
 
   Future<Response<T>> post<T>(String path,
-          {dynamic data, Options? options}) =>
+      {dynamic data, Options? options}) =>
       dio.post<T>(path, data: data, options: options);
 
   Future<Response<T>> put<T>(String path,
-          {dynamic data, Options? options}) =>
+      {dynamic data, Options? options}) =>
       dio.put<T>(path, data: data, options: options);
 }

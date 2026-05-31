@@ -1,8 +1,10 @@
+// ── Request models ────────────────────────────────────────────────────────────
+
 class RegisterRequest {
   final String fullName;
   final String email;
   final String password;
-  final String gender; // 'male' | 'female'
+  final String gender;
 
   const RegisterRequest({
     required this.fullName,
@@ -25,11 +27,53 @@ class LoginRequest {
 
   const LoginRequest({required this.email, required this.password});
 
+  Map<String, dynamic> toJson() => {'email': email, 'password': password};
+}
+
+class ChangePasswordRequest {
+  final String oldPassword;
+  final String newPassword;
+
+  const ChangePasswordRequest({
+    required this.oldPassword,
+    required this.newPassword,
+  });
+
   Map<String, dynamic> toJson() => {
-        'email': email,
-        'password': password,
+        'old_password': oldPassword,
+        'new_password': newPassword,
       };
 }
+
+class UpdateProfileRequest {
+  final String fullName;
+
+  const UpdateProfileRequest({required this.fullName});
+
+  Map<String, dynamic> toJson() => {'full_name': fullName};
+}
+
+class ForgotPasswordRequest {
+  final String email;
+
+  const ForgotPasswordRequest({required this.email});
+
+  Map<String, dynamic> toJson() => {'email': email};
+}
+
+class ResetPasswordRequest {
+  final String token;
+  final String newPassword;
+
+  const ResetPasswordRequest({required this.token, required this.newPassword});
+
+  Map<String, dynamic> toJson() => {
+        'token': token,
+        'new_password': newPassword,
+      };
+}
+
+// ── Response models ───────────────────────────────────────────────────────────
 
 class AuthResponse {
   final String accessToken;
@@ -68,4 +112,21 @@ class UserAuth {
         email: j['email'] as String? ?? '',
         gender: j['gender'] as String? ?? '',
       );
+
+  UserAuth copyWith({String? fullName}) => UserAuth(
+        id: id,
+        fullName: fullName ?? this.fullName,
+        email: email,
+        gender: gender,
+      );
+}
+
+// Generic response for endpoints that return only a message field
+class MessageResponse {
+  final String message;
+
+  const MessageResponse({required this.message});
+
+  factory MessageResponse.fromJson(Map<String, dynamic> j) =>
+      MessageResponse(message: j['message'] as String? ?? '');
 }

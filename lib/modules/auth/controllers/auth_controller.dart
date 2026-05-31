@@ -66,8 +66,11 @@ class AuthController extends GetxController {
         _snack('register_failed'.tr, 'try_again_later'.tr);
         return;
       }
-      await _saveToken(res.accessToken);
-      Get.offAllNamed(AppRoutes.onboarding);
+      // Account created — show success then switch to Login tab
+      _snack('register_success'.tr, res.message);
+      passwordController.clear();
+      nameController.clear();
+      isLoginTab.value = true;
     } on Exception catch (e) {
       _snack('register_failed'.tr, e.toString());
     } finally {

@@ -10,9 +10,10 @@ import '../data/models/auth_model.dart';
 class AuthService extends GetxService {
   final DioClient _client = Get.find<DioClient>();
 
-  // ── Register ──────────────────────────────────────────────────────────────
+  // ── Register ─────────────────────────────────────────────────────────────
+  // Server returns: {"message": "User created successfully"}
 
-  Future<AuthResponse?> register(RegisterRequest req) async {
+  Future<MessageResponse?> register(RegisterRequest req) async {
     try {
       final res = await _client.post<Map<String, dynamic>>(
         ApiConstants.register,
@@ -20,11 +21,10 @@ class AuthService extends GetxService {
       );
       if (_ok(res.statusCode)) {
         final data = _toMap(res.data);
-        if (data != null) return AuthResponse.fromJson(data);
+        if (data != null) return MessageResponse.fromJson(data);
       }
     } on DioException catch (e) {
       _logDio('register', e);
-      rethrow;
     }
     return null;
   }

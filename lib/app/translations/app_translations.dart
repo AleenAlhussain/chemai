@@ -180,6 +180,56 @@ class AppTranslations extends Translations {
     'drawer_language_current': 'English',
     'drawer_disconnect': 'DISCONNECT SESSION',
 
+    // ── Privacy ────────────────────────────────────────────────────────────
+    'privacy_title': 'PRIVACY & SECURITY',
+    'privacy_settings': 'Privacy Settings',
+    'privacy_subtitle': 'Control your data and visibility',
+    'privacy_social': 'SOCIAL PRIVACY',
+    'privacy_share_progress': 'Share Progress',
+    'privacy_share_progress_sub': 'Let others see your learning progress',
+    'privacy_leaderboard': 'Show in Leaderboard',
+    'privacy_leaderboard_sub': 'Appear in global and friend rankings',
+    'privacy_squad_invites': 'Allow Squad Invites',
+    'privacy_squad_invites_sub': 'Receive invitations from other players',
+    'privacy_share_achievements': 'Share Achievements',
+    'privacy_share_achievements_sub': 'Auto-post achievements to social feed',
+    'privacy_data_analytics': 'DATA & ANALYTICS',
+    'privacy_analytics': 'Analytics',
+    'privacy_analytics_sub': 'Help improve ChemAI with usage data',
+    'privacy_crash_reports': 'Crash Reports',
+    'privacy_crash_reports_sub': 'Send automatic crash reports',
+    'privacy_data_management': 'DATA MANAGEMENT',
+    'privacy_export_data': 'Export My Data',
+    'privacy_export_data_sub': 'Download a copy of your data',
+    'privacy_export_requested': 'Data export requested.',
+    'privacy_delete_sub': 'Permanently remove your account',
+    'privacy_legal': 'LEGAL',
+    'privacy_policy': 'Privacy Policy',
+    'privacy_terms': 'Terms of Service',
+    'privacy_cookies': 'Cookie Policy',
+
+    // ── Synergy Sparks ─────────────────────────────────────────────────────
+    'synergy_subtitle': 'You and your partner crushed it together!',
+    'synergy_ring_label': 'SYNERGY',
+    'synergy_streak_bonus': 'Synergy Streak Bonus',
+    'synergy_streak_desc': 'Both answered correctly 9/10',
+    'synergy_vs': 'VS',
+    'synergy_you': 'YOU',
+    'synergy_time': 'TIME',
+    'synergy_correct': 'CORRECT',
+    'synergy_challenge_again': 'Challenge Again ⚡',
+    'synergy_share_result': 'Share Result',
+    'synergy_return_base': 'Return to Base',
+
+    // ── Reels ──────────────────────────────────────────────────────────────
+    'reels_save': 'Save',
+    'reels_share': 'Share',
+
+    // ── Profile tiers ──────────────────────────────────────────────────────
+    'profile_tier_gold': 'GOLD',
+    'profile_tier_silver': 'SILVER',
+    'profile_tier_bronze': 'BRONZE',
+
     // ── Lessons ────────────────────────────────────────────────────────────
     'lessons_master': 'Master the Elements',
     'lessons_subtitle':
@@ -576,6 +626,56 @@ class AppTranslations extends Translations {
     'drawer_language': 'اللغة',
     'drawer_language_current': 'عربي',
     'drawer_disconnect': 'قطع الاتصال',
+
+    // ── Privacy ────────────────────────────────────────────────────────────
+    'privacy_title': 'الخصوصية والأمان',
+    'privacy_settings': 'إعدادات الخصوصية',
+    'privacy_subtitle': 'تحكم في بياناتك ومستوى ظهورك',
+    'privacy_social': 'الخصوصية الاجتماعية',
+    'privacy_share_progress': 'مشاركة التقدم',
+    'privacy_share_progress_sub': 'دع الآخرين يرون تقدمك في التعلم',
+    'privacy_leaderboard': 'الظهور في لوحة المتصدرين',
+    'privacy_leaderboard_sub': 'ظهر في التصنيفات العالمية وتصنيفات الأصدقاء',
+    'privacy_squad_invites': 'السماح بدعوات الفريق',
+    'privacy_squad_invites_sub': 'استقبال الدعوات من لاعبين آخرين',
+    'privacy_share_achievements': 'مشاركة الإنجازات',
+    'privacy_share_achievements_sub': 'نشر الإنجازات تلقائياً في الخلاصة الاجتماعية',
+    'privacy_data_analytics': 'البيانات والتحليلات',
+    'privacy_analytics': 'التحليلات',
+    'privacy_analytics_sub': 'ساعد في تحسين كيم AI ببيانات الاستخدام',
+    'privacy_crash_reports': 'تقارير الأعطال',
+    'privacy_crash_reports_sub': 'إرسال تقارير الأعطال تلقائياً',
+    'privacy_data_management': 'إدارة البيانات',
+    'privacy_export_data': 'تصدير بياناتي',
+    'privacy_export_data_sub': 'تنزيل نسخة من بياناتك',
+    'privacy_export_requested': 'تم طلب تصدير البيانات.',
+    'privacy_delete_sub': 'إزالة حسابك نهائياً',
+    'privacy_legal': 'قانوني',
+    'privacy_policy': 'سياسة الخصوصية',
+    'privacy_terms': 'شروط الخدمة',
+    'privacy_cookies': 'سياسة ملفات تعريف الارتباط',
+
+    // ── Synergy Sparks ─────────────────────────────────────────────────────
+    'synergy_subtitle': 'أنت وشريكك أبليتما بلاء حسناً معاً!',
+    'synergy_ring_label': 'تآزر',
+    'synergy_streak_bonus': 'مكافأة سلسلة التآزر',
+    'synergy_streak_desc': 'كلاكما أجاب بشكل صحيح 9/10',
+    'synergy_vs': 'ضد',
+    'synergy_you': 'أنت',
+    'synergy_time': 'الوقت',
+    'synergy_correct': 'صحيح',
+    'synergy_challenge_again': 'تحدَّ مجدداً ⚡',
+    'synergy_share_result': 'مشاركة النتيجة',
+    'synergy_return_base': 'العودة إلى القاعدة',
+
+    // ── Reels ──────────────────────────────────────────────────────────────
+    'reels_save': 'حفظ',
+    'reels_share': 'مشاركة',
+
+    // ── Profile tiers ──────────────────────────────────────────────────────
+    'profile_tier_gold': 'ذهبي',
+    'profile_tier_silver': 'فضي',
+    'profile_tier_bronze': 'برونزي',
 
     // ── Lessons ────────────────────────────────────────────────────────────
     'lessons_master': 'أتقن العناصر',

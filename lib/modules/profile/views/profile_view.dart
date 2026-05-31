@@ -209,7 +209,7 @@ class _StudyConsistencyCard extends StatelessWidget {
                   ),
                 ),
               ),
-              Text('LESS',
+              Text('profile_less'.tr,
                   style: TextStyle(color: AppColors.textMuted, fontSize: 9)),
               const SizedBox(width: 4),
               ...[0, 1, 2, 3].map((v) => Container(
@@ -221,7 +221,7 @@ class _StudyConsistencyCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(2),
                     ),
                   )),
-              Text('MORE',
+              Text('profile_more'.tr,
                   style: TextStyle(color: AppColors.textMuted, fontSize: 9)),
             ],
           ),
@@ -295,7 +295,11 @@ class _ScientificMilestonesSection extends StatelessWidget {
     Color(0xFF94A3B8),
     Color(0xFFF97316),
   ];
-  static const _tierLabels = ['GOLD', 'SILVER', 'BRONZE'];
+  static List<String> get _tierLabels => [
+    'profile_tier_gold'.tr,
+    'profile_tier_silver'.tr,
+    'profile_tier_bronze'.tr,
+  ];
 
   @override
   Widget build(BuildContext context) {

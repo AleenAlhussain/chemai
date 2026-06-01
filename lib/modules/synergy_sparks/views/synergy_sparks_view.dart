@@ -87,7 +87,7 @@ class SynergySparkView extends GetView<SynergySparkController> {
                   const SizedBox(height: 6),
 
                   Text(
-                    'You and your partner crushed it together!',
+                    'synergy_subtitle'.tr,
                     style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
                     textAlign: TextAlign.center,
                   ).animate().fadeIn(delay: 450.ms, duration: 500.ms),
@@ -175,8 +175,8 @@ class SynergySparkView extends GetView<SynergySparkController> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('Synergy Streak Bonus', style: TextStyle(color: AppColors.textPrimary, fontSize: 13, fontWeight: FontWeight.w700)),
-                                  Text('Both answered correctly 9/10', style: TextStyle(color: AppColors.textSecondary, fontSize: 11)),
+                                  Text('synergy_streak_bonus'.tr, style: TextStyle(color: AppColors.textPrimary, fontSize: 13, fontWeight: FontWeight.w700)),
+                                  Text('synergy_streak_desc'.tr, style: TextStyle(color: AppColors.textSecondary, fontSize: 11)),
                                 ],
                               ),
                             ),
@@ -237,7 +237,7 @@ class _SynergyRing extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'SYNERGY',
+                  'synergy_ring_label'.tr,
                   style: TextStyle(
                     color: AppColors.textMuted,
                     fontSize: 9,
@@ -301,7 +301,7 @@ class _PlayersRow extends StatelessWidget {
               child: Column(
                 children: [
                   Icon(Icons.flash_on_rounded, color: AppColors.amber, size: 24),
-                  Text('VS', style: TextStyle(color: AppColors.textMuted, fontSize: 9, letterSpacing: 2)),
+                  Text('synergy_vs'.tr, style: TextStyle(color: AppColors.textMuted, fontSize: 9, letterSpacing: 2)),
                 ],
               ),
             ),
@@ -356,7 +356,7 @@ class _PlayerCard extends StatelessWidget {
                 color: AppColors.purple.withOpacity(0.15),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Text('YOU', style: TextStyle(color: AppColors.purple, fontSize: 9, fontWeight: FontWeight.w700, letterSpacing: 1)),
+              child: Text('synergy_you'.tr, style: TextStyle(color: AppColors.purple, fontSize: 9, fontWeight: FontWeight.w700, letterSpacing: 1)),
             ),
         ],
       ),
@@ -372,9 +372,9 @@ class _StatsGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() => Row(
           children: [
-            Expanded(child: _StatBox(label: 'TIME', value: controller.timeTaken.value, icon: Icons.access_time, color: AppColors.cyan)),
+            Expanded(child: _StatBox(label: 'synergy_time'.tr, value: controller.timeTaken.value, icon: Icons.access_time, color: AppColors.cyan)),
             const SizedBox(width: 12),
-            Expanded(child: _StatBox(label: 'CORRECT', value: '${controller.correctAnswers.value}/${controller.questionsAnswered.value}', icon: Icons.check_circle_outline, color: AppColors.green)),
+            Expanded(child: _StatBox(label: 'synergy_correct'.tr, value: '${controller.correctAnswers.value}/${controller.questionsAnswered.value}', icon: Icons.check_circle_outline, color: AppColors.green)),
           ],
         ));
   }
@@ -429,9 +429,9 @@ class _ActionButtons extends StatelessWidget {
               borderRadius: BorderRadius.circular(30),
             ),
             alignment: Alignment.center,
-            child: const Text(
-              'Challenge Again ⚡',
-              style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700),
+            child: Text(
+              'synergy_challenge_again'.tr,
+              style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700),
             ),
           ),
         ),
@@ -452,7 +452,7 @@ class _ActionButtons extends StatelessWidget {
               children: [
                 Icon(Icons.share_outlined, color: AppColors.textSecondary, size: 18),
                 const SizedBox(width: 8),
-                Text('Share Result', style: TextStyle(color: AppColors.textSecondary, fontSize: 14)),
+                Text('synergy_share_result'.tr, style: TextStyle(color: AppColors.textSecondary, fontSize: 14)),
               ],
             ),
           ),
@@ -460,7 +460,7 @@ class _ActionButtons extends StatelessWidget {
         const SizedBox(height: 12),
         GestureDetector(
           onTap: Get.back,
-          child: Text('Return to Base', style: TextStyle(color: AppColors.textMuted, fontSize: 13)),
+          child: Text('synergy_return_base'.tr, style: TextStyle(color: AppColors.textMuted, fontSize: 13)),
         ),
       ],
     );

@@ -15,7 +15,7 @@ class PrivacyView extends GetView<PrivacyController> {
       appBar: AppBar(
         backgroundColor: AppColors.bgBase,
         title: Text(
-          'PRIVACY & SECURITY',
+          'privacy_title'.tr,
           style: TextStyle(
             color: AppColors.textPrimary,
             fontSize: 12,
@@ -48,12 +48,12 @@ class PrivacyView extends GetView<PrivacyController> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Privacy Settings',
+                    Text('privacy_settings'.tr,
                         style: TextStyle(
                             color: AppColors.textPrimary,
                             fontSize: 18,
                             fontWeight: FontWeight.w700)),
-                    Text('Control your data and visibility',
+                    Text('privacy_subtitle'.tr,
                         style: TextStyle(
                             color: AppColors.textSecondary, fontSize: 12)),
                   ],
@@ -64,34 +64,34 @@ class PrivacyView extends GetView<PrivacyController> {
             const SizedBox(height: 24),
 
             // Social privacy
-            _SectionHeader('SOCIAL PRIVACY'),
+            _SectionHeader('privacy_social'.tr),
             Obx(() => _ToggleRow(
                   icon: Icons.bar_chart_outlined,
-                  title: 'Share Progress',
-                  subtitle: 'Let others see your learning progress',
+                  title: 'privacy_share_progress'.tr,
+                  subtitle: 'privacy_share_progress_sub'.tr,
                   value: controller.shareProgress.value,
                   onChanged: (_) => controller.toggle(controller.shareProgress),
                 )),
             Obx(() => _ToggleRow(
                   icon: Icons.emoji_events_outlined,
-                  title: 'Show in Leaderboard',
-                  subtitle: 'Appear in global and friend rankings',
+                  title: 'privacy_leaderboard'.tr,
+                  subtitle: 'privacy_leaderboard_sub'.tr,
                   value: controller.showInLeaderboard.value,
                   onChanged: (_) =>
                       controller.toggle(controller.showInLeaderboard),
                 )),
             Obx(() => _ToggleRow(
                   icon: Icons.group_add_outlined,
-                  title: 'Allow Squad Invites',
-                  subtitle: 'Receive invitations from other players',
+                  title: 'privacy_squad_invites'.tr,
+                  subtitle: 'privacy_squad_invites_sub'.tr,
                   value: controller.allowSquadInvites.value,
                   onChanged: (_) =>
                       controller.toggle(controller.allowSquadInvites),
                 )),
             Obx(() => _ToggleRow(
                   icon: Icons.share_outlined,
-                  title: 'Share Achievements',
-                  subtitle: 'Auto-post achievements to social feed',
+                  title: 'privacy_share_achievements'.tr,
+                  subtitle: 'privacy_share_achievements_sub'.tr,
                   value: controller.shareAchievements.value,
                   onChanged: (_) =>
                       controller.toggle(controller.shareAchievements),
@@ -100,19 +100,19 @@ class PrivacyView extends GetView<PrivacyController> {
             const SizedBox(height: 8),
 
             // Data & analytics
-            _SectionHeader('DATA & ANALYTICS'),
+            _SectionHeader('privacy_data_analytics'.tr),
             Obx(() => _ToggleRow(
                   icon: Icons.analytics_outlined,
-                  title: 'Analytics',
-                  subtitle: 'Help improve ChemAI with usage data',
+                  title: 'privacy_analytics'.tr,
+                  subtitle: 'privacy_analytics_sub'.tr,
                   value: controller.analyticsEnabled.value,
                   onChanged: (_) =>
                       controller.toggle(controller.analyticsEnabled),
                 )),
             Obx(() => _ToggleRow(
                   icon: Icons.bug_report_outlined,
-                  title: 'Crash Reports',
-                  subtitle: 'Send automatic crash reports',
+                  title: 'privacy_crash_reports'.tr,
+                  subtitle: 'privacy_crash_reports_sub'.tr,
                   value: controller.crashReportsEnabled.value,
                   onChanged: (_) =>
                       controller.toggle(controller.crashReportsEnabled),
@@ -121,18 +121,18 @@ class PrivacyView extends GetView<PrivacyController> {
             const SizedBox(height: 24),
 
             // Data management
-            _SectionHeader('DATA MANAGEMENT'),
+            _SectionHeader('privacy_data_management'.tr),
             _ActionRow(
               icon: Icons.download_outlined,
-              title: 'Export My Data',
-              subtitle: 'Download a copy of your data',
-              onTap: () => Get.snackbar('Export', 'Data export requested.',
+              title: 'privacy_export_data'.tr,
+              subtitle: 'privacy_export_data_sub'.tr,
+              onTap: () => Get.snackbar('privacy_export_data'.tr, 'privacy_export_requested'.tr,
                   snackPosition: SnackPosition.BOTTOM),
             ),
             _ActionRow(
               icon: Icons.delete_outline,
-              title: 'Delete Account',
-              subtitle: 'Permanently remove your account',
+              title: 'account_delete_title'.tr,
+              subtitle: 'privacy_delete_sub'.tr,
               isDestructive: true,
               onTap: controller.deleteAccount,
             ),
@@ -140,10 +140,10 @@ class PrivacyView extends GetView<PrivacyController> {
             const SizedBox(height: 24),
 
             // Legal links
-            _SectionHeader('LEGAL'),
-            _LinkRow('Privacy Policy', () {}),
-            _LinkRow('Terms of Service', () {}),
-            _LinkRow('Cookie Policy', () {}),
+            _SectionHeader('privacy_legal'.tr),
+            _LinkRow('privacy_policy'.tr, () {}),
+            _LinkRow('privacy_terms'.tr, () {}),
+            _LinkRow('privacy_cookies'.tr, () {}),
 
             const SizedBox(height: 30),
           ],

@@ -51,4 +51,9 @@ abstract final class AppRoutes {
   static const resetPassword  = '/reset-password';
   static const plan    = '/plan';
   static const privacy = '/privacy';
+
+  // ── New learning screens ────────────────────────────────────────────────────
+  static const missionMap       = '/mission-map';
+  static const equationBalancer = '/equation-balancer';
+  static const molarMass        = '/molar-mass';
 }

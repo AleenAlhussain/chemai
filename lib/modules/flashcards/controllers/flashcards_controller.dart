@@ -15,6 +15,11 @@ class FlashcardsController extends GetxController
   final totalCards = 40;
   final dailyGoalRemaining = 25;
 
+  // Spectral Study counts
+  final newCount = 12.obs;
+  final learningCount = 5.obs;
+  final reviewCount = 3.obs;
+
   late final AnimationController flipController;
 
   Flashcard get current => cards[currentIndex.value % cards.length];
@@ -35,6 +40,14 @@ class FlashcardsController extends GetxController
       flipController.forward();
     }
     isFlipped.value = !isFlipped.value;
+  }
+
+  /// Alias for flip() used by the Spectral Study reveal gesture.
+  void reveal() => flip();
+
+  void rateCard(String rating) {
+    // rating: 'again', 'hard', 'good', 'easy'
+    _nextCard();
   }
 
   void markMastered() {

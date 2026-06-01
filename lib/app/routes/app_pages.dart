@@ -1,5 +1,11 @@
 import 'package:get/get.dart';
 
+import '../../modules/equation_balancer/bindings/equation_balancer_binding.dart';
+import '../../modules/equation_balancer/views/equation_balancer_view.dart';
+import '../../modules/mission_map/bindings/mission_map_binding.dart';
+import '../../modules/mission_map/views/mission_map_view.dart';
+import '../../modules/molar_mass/bindings/molar_mass_binding.dart';
+import '../../modules/molar_mass/views/molar_mass_view.dart';
 import '../../modules/account/bindings/account_binding.dart';
 import '../../modules/account/views/account_view.dart';
 import '../../modules/auth/bindings/auth_binding.dart';
@@ -317,6 +323,27 @@ abstract final class AppPages {
       binding: SynergySparkBinding(),
       transition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 400),
+    ),
+    GetPage(
+      name: AppRoutes.missionMap,
+      page: () => const MissionMapView(),
+      binding: MissionMapBinding(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: AppRoutes.equationBalancer,
+      page: () => const EquationBalancerView(),
+      binding: EquationBalancerBinding(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 300),
+    ),
+    GetPage(
+      name: AppRoutes.molarMass,
+      page: () => const MolarMassView(),
+      binding: MolarMassBinding(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 300),
     ),
   ];
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/app.dart';
 import 'core/controllers/explanation_style_controller.dart';
@@ -10,8 +11,18 @@ import 'core/network/dio_client.dart';
 import 'data/providers/chemai_provider.dart';
 import 'data/repositories/chemai_repository.dart';
 
+// Set to true to skip login during development.
+// Set to false before releasing to production.
+const bool kDevSkipAuth = true;
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  if (kDevSkipAuth) {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('logged_in', true);
+    await prefs.setString('access_token', 'dev_token');
+  }
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

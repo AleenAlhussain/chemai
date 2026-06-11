@@ -23,6 +23,10 @@ abstract final class ApiConstants {
   static const lessons  = '/lessons';
   static const mentors  = '/mentors';
 
+  // ── Student ────────────────────────────────────────────────────────────────
+  static const studentMe          = '/students/me';
+  static const studentPreferences = '/students/preferences';
+
   // ── AI ─────────────────────────────────────────────────────────────────────
   static const askAi = '/ai/chat';
 }

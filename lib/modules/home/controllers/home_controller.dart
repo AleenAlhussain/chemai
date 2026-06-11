@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/models/user_model.dart';
 import '../../../data/repositories/chemai_repository.dart';
@@ -22,7 +23,7 @@ class HomeController extends GetxController {
     user.value = UserModel.mock;
     isLoading.value = false;
 
-    // Load real name from auth API (overrides mock name)
+    // Load real name — from cache first (instant), then live API
     await _loadRealName();
 
     // Then try live stats
@@ -31,11 +32,21 @@ class HomeController extends GetxController {
   }
 
   Future<void> _loadRealName() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    // Fast path: cached name from login
+    final cached = prefs.getString('user_full_name') ?? '';
+    if (cached.isNotEmpty) {
+      user.value = (user.value ?? UserModel.mock).copyWith(name: cached);
+    }
+
+    // Refresh from API and update cache
     try {
       final account = await _authService.getAccount();
       if (account != null && account.fullName.isNotEmpty) {
-        final current = user.value ?? UserModel.mock;
-        user.value = current.copyWith(name: account.fullName);
+        user.value = (user.value ?? UserModel.mock).copyWith(name: account.fullName);
+        prefs.setString('user_full_name', account.fullName);
+        if (account.email.isNotEmpty) prefs.setString('user_email', account.email);
       }
     } catch (_) {}
   }

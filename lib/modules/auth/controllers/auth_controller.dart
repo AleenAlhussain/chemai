@@ -91,6 +91,7 @@ class AuthController extends GetxController {
         return;
       }
       await _saveToken(res.accessToken);
+      await _cacheUserData(res);
       // Route based on onboarding status
       final prefs = await SharedPreferences.getInstance();
       if (prefs.getBool('onboarding_done') == true) {
@@ -184,10 +185,31 @@ class AuthController extends GetxController {
     await prefs.setString('access_token', token);
   }
 
+  /// Caches the user's name + email so screens load instantly without waiting
+  /// for a live API call. Uses the user object from the login response when
+  /// available; falls back to GET /auth/account.
+  Future<void> _cacheUserData(AuthResponse res) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (res.user != null && res.user!.fullName.isNotEmpty) {
+      await prefs.setString('user_full_name', res.user!.fullName);
+      await prefs.setString('user_email', res.user!.email);
+      return;
+    }
+    try {
+      final account = await _service.getAccount();
+      if (account != null && account.fullName.isNotEmpty) {
+        await prefs.setString('user_full_name', account.fullName);
+        await prefs.setString('user_email', account.email);
+      }
+    } catch (_) {}
+  }
+
   Future<void> _clearSession() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('logged_in');
     await prefs.remove('access_token');
+    await prefs.remove('user_full_name');
+    await prefs.remove('user_email');
   }
 
   void _snack(String title, String msg) =>

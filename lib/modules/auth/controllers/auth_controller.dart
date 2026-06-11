@@ -99,7 +99,17 @@ class AuthController extends GetxController {
         return;
       }
       await _saveToken(res.accessToken);
-      Get.offAllNamed(AppRoutes.onboarding);
+      // Route based on onboarding status
+      final prefs = await SharedPreferences.getInstance();
+      if (prefs.getBool('onboarding_done') == true) {
+        if (prefs.getString('mentor_id') == null) {
+          Get.offAllNamed(AppRoutes.mentor);
+        } else {
+          Get.offAllNamed(AppRoutes.mainNav);
+        }
+      } else {
+        Get.offAllNamed(AppRoutes.onboarding);
+      }
     } on Exception catch (e) {
       _snack('login_failed'.tr, e.toString());
     } finally {

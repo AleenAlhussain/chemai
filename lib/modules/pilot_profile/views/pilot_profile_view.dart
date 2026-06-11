@@ -25,14 +25,16 @@ class PilotProfileView extends GetView<PilotProfileController> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: Text(
-                      controller.name,
+                    child: Obx(() => Text(
+                      controller.name.value.isNotEmpty
+                          ? controller.name.value
+                          : '—',
                       style: TextStyle(
                         color: AppColors.textPrimary,
                         fontSize: 24,
                         fontWeight: FontWeight.w800,
                       ),
-                    ),
+                    )),
                   ),
                   // Container(
                   //   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),

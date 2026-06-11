@@ -468,6 +468,15 @@ class AppTranslations extends Translations {
     'reels_share': 'Share',
     'reels_title': 'SPECTRAL FEED',
 
+    // ── Account (student fields) ───────────────────────────────────────────
+    'account_grade': 'Grade',
+    'account_language': 'Preferred Language',
+    'account_teaching_style': 'Teaching Style',
+    'account_learning_mode': 'Learning Mode',
+    'account_learning_prefs': 'Learning Preferences',
+    'account_save_prefs': 'SAVE PREFERENCES',
+    'account_preferences_saved': 'Preferences saved successfully',
+
     // ── Mission Roadmap (Schedule) ─────────────────────────────────────────
     'schedule_mission_roadmap': 'Mission Roadmap',
     'schedule_october_2024': 'OCTOBER 2024',
@@ -995,6 +1004,15 @@ class AppTranslations extends Translations {
     'flashcards_tap_flip': 'اضغط للقلب',
     'flashcards_definition': 'تعريف',
     'flashcards_daily_goal': 'الهدف اليومي: @remaining بطاقات أخرى',
+
+    // ── Account (student fields) ───────────────────────────────────────────
+    'account_grade': 'الصف الدراسي',
+    'account_language': 'اللغة المفضلة',
+    'account_teaching_style': 'أسلوب التدريس',
+    'account_learning_mode': 'نمط التعلم',
+    'account_learning_prefs': 'تفضيلات التعلم',
+    'account_save_prefs': 'حفظ التفضيلات',
+    'account_preferences_saved': 'تم حفظ التفضيلات بنجاح',
 
     // ── Mission Roadmap ────────────────────────────────────────────────────
     'schedule_mission_roadmap': 'خارطة المهمة',

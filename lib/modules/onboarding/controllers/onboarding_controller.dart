@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../app/routes/app_routes.dart';
+import '../../../data/models/student_model.dart';
+import '../../../services/student_service.dart';
 
 class OnboardingPage {
   final String titleKey;
@@ -71,6 +73,14 @@ class OnboardingController extends GetxController {
   Future<void> _finish() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onboarding_done', true);
+
+    // Mark onboarding as completed on the server
+    try {
+      await Get.find<StudentService>().updateProfile(
+        const UpdateStudentRequest(onboardingCompleted: true),
+      );
+    } catch (_) {}
+
     if (prefs.getString('mentor_id') == null) {
       Get.offAllNamed(AppRoutes.mentor);
     } else {

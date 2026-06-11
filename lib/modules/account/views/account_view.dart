@@ -37,6 +37,12 @@ class AccountView extends GetView<AccountController> {
               ),
               const SizedBox(height: 16),
               _SectionCard(
+                title: 'account_learning_prefs'.tr,
+                icon: Icons.school_outlined,
+                child: _LearningPrefsForm(controller: controller),
+              ),
+              const SizedBox(height: 16),
+              _SectionCard(
                 title: 'account_change_password'.tr,
                 icon: Icons.lock_outline,
                 child: _ChangePasswordForm(controller: controller),
@@ -99,16 +105,18 @@ class _UserCard extends StatelessWidget {
                     style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
                   ),
                   const SizedBox(height: 4),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-                    decoration: BoxDecoration(
-                      color: AppColors.purple.withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      u?.gender.toUpperCase() ?? '',
-                      style: TextStyle(color: AppColors.purple, fontSize: 10, fontWeight: FontWeight.w700),
-                    ),
+                  Row(
+                    children: [
+                      if (u?.gender.isNotEmpty == true)
+                        _InfoBadge(u!.gender.toUpperCase(), AppColors.purple),
+                      const SizedBox(width: 6),
+                      Obx(() {
+                        final grade = controller.studentProfile.value?.grade;
+                        return grade != null
+                            ? _InfoBadge('Grade $grade', AppColors.cyan)
+                            : const SizedBox.shrink();
+                      }),
+                    ],
                   ),
                 ],
               ),
@@ -199,12 +207,161 @@ class _EditProfileForm extends StatelessWidget {
               ],
             )),
         const SizedBox(height: 16),
+
+        // ── Grade ────────────────────────────────────────────────────────────
+        Text('account_grade'.tr,
+            style: TextStyle(color: AppColors.textSecondary, fontSize: 11, fontWeight: FontWeight.w600)),
+        const SizedBox(height: 8),
+        Obx(() => Row(
+              children: [9, 10, 11, 12].map((g) => Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: _SelectChip(
+                      label: 'Grade $g',
+                      selected: controller.selectedGrade.value == g,
+                      color: AppColors.amber,
+                      onTap: () => controller.selectedGrade.value = g,
+                    ),
+                  )).toList(),
+            )),
+
+        const SizedBox(height: 16),
+
+        // ── Preferred language ────────────────────────────────────────────────
+        Text('account_language'.tr,
+            style: TextStyle(color: AppColors.textSecondary, fontSize: 11, fontWeight: FontWeight.w600)),
+        const SizedBox(height: 8),
+        Obx(() => Row(
+              children: [
+                _SelectChip(
+                  label: 'العربية',
+                  selected: controller.selectedLanguage.value == 'ar',
+                  color: AppColors.green,
+                  onTap: () => controller.selectedLanguage.value = 'ar',
+                ),
+                const SizedBox(width: 8),
+                _SelectChip(
+                  label: 'English',
+                  selected: controller.selectedLanguage.value == 'en',
+                  color: AppColors.green,
+                  onTap: () => controller.selectedLanguage.value = 'en',
+                ),
+              ],
+            )),
+
+        const SizedBox(height: 20),
         Obx(() => _ActionButton(
           label: 'account_save'.tr,
           isLoading: controller.isLoading.value,
           onTap: controller.updateProfile,
         )),
       ],
+    );
+  }
+}
+
+// ── Learning preferences form ─────────────────────────────────────────────────
+class _LearningPrefsForm extends StatelessWidget {
+  final AccountController controller;
+  const _LearningPrefsForm({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Teaching style
+        Text('account_teaching_style'.tr,
+            style: TextStyle(color: AppColors.textSecondary, fontSize: 11, fontWeight: FontWeight.w600)),
+        const SizedBox(height: 8),
+        Obx(() => Wrap(
+              spacing: 8,
+              children: ['beginner', 'visual', 'text'].map((s) => _SelectChip(
+                    label: s,
+                    selected: controller.selectedTeachingStyle.value == s,
+                    color: AppColors.purple,
+                    onTap: () => controller.selectedTeachingStyle.value = s,
+                  )).toList(),
+            )),
+
+        const SizedBox(height: 16),
+
+        // Learning mode
+        Text('account_learning_mode'.tr,
+            style: TextStyle(color: AppColors.textSecondary, fontSize: 11, fontWeight: FontWeight.w600)),
+        const SizedBox(height: 8),
+        Obx(() => Wrap(
+              spacing: 8,
+              children: ['text', 'interactive', 'audio'].map((m) => _SelectChip(
+                    label: m,
+                    selected: controller.selectedLearningMode.value == m,
+                    color: AppColors.cyan,
+                    onTap: () => controller.selectedLearningMode.value = m,
+                  )).toList(),
+            )),
+
+        const SizedBox(height: 20),
+        Obx(() => _ActionButton(
+          label: 'account_save_prefs'.tr,
+          isLoading: controller.isLoading.value,
+          onTap: controller.updatePreferences,
+          color: AppColors.cyan,
+        )),
+      ],
+    );
+  }
+}
+
+// ── Info badge ─────────────────────────────────────────────────────────────────
+class _InfoBadge extends StatelessWidget {
+  final String text;
+  final Color color;
+  const _InfoBadge(this.text, this.color);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(text, style: TextStyle(color: color, fontSize: 10, fontWeight: FontWeight.w700)),
+    );
+  }
+}
+
+// ── Select chip ────────────────────────────────────────────────────────────────
+class _SelectChip extends StatelessWidget {
+  final String label;
+  final bool selected;
+  final Color color;
+  final VoidCallback onTap;
+  const _SelectChip({required this.label, required this.selected, required this.color, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        decoration: BoxDecoration(
+          color: selected ? color.withOpacity(0.15) : AppColors.bgCardAlt,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: selected ? color : AppColors.borderDefault,
+            width: selected ? 1.5 : 1,
+          ),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: selected ? color : AppColors.textSecondary,
+            fontSize: 12,
+            fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+          ),
+        ),
+      ),
     );
   }
 }

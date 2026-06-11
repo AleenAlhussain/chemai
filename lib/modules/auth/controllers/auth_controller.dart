@@ -31,14 +31,7 @@ class AuthController extends GetxController {
   void toggleRememberMe()         => rememberMe.value = !rememberMe.value;
 
   @override
-  void onClose() {
-    emailController.dispose();
-    passwordController.dispose();
-    nameController.dispose();
-    resetTokenController.dispose();
-    newPasswordController.dispose();
-    super.onClose();
-  }
+  void onClose() => super.onClose();
 
   // ── Register ────────────────────────────────────────────────────────────────
 

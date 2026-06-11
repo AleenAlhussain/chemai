@@ -240,6 +240,26 @@ class _FormCard extends StatelessWidget {
               icon: Icons.person_outline,
             ),
             const SizedBox(height: 18),
+            _FieldLabel('auth_gender'.tr),
+            const SizedBox(height: 10),
+            Obx(() => Row(
+                  children: [
+                    _GenderChip(
+                      label: 'auth_gender_female'.tr,
+                      icon: Icons.female_rounded,
+                      selected: controller.gender.value == 'female',
+                      onTap: () => controller.setGender('female'),
+                    ),
+                    const SizedBox(width: 10),
+                    _GenderChip(
+                      label: 'auth_gender_male'.tr,
+                      icon: Icons.male_rounded,
+                      selected: controller.gender.value == 'male',
+                      onTap: () => controller.setGender('male'),
+                    ),
+                  ],
+                )),
+            const SizedBox(height: 18),
           ],
 
           _FieldLabel('auth_email'.tr),
@@ -342,6 +362,50 @@ class _FieldLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(text, style: TextStyle(color: AppColors.textSecondary, fontSize: 12, fontWeight: FontWeight.w600));
+  }
+}
+
+class _GenderChip extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final bool selected;
+  final VoidCallback onTap;
+  const _GenderChip({required this.label, required this.icon, required this.selected, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 180),
+          height: 44,
+          decoration: BoxDecoration(
+            color: selected ? AppColors.purple.withOpacity(0.15) : AppColors.bgCardAlt,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: selected ? AppColors.purple : AppColors.borderDefault,
+              width: selected ? 1.5 : 1,
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: selected ? AppColors.purple : AppColors.textSecondary, size: 18),
+              const SizedBox(width: 6),
+              Text(
+                label,
+                style: TextStyle(
+                  color: selected ? AppColors.purple : AppColors.textSecondary,
+                  fontSize: 13,
+                  fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 

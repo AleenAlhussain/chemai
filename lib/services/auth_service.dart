@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 import '../core/constants/api_constants.dart';
@@ -37,6 +38,7 @@ class AuthService extends GetxService {
         ApiConstants.login,
         data: req.toJson(),
       );
+      debugPrint('🔑 POST /auth/login — status: ${res.statusCode}, body: ${res.data}');
       if (_ok(res.statusCode)) {
         final data = _toMap(res.data);
         if (data != null) return AuthResponse.fromJson(data);
@@ -65,9 +67,14 @@ class AuthService extends GetxService {
   Future<UserAuth?> getAccount() async {
     try {
       final res = await _client.get<Map<String, dynamic>>(ApiConstants.account);
+      debugPrint('👤 GET /auth/account — status: ${res.statusCode}, body: ${res.data}');
       if (_ok(res.statusCode)) {
         final data = _toMap(res.data);
-        if (data != null) return UserAuth.fromJson(data);
+        if (data != null) {
+          final user = UserAuth.fromJson(data);
+          debugPrint('👤 Parsed UserAuth — fullName: "${user.fullName}", email: "${user.email}"');
+          return user;
+        }
       }
     } on DioException catch (e) {
       _logDio('getAccount', e);

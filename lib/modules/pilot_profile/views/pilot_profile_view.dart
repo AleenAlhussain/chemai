@@ -54,16 +54,25 @@ class PilotProfileView extends GetView<PilotProfileController> {
                 ],
               ),
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: 4),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                'pilot_member_since'.tr,
-                style: TextStyle(
-                  color: AppColors.textMuted,
-                  fontSize: 12,
-                ),
-              ),
+              child: Obx(() {
+                final grade = controller.grade.value;
+                final lang  = controller.language.value;
+                return Wrap(
+                  spacing: 8,
+                  runSpacing: 6,
+                  children: [
+                    if (controller.email.value.isNotEmpty)
+                      _PilotBadge(controller.email.value, AppColors.textMuted),
+                    if (grade > 0)
+                      _PilotBadge('Grade $grade', AppColors.amber),
+                    if (lang.isNotEmpty)
+                      _PilotBadge(lang == 'ar' ? 'العربية' : 'English', AppColors.cyan),
+                  ],
+                );
+              }),
             ),
             const SizedBox(height: 16),
             _ProSubscriptionCard(
@@ -406,6 +415,25 @@ class _StatBox extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _PilotBadge extends StatelessWidget {
+  final String text;
+  final Color color;
+  const _PilotBadge(this.text, this.color);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.12),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: color.withOpacity(0.3)),
+      ),
+      child: Text(text, style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.w600)),
     );
   }
 }

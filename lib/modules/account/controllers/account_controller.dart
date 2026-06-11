@@ -5,15 +5,24 @@ import 'package:get/get.dart';
 import '../../../app/routes/app_routes.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../data/models/auth_model.dart';
+import '../../../data/models/student_model.dart';
 import '../../../services/auth_service.dart';
+import '../../../services/student_service.dart';
 
 class AccountController extends GetxController {
-  final AuthService _service = Get.find<AuthService>();
+  final AuthService   _authService    = Get.find<AuthService>();
+  final StudentService _studentService = Get.find<StudentService>();
 
   // ── State ──────────────────────────────────────────────────────────────────
-  final user           = Rxn<UserAuth>();
-  final isLoading      = false.obs;
-  final selectedGender = 'male'.obs;
+  final user              = Rxn<UserAuth>();
+  final studentProfile    = Rxn<StudentProfile>();
+  final studentPrefs      = Rxn<StudentPreferences>();
+  final isLoading         = false.obs;
+  final selectedGender    = 'male'.obs;
+  final selectedGrade     = 9.obs;
+  final selectedLanguage  = 'ar'.obs;
+  final selectedTeachingStyle = 'beginner'.obs;
+  final selectedLearningMode  = 'text'.obs;
 
   // ── Form controllers ───────────────────────────────────────────────────────
   final nameController        = TextEditingController();
@@ -27,7 +36,16 @@ class AccountController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchAccount();
+    fetchAll();
+  }
+
+  Future<void> fetchAll() async {
+    isLoading.value = true;
+    try {
+      await Future.wait([fetchAccount(), fetchStudentProfile(), fetchStudentPrefs()]);
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   @override
@@ -42,9 +60,8 @@ class AccountController extends GetxController {
   // ── GET /auth/account ─────────────────────────────────────────────────────
 
   Future<void> fetchAccount() async {
-    isLoading.value = true;
     try {
-      final res = await _service.getAccount();
+      final res = await _authService.getAccount();
       if (res != null) {
         user.value = res;
         nameController.text = res.fullName;
@@ -52,9 +69,33 @@ class AccountController extends GetxController {
       }
     } catch (e) {
       _snack('error'.tr, e.toString());
-    } finally {
-      isLoading.value = false;
     }
+  }
+
+  // ── GET /students/me ──────────────────────────────────────────────────────
+
+  Future<void> fetchStudentProfile() async {
+    try {
+      final res = await _studentService.getProfile();
+      if (res != null) {
+        studentProfile.value = res;
+        selectedGrade.value = res.grade;
+        selectedLanguage.value = res.preferredLanguage;
+      }
+    } catch (_) {}
+  }
+
+  // ── GET /students/preferences ─────────────────────────────────────────────
+
+  Future<void> fetchStudentPrefs() async {
+    try {
+      final res = await _studentService.getPreferences();
+      if (res != null) {
+        studentPrefs.value = res;
+        selectedTeachingStyle.value = res.teachingStyle;
+        selectedLearningMode.value = res.learningMode;
+      }
+    } catch (_) {}
   }
 
   // ── PATCH /auth/profile ───────────────────────────────────────────────────
@@ -68,13 +109,44 @@ class AccountController extends GetxController {
 
     isLoading.value = true;
     try {
-      final res = await _service.updateProfile(
+      // Update auth profile (name + gender)
+      final authRes = await _authService.updateProfile(
         UpdateProfileRequest(fullName: name, gender: selectedGender.value),
       );
+      // Update student profile (grade + language)
+      final studentRes = await _studentService.updateProfile(
+        UpdateStudentRequest(
+          grade: selectedGrade.value,
+          preferredLanguage: selectedLanguage.value,
+        ),
+      );
+      if (authRes != null || studentRes != null) {
+        await fetchAll();
+        _snack('profile_updated'.tr, authRes?.message ?? 'OK');
+      } else {
+        _snack('error'.tr, 'try_again_later'.tr);
+      }
+    } on Exception catch (e) {
+      _snack('error'.tr, e.toString());
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  // ── PATCH /students/preferences ───────────────────────────────────────────
+
+  Future<void> updatePreferences() async {
+    isLoading.value = true;
+    try {
+      final res = await _studentService.updatePreferences(
+        UpdatePreferencesRequest(
+          teachingStyle: selectedTeachingStyle.value,
+          learningMode: selectedLearningMode.value,
+        ),
+      );
       if (res != null) {
-        // Refresh user data from server after successful update
-        await fetchAccount();
-        _snack('profile_updated'.tr, res.message);
+        studentPrefs.value = res;
+        _snack('profile_updated'.tr, 'account_preferences_saved'.tr);
       } else {
         _snack('error'.tr, 'try_again_later'.tr);
       }
@@ -113,7 +185,7 @@ class AccountController extends GetxController {
 
     isLoading.value = true;
     try {
-      final res = await _service.deleteAccount();
+      final res = await _authService.deleteAccount();
       if (res != null) {
         _snack('account_deleted'.tr, res.message);
         await Future.delayed(const Duration(milliseconds: 800));
@@ -147,7 +219,7 @@ class AccountController extends GetxController {
 
     isLoading.value = true;
     try {
-      final res = await _service.changePassword(
+      final res = await _authService.changePassword(
         ChangePasswordRequest(oldPassword: oldPass, newPassword: newPass),
       );
       if (res != null) {

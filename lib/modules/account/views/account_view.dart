@@ -105,11 +105,11 @@ class _UserCard extends StatelessWidget {
                     style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
                   ),
                   const SizedBox(height: 4),
-                  Row(
+                  Wrap(
+                    spacing: 6,
                     children: [
                       if (u?.gender.isNotEmpty == true)
                         _InfoBadge(u!.gender.toUpperCase(), AppColors.purple),
-                      const SizedBox(width: 6),
                       Obx(() {
                         final grade = controller.studentProfile.value?.grade;
                         return grade != null
@@ -212,15 +212,14 @@ class _EditProfileForm extends StatelessWidget {
         Text('account_grade'.tr,
             style: TextStyle(color: AppColors.textSecondary, fontSize: 11, fontWeight: FontWeight.w600)),
         const SizedBox(height: 8),
-        Obx(() => Row(
-              children: [9, 10, 11, 12].map((g) => Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: _SelectChip(
-                      label: 'Grade $g',
-                      selected: controller.selectedGrade.value == g,
-                      color: AppColors.amber,
-                      onTap: () => controller.selectedGrade.value = g,
-                    ),
+        Obx(() => Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [9, 10, 11, 12].map((g) => _SelectChip(
+                    label: 'Grade $g',
+                    selected: controller.selectedGrade.value == g,
+                    color: AppColors.amber,
+                    onTap: () => controller.selectedGrade.value = g,
                   )).toList(),
             )),
 
@@ -230,7 +229,9 @@ class _EditProfileForm extends StatelessWidget {
         Text('account_language'.tr,
             style: TextStyle(color: AppColors.textSecondary, fontSize: 11, fontWeight: FontWeight.w600)),
         const SizedBox(height: 8),
-        Obx(() => Row(
+        Obx(() => Wrap(
+              spacing: 8,
+              runSpacing: 8,
               children: [
                 _SelectChip(
                   label: 'العربية',
@@ -238,7 +239,6 @@ class _EditProfileForm extends StatelessWidget {
                   color: AppColors.green,
                   onTap: () => controller.selectedLanguage.value = 'ar',
                 ),
-                const SizedBox(width: 8),
                 _SelectChip(
                   label: 'English',
                   selected: controller.selectedLanguage.value == 'en',

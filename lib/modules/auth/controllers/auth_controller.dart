@@ -66,11 +66,10 @@ class AuthController extends GetxController {
         _snack('register_failed'.tr, 'try_again_later'.tr);
         return;
       }
-      // Account created — show success then switch to Login tab
+      // Account created — auto-login with the same credentials
       _snack('register_success'.tr, res.message);
-      passwordController.clear();
       nameController.clear();
-      isLoginTab.value = true;
+      await login(); // email + password still in the fields
     } on Exception catch (e) {
       _snack('register_failed'.tr, e.toString());
     } finally {

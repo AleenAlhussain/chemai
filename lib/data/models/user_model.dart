@@ -17,6 +17,16 @@ class UserModel {
     this.selectedMentorId,
   });
 
+  UserModel copyWith({String? name, String? avatarUrl}) => UserModel(
+        id: id,
+        name: name ?? this.name,
+        avatarUrl: avatarUrl ?? this.avatarUrl,
+        level: level,
+        xp: xp,
+        xpToNextLevel: xpToNextLevel,
+        selectedMentorId: selectedMentorId,
+      );
+
   double get progressToNextLevel =>
       xpToNextLevel > 0 ? (xp / xpToNextLevel).clamp(0.0, 1.0) : 0.0;
 

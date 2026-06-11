@@ -15,7 +15,7 @@ import 'services/student_service.dart';
 
 // Set to true to skip login during development.
 // Set to false before releasing to production.
-const bool kDevSkipAuth = true;
+const bool kDevSkipAuth = false;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

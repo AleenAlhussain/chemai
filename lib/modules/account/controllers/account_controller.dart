@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../app/routes/app_routes.dart';
 import '../../../app/theme/app_colors.dart';
@@ -60,15 +61,28 @@ class AccountController extends GetxController {
   // ── GET /auth/account ─────────────────────────────────────────────────────
 
   Future<void> fetchAccount() async {
+    // Fast path: pre-populate from cache so the screen isn't blank
+    final prefs = await SharedPreferences.getInstance();
+    if (user.value == null) {
+      final cachedName  = prefs.getString('user_full_name') ?? '';
+      final cachedEmail = prefs.getString('user_email') ?? '';
+      if (cachedName.isNotEmpty) {
+        user.value = UserAuth(id: '', fullName: cachedName, email: cachedEmail, gender: '');
+        nameController.text = cachedName;
+      }
+    }
+
     try {
       final res = await _authService.getAccount();
       if (res != null) {
         user.value = res;
         nameController.text = res.fullName;
         selectedGender.value = res.gender.isNotEmpty ? res.gender : 'male';
+        if (res.fullName.isNotEmpty) prefs.setString('user_full_name', res.fullName);
+        if (res.email.isNotEmpty)    prefs.setString('user_email', res.email);
       }
     } catch (e) {
-      _snack('error'.tr, e.toString());
+      if (user.value == null) _snack('error'.tr, e.toString());
     }
   }
 

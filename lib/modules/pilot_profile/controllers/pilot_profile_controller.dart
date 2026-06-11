@@ -44,6 +44,14 @@ class PilotProfileController extends GetxController {
   }
 
   Future<void> _loadUserData() async {
+    // Fast path: show cached name/email immediately (no network wait)
+    final prefs = await SharedPreferences.getInstance();
+    final cachedName  = prefs.getString('user_full_name') ?? '';
+    final cachedEmail = prefs.getString('user_email') ?? '';
+    if (cachedName.isNotEmpty)  name.value  = cachedName;
+    if (cachedEmail.isNotEmpty) email.value = cachedEmail;
+
+    // Refresh from API in the background
     try {
       final results = await Future.wait([
         _authService.getAccount(),
@@ -54,6 +62,8 @@ class PilotProfileController extends GetxController {
       if (user != null) {
         name.value  = user.fullName;
         email.value = user.email;
+        if (user.fullName.isNotEmpty) prefs.setString('user_full_name', user.fullName);
+        if (user.email.isNotEmpty)    prefs.setString('user_email', user.email);
       }
       if (student != null) {
         final sp = student as StudentProfile;
@@ -106,6 +116,8 @@ class PilotProfileController extends GetxController {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('logged_in');
     await prefs.remove('access_token');
+    await prefs.remove('user_full_name');
+    await prefs.remove('user_email');
     await prefs.remove('onboarding_done');
     await prefs.remove('mentor_id');
     await prefs.remove('explanation_style');

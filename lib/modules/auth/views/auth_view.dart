@@ -259,7 +259,7 @@ class _FormCard extends StatelessWidget {
               _FieldLabel('auth_password'.tr),
               if (isLogin)
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () => Get.toNamed('/forgot-password'),
                   child: Text('auth_forgot'.tr, style: const TextStyle(color: Color(0xFFFBBF24), fontSize: 12, fontWeight: FontWeight.w600)),
                 ),
             ],
@@ -310,7 +310,9 @@ class _FormCard extends StatelessWidget {
           const SizedBox(height: 22),
 
           Obx(() => GestureDetector(
-                onTap: controller.isLoading.value ? null : controller.login,
+                onTap: controller.isLoading.value
+                    ? null
+                    : (isLogin ? controller.login : controller.register),
                 child: Container(
                   width: double.infinity,
                   height: 52,

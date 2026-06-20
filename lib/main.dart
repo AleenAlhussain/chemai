@@ -11,6 +11,7 @@ import 'core/network/dio_client.dart';
 import 'data/providers/chemai_provider.dart';
 import 'data/repositories/chemai_repository.dart';
 import 'services/auth_service.dart';
+import 'services/conversation_service.dart';
 import 'services/student_service.dart';
 
 // Set to true to skip login during development.
@@ -50,4 +51,5 @@ void bootstrap() {
   Get.put(ChemAIRepository(Get.find<ChemAIProvider>()), permanent: true);
   Get.put(AuthService(), permanent: true);
   Get.put(StudentService(), permanent: true);
+  Get.put(ConversationService(), permanent: true);
 }

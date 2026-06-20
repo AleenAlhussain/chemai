@@ -2,38 +2,93 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../data/models/chat_message_model.dart';
+import '../../../data/models/conversation_model.dart';
+import '../../../services/conversation_service.dart';
 
 class AskAiController extends GetxController {
-  final messages = <ChatMessage>[].obs;
+  final ConversationService _conversationService = Get.find<ConversationService>();
+
+  // ── Conversations ──────────────────────────────────────────────────────────
+  final conversations        = <ConversationModel>[].obs;
+  final currentConversation  = Rxn<ConversationModel>();
+  final isLoadingConversations = false.obs;
+
+  // ── Messages ───────────────────────────────────────────────────────────────
+  final messages   = <ChatMessage>[].obs;
+  final isTyping   = false.obs;
+  final teachingStyle   = 'Socratic'.obs;
   final messageController = TextEditingController();
-  final isTyping = false.obs;
-  final teachingStyle = 'Socratic'.obs;
-  final scrollController = ScrollController();
+  final scrollController  = ScrollController();
 
   @override
   void onInit() {
     super.onInit();
-    messages.addAll([
-      ChatMessage(
-        id: '1',
-        content:
-            'Let\'s look at the reaction between Hydrogen and Oxygen.\n\n2H₂ + O₂ → 2H₂O',
-        isBot: true,
-        time: '14:00',
-      ),
-      ChatMessage(
-        id: '2',
-        content: 'What kind of bond is that?',
-        isBot: false,
-        time: '14:02',
-        isRead: true,
-      ),
-    ]);
+    loadConversations();
   }
+
+  // ── Load conversations from API ────────────────────────────────────────────
+
+  Future<void> loadConversations() async {
+    isLoadingConversations.value = true;
+    try {
+      final result = await _conversationService.getConversations();
+      conversations.value = result;
+      // Auto-select the most recent conversation if none selected
+      if (currentConversation.value == null && result.isNotEmpty) {
+        selectConversation(result.first);
+      }
+    } catch (_) {} finally {
+      isLoadingConversations.value = false;
+    }
+  }
+
+  // ── Create a new conversation ──────────────────────────────────────────────
+
+  Future<void> newConversation() async {
+    isLoadingConversations.value = true;
+    try {
+      final created = await _conversationService.createConversation();
+      if (created != null) {
+        conversations.insert(0, created);
+        selectConversation(created);
+        Get.back(); // close the conversations sheet
+      } else {
+        Get.snackbar('error'.tr, 'try_again_later'.tr,
+            snackPosition: SnackPosition.BOTTOM);
+      }
+    } catch (e) {
+      Get.snackbar('error'.tr, e.toString(),
+          snackPosition: SnackPosition.BOTTOM);
+    } finally {
+      isLoadingConversations.value = false;
+    }
+  }
+
+  // ── Select a conversation ──────────────────────────────────────────────────
+
+  void selectConversation(ConversationModel conv) {
+    currentConversation.value = conv;
+    messages.clear();
+    // Seed the chat with a welcome message for this conversation
+    messages.add(ChatMessage(
+      id: 'welcome',
+      content: 'ask_ai_welcome'.tr,
+      isBot: true,
+      time: _now(),
+    ));
+  }
+
+  // ── Send a message ─────────────────────────────────────────────────────────
 
   Future<void> sendMessage() async {
     final text = messageController.text.trim();
     if (text.isEmpty) return;
+
+    // Auto-create a conversation if none exists yet
+    if (currentConversation.value == null) {
+      await newConversation();
+      if (currentConversation.value == null) return;
+    }
 
     messages.add(ChatMessage(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -45,6 +100,7 @@ class AskAiController extends GetxController {
     isTyping.value = true;
     _scrollToBottom();
 
+    // TODO: wire to real AI endpoint with currentConversation.value!.id
     await Future.delayed(const Duration(seconds: 2));
     isTyping.value = false;
 

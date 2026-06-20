@@ -260,6 +260,9 @@ class AppTranslations extends Translations {
     'ask_ai_direct': 'Direct',
     'ask_ai_hint': 'Ask about molecular geometry...',
     'ask_ai_bot_name': 'QUANTUM_BOT v4.2',
+    'ask_ai_welcome': 'Hello! How can I help you with chemistry today?',
+    'ask_ai_conversations': 'Conversations',
+    'ask_ai_no_conversations': 'No conversations yet. Start a new chat!',
 
     // ── Mentor ─────────────────────────────────────────────────────────────
     'mentor_choose': 'Choose Your Mentor',
@@ -827,6 +830,9 @@ class AppTranslations extends Translations {
     'ask_ai_direct': 'مباشر',
     'ask_ai_hint': 'اسأل عن الهندسة الجزيئية...',
     'ask_ai_bot_name': 'QUANTUM_BOT v4.2',
+    'ask_ai_welcome': 'مرحباً! كيف يمكنني مساعدتك في الكيمياء اليوم؟',
+    'ask_ai_conversations': 'المحادثات',
+    'ask_ai_no_conversations': 'لا توجد محادثات بعد. ابدأ محادثة جديدة!',
 
     // ── Mentor ─────────────────────────────────────────────────────────────
     'mentor_choose': 'اختر معلمك',
